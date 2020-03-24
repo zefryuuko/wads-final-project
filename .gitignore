@@ -1,0 +1,13 @@
+# Node
+node_modules/
+package-lock.json
+
+# Authentication Files
+auth-inf.json
+
+# Dev Environment
+.vscode
+
+# OS Files
+.DS_Store
+desktop.ini
