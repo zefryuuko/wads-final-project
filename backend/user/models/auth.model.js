@@ -1,7 +1,7 @@
 var monggose = require('mongoose');
 var Schema = monggose.Schema;
 
-var authSchema = new Schema({
+var AuthSchema = new Schema({
     id: {
         type: monggose.ObjectId,
         required: true
@@ -16,4 +16,4 @@ var authSchema = new Schema({
     }
 });
 
-mongoose.model('auth', authSchema);
+mongoose.model('auth', AuthSchema);

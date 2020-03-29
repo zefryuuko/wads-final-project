@@ -1,7 +1,7 @@
 var monggose = require('mongoose');
 var Schema = monggose.Schema;
 
-var userSchema = new Schema({
+var UserSchema = new Schema({
     id: {
         type: String,
         required: true
@@ -20,4 +20,4 @@ var userSchema = new Schema({
     }
 });
 
-mongoose.model('users', userSchema);
+mongoose.model('user', UserSchema);

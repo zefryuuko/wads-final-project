@@ -1,11 +1,11 @@
 var monggose = require('mongoose');
 var Schema = monggose.Schema;
 
-var studentSchema = new Schema({
+var StudentSchema = new Schema({
     user: Schema.ObjectId,
     currentGPA: Number,
     currentSAT: Number,
     major: String
 });
 
-mongoose.model('student', studentSchema);
+mongoose.model('student', StudentSchema);
