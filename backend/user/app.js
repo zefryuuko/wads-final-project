@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(bodyParser.json())
 
 mongoose.connect(process.env.MONGO_ADDRESS, 
