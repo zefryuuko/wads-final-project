@@ -4,6 +4,7 @@ package-lock.json
 
 # Authentication Files
 auth-inf.json
+.env
 
 # Dev Environment
 .vscode
