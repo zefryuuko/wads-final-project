@@ -8,4 +8,4 @@ var StudentSchema = new Schema({
     major: String
 });
 
-mongoose.model('student', StudentSchema);
+module.exports = mongoose.model('student', StudentSchema);

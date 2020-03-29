@@ -16,4 +16,4 @@ var AuthSchema = new Schema({
     }
 });
 
-mongoose.model('auth', AuthSchema);
+module.exports = mongoose.model('auth', AuthSchema);
