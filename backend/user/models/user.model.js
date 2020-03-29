@@ -6,7 +6,7 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    frontName: {
+    firstName: {
         type: String,
         required: true
     },
