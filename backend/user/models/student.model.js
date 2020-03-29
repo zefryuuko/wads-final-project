@@ -1,5 +1,5 @@
-var monggose = require('mongoose');
-var Schema = monggose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var StudentSchema = new Schema({
     user: Schema.ObjectId,
