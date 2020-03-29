@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user.model');
 
 router.get('/', async (req, res) => {
-    res.json({
+    res.status(400).json({
         "message": "invalid request"
     });
 });
@@ -11,7 +11,15 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const user = await User.find({ id: req.params.id });
-        res.status(200).send(user);
+        
+        if (user.length < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not found.`
+            });
+        }
+        else {
+            res.status(200).send(user[0]);
+        }
     } catch (err) {
         res.status(500).json({
             "message": err
