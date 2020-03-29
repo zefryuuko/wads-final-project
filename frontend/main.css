@@ -23,3 +23,7 @@ body{
     font-family: OpenSans-Light;
     src: url(fonts/OpenSans-Light.ttf)
 }
+
+.user-btn:hover{
+    opacity: 0.8;
+}
