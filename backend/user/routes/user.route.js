@@ -47,4 +47,31 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.delete('/', async (req, res) => {
+    res.status(400).json({
+        "message": "invalid request"
+    });
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const removedUser = await User.remove({ id: req.params.id });
+        
+        if (removedUser.deletedCount < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not found.`
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "User deleted successfully."
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": err
+        });
+    }
+});
+
 module.exports = router;
