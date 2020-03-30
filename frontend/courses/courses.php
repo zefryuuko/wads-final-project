@@ -24,7 +24,7 @@
     <!-- END OF HEADER SECTION -->
 
     <!-- NAVBAR -->
-    <?php include("components/navbar.html"); ?>
+    <?php include("components/navbar_courses.html"); ?>
     <!-- END OF NAVBAR -->
 
     <h1 style="text-align: center; padding: 20px;">Hello World!</h1>
