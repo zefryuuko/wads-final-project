@@ -29,6 +29,7 @@
     <!-- NAVBAR -->
     <?php include("components/navbar_finance.html"); ?>
     <!-- END OF NAVBAR -->
+
     <div class="row row-title" style="margin: 0px !important;">
         <div class="col-md-12 va-info">
             <h1 style="font-family: OpenSans-Bold;">FINANCIAL STATUS</h1>
@@ -46,26 +47,25 @@
             <!-- PERIOD -->
             <h3 style="font-family: OpenSans-Regular; padding: 0px 20px">PERIOD</h3>
             <div class="col-md-12 va-info">
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 250px">
-                        Period
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">2018, Odd Semester</a>
-                        <a class="dropdown-item" href="#">2018, Even Semester</a>
-                        <a class="dropdown-item" href="#">2019, Odd Semester</a>
-                    </div>
-                </div>
-                <!-- <form class="row">
-                    <span class="custom-combobox">
-                        <select id="ddlPeriod" disable="disable">
-                            <option>2019, Even Semester</option>
-                            <option>2019, Odd Semester</option>
-                            <option>2018, Even Semester</option>
-                        </select>
-                        <span class="combobox-label">Period</span>
-                    </span>
-                </form> -->
+                <select class="form-control">
+                    <option value="2019-Odd">2019, Odd Semester</option>
+                    <option value="2019-Even">2019, Even Semester</option>
+                    <option value="2018-Odd">2018, Odd Semester</option>
+                </select>
+                <script>
+                    $(document).ready(function() {
+                        $('select.form-control').combobox();
+
+                        $('#it').click(function(e) {
+                            $('ul.dropdown-menu').toggle();
+                        });
+
+                        //  $('input').focus(function(e){
+                        //    $('ul.dropdown-menu').toggle();
+                        //  });
+
+                    });
+                </script>
             </div>
             <!-- END OF PERIOD -->
         </div>
@@ -103,7 +103,7 @@
                 <table class="table">
                     <thead>
                         <tr class="">
-                            <th scope="col">#</th>
+                            <th scope="col">No</th>
                             <th scope="col">Period</th>
                             <th scope="col">Description</th>
                             <th scope="col">Due</th>

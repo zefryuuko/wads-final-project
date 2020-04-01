@@ -28,9 +28,19 @@ body{
     opacity: 0.8;
 }
 
+.row-title{
+    background-color: #008ed3;
+}  
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+}
+
 /* TABLE */
 tr.hide-table-padding td{
-    padding: 0;
+    padding: 0px 12px;
 }
   
 .expand-button{
