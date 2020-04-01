@@ -74,34 +74,46 @@
     <!-- TABLE -->
     <div class="row" style="margin: 0px !important">
         <div class="col-md-12 va-info">
-            <div class="table-responsive">
+            <div class="table-responsive w-auto">
                 <table class="table">
                     <thead>
                         <tr class="">
                             <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Period</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Due</th>
+                            <th scope="col">Bill</th>
+                            <th scope="col">Payment</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td>2019-2020 <br> Even semester</td>
+                            <td>Development Fee</td>
+                            <td>1 April 2020</td>
+                            <td>$433.690</td>
+                            <td>$433.690</td>
+                            <td>Paid</td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                            <td>2019-2020 <br> Even semester</td>
+                            <td>Building Fee</td>
+                            <td>1 March 2020</td>
+                            <td>$168.700</td>
+                            <td>$0.00</td>
+                            <td>Unpaid - overdo</td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <td>2020-2021 <br> Odd semester</td>
+                            <td>Development Fee</td>
+                            <td>10 April 2020</td>
+                            <td>$213.790</td>
+                            <td>$0.00</td>
+                            <td>Unpaid</td>
                         </tr>
                     </tbody>
                 </table>

@@ -29,15 +29,6 @@ body{
     opacity: 0.8;
 }
 
-/* .summary{
-    width: 500px;
-    height: 150px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    text-align: left !important;
-} */
-
 .form-control::placeholder{
     font-size: 0.95rem;
     color: #aaa;
