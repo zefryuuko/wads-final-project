@@ -29,22 +29,48 @@
     <!-- NAVBAR -->
     <?php include("components/navbar_finance.html"); ?>
     <!-- END OF NAVBAR -->
-
-    <h1 style="font-family: OpenSans-Regular; padding: 10px 20px;">FINANCIAL STATUS</h1>
+    <div class="row row-title" style="margin: 0px !important;">
+        <div class="col-md-12 va-info">
+            <h1 style="font-family: OpenSans-Bold;">FINANCIAL STATUS</h1>
+        </div>
+    </div>
 
     <!-- VIRTUAL ACCOUNT INFORMATION -->
     <div class="row" style="margin: 0px !important;">
         <div class="col-md-6 va-info">
+            <h3 style="font-family: OpenSans-Regular; padding: 0px">VIRTUAL ACCOUNT INFORMATION</h3>
             <p>BCA VIRTUAL ACCOUNT (TUITION) - 77422531 - DAVID AMADEO <br>
                 BCA VIRTUAL ACCOUNT (NON-TUITION) - 64456233 - DAVID AMADEO</p>
         </div>
+        <div class="col-md-6 va-info">
+            <!-- PERIOD -->
+            <h3 style="font-family: OpenSans-Regular; padding: 0px 20px">PERIOD</h3>
+            <div class="col-md-12 va-info">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 250px">
+                        Period
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">2018, Odd Semester</a>
+                        <a class="dropdown-item" href="#">2018, Even Semester</a>
+                        <a class="dropdown-item" href="#">2019, Odd Semester</a>
+                    </div>
+                </div>
+                <!-- <form class="row">
+                    <span class="custom-combobox">
+                        <select id="ddlPeriod" disable="disable">
+                            <option>2019, Even Semester</option>
+                            <option>2019, Odd Semester</option>
+                            <option>2018, Even Semester</option>
+                        </select>
+                        <span class="combobox-label">Period</span>
+                    </span>
+                </form> -->
+            </div>
+            <!-- END OF PERIOD -->
+        </div>
     </div>
     <!-- END OF VIRTUAL ACCOUNT INFORMATION -->
-
-    <!-- PERIOD -->
-    <h3 style="font-family: OpenSans-Regular; padding: 10px 20px;">PERIOD</h3>
-
-    <!-- END OF PERIOD -->
 
     <!-- SUMMARY -->
     <div class="row" style="margin: 0px !important">
@@ -57,7 +83,6 @@
         </div>
         <div class="col-md-6 va-info">
             <div class="bg-white p-5">
-                <!-- Default search bars with input group -->
                 <form action="">
                     <div class="input-group mb-4">
                         <input type="search" placeholder="What are you searching for?" aria-describedby="button-addon5" class="form-control">
