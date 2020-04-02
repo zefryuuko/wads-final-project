@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="edit_profile.css">
 
+    <!-- FONT AWESOME -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
     <!-- BOOTSTRAP HOVER DOWN CSS -->
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/bootstrap-dropdownhover.min.css" rel="stylesheet">
@@ -24,7 +27,7 @@
     <!-- END OF HEADER SECTION -->
 
     <!-- NAVBAR -->
-    <?php include("components/navbar.html"); ?>
+    <?php include("components/navbar_index.html"); ?>
     <!-- END OF NAVBAR -->
 
     <h1 style="text-align: center; padding: 20px;">Hello World!</h1>
