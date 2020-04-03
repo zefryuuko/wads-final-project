@@ -1,12 +1,14 @@
 * {
     padding: 0px;
     margin: 0px;
+    box-sizing: border-box;
 }
 
 body{
     font-family: OpenSans-Bold;
     font-size: 15px !important;
-    margin:0px;
+    margin: 0px;
+    height: 100%;
 }
 
 @font-face{
@@ -24,6 +26,24 @@ body{
     src: url(fonts/OpenSans-Light.ttf)
 }
 
+.row-bod{
+    width: 960px;
+    margin: auto;
+}
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+    display: block;
+}
+
+.user-btn{
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.52);
+    border-radius: 5px;
+}
+
 .user-btn:hover{
     opacity: 0.8;
+    
 }

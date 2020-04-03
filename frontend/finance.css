@@ -1,6 +1,7 @@
 * {
     padding: 0px;
     margin: 0px;
+    box-sizing: border-box;
 }
 
 body{
@@ -8,6 +9,7 @@ body{
     font-size: 15px !important;
     margin:0px;
     padding: 0px !important;
+    height: 100%;
 }
 
 @font-face{
