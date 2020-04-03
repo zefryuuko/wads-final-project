@@ -1,3 +1,5 @@
+<!-- Source: https://colorlib.com/wp/template/login-form-v1/?v=b718adec73e0 -->
+
 <!doctype html>
 <html lang="en">
 
@@ -12,6 +14,7 @@
 
     <!-- FONT AWESOME -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 
     <!-- BOOTSTRAP HOVER DOWN CSS -->
     <link href="css/animate.min.css" rel="stylesheet">
@@ -22,19 +25,46 @@
 </head>
 
 <body>
-    <!-- HEADER SECTION -->
-    <?php include("components/header.html"); ?>
-    <!-- END OF HEADER SECTION -->
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="assets/components/logo.png" alt="IMG">
+                </div>
 
-    <!-- NAVBAR -->
-    <?php include("components/navbar_index.html"); ?>
-    <!-- END OF NAVBAR -->
+                <form class="login100-form validate-form">
+                    <span class="login100-form-title">
+                        Login
+                    </span>
 
-    <h1 style="text-align: center; padding: 20px;">Hello World!</h1>
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: firstname.surname@binus.ac.id">
+                        <input class="input100" type="text" name="email" placeholder="Binusian Email">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
 
-    <!-- FOOTER -->
-    <?php include("components/footer.html"); ?>
-    <!-- END OF FOOTER -->
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="pass" placeholder="Password">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-12" style="padding-top: 158px;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- OPTIONAL JAVASCRIPT -->
     <!-- JQUERY FIRST, THE POPPER.JS, THEN BOOTSTRAP JS -->
