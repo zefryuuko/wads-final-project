@@ -47,6 +47,17 @@ class Session {
         }
     }
 
+    async getAccountId(sessionId) {
+        const result = await db.query(
+            'SELECT account_id FROM sessions WHERE session_id = ?',
+            [
+                sessionId
+            ]
+        );
+        if (result[0].length == 0) return undefined;
+        else return result[0][0].account_id;
+    }
+
     async revokeSession(sessionId) {
         try {
             const result = await db.query(
@@ -62,8 +73,11 @@ class Session {
         }
     }
 
-    async revokeSessions(accountId) {
+    async revokeSessions(sessionId) {
         try {
+            const accountId = await this.getAccountId(sessionId);
+            if (!accountId) return false;
+
             const result = await db.query(
                 'DELETE FROM sessions WHERE account_id = ?',
                 [
