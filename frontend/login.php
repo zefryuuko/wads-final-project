@@ -49,6 +49,10 @@
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                     </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+                    </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
                             Login
