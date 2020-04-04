@@ -19,7 +19,7 @@ class Account {
         }
     }
 
-    async checkCredentials(emailAddress, password) {
+    async getAccountId(emailAddress, password) {
         try {
             const result = await db.query(
                 'SELECT account_id FROM accounts WHERE email_address = ? AND password = SHA2(?, 512)',
@@ -28,7 +28,8 @@ class Account {
                     password + process.env.CRYPTO_SALT
                 ]
             );
-            return true;
+            if (result[0].length == 0) return undefined;
+            else return result[0][0].account_id;
         } catch (err) {
             throw err;
         }

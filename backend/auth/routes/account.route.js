@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const status = await account.checkCredentials(emailAddress, password);
+        const status = await account.getAccountId(emailAddress, password);
         if (!status) {
             res.status(401).json({
                 "message": "Invalid email and/or password"
