@@ -59,7 +59,7 @@ class Session {
             const result = await db.query(
                 'DELETE FROM sessions WHERE account_id = ?',
                 [
-                    sessionId
+                    accountId
                 ]
             );
             if (result[0].affectedRows > 0) return true;
