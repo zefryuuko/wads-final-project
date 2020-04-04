@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('../utils/db');
 const dotenv = require('dotenv/config');
 
 class Account {
