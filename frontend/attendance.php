@@ -36,185 +36,188 @@
         </div>
     </div>
 
-    <!-- PERIOD -->
-    <div class="row" style="margin: 0px !important;">
-        <div class="col-md-6 va-info" style="padding: 10px 20px !important;">
-            <h3 style="font-family: OpenSans-Regular">PERIOD</h3>
-            <select class="form-control">
-                <option value="2019-Odd">2019, Odd Semester</option>
-                <option value="2019-Even">2019, Even Semester</option>
-                <option value="2018-Odd">2018, Odd Semester</option>
-            </select>
-            <script>
-                $(document).ready(function() {
-                    $('select.form-control').combobox();
+    <div class="body-content">
+        <!-- PERIOD -->
+        <div class="row" style="margin: 0px !important;">
+            <div class="col-md-6 va-info" style="padding: 10px 20px !important;">
+                <h3 style="font-family: OpenSans-Regular">PERIOD</h3>
+                <select class="form-control">
+                    <option value="2019-Odd">2019, Odd Semester</option>
+                    <option value="2019-Even">2019, Even Semester</option>
+                    <option value="2018-Odd">2018, Odd Semester</option>
+                </select>
+                <script>
+                    $(document).ready(function() {
+                        $('select.form-control').combobox();
 
-                    $('#it').click(function(e) {
-                        $('ul.dropdown-menu').toggle();
+                        $('#it').click(function(e) {
+                            $('ul.dropdown-menu').toggle();
+                        });
+
+                        //  $('input').focus(function(e){
+                        //    $('ul.dropdown-menu').toggle();
+                        //  });
+
                     });
+                </script>
+            </div>
+        </div>
+        <!-- END OF PERIOD -->
 
-                    //  $('input').focus(function(e){
-                    //    $('ul.dropdown-menu').toggle();
-                    //  });
-
-                });
-            </script>
+        <!-- TABLE -->
+        <div class="row" style="margin: 0px !important">
+            <div class="col-md-12 va-info">
+                <div class="table-responsive w-auto">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Course</th>
+                                <th scope="col">Class</th>
+                                <th scope="col">Component</th>
+                                <th scope="col">Total Session</th>
+                                <th scope="col">Session Done</th>
+                                <th scope="col">Total Absence</th>
+                                <th scope="col">Maximum Absence</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Eligibility</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+                                <td>1</td>
+                                <td>Web Applicatoin Development and Security</td>
+                                <td>L4AC</td>
+                                <td>Lecturer</td>
+                                <td>12</td>
+                                <td>6</td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td>Warning, 80%</td>
+                                <td>Eligibile</td>
+                            </tr>
+                            <tr class="hide-table-padding">
+                                <td></td>
+                                <td colspan="10">
+                                    <div id="collapseOne" class="collapse in p-3">
+                                        <div class="table-responsive w-auto">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Week</th>
+                                                        <th scope="col">Session</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Time</th>
+                                                        <th scope="col">Delivery Mode</th>
+                                                        <th scope="col">Session Done</th>
+                                                        <th scope="col">Absence</th>
+                                                        <th scope="col">Tapping Time</th>
+                                                        <th scope="col">Reason</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>1</td>
+                                                        <td>Mon Oct 14 2020</td>
+                                                        <td>09:30 - 11:10</td>
+                                                        <td>F2F</td>
+                                                        <td>Y</td>
+                                                        <td>P</td>
+                                                        <td>Mon Oct 14 2019 15:11:04 GMT+0910 (Indochina Time)</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>2</td>
+                                                        <td>Mon Oct 14 2020</td>
+                                                        <td>11:30 - 13:10</td>
+                                                        <td>F2F</td>
+                                                        <td>Y</td>
+                                                        <td>P</td>
+                                                        <td>Mon Oct 14 2019 15:11:04 GMT+1110 (Indochina Time)</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="accordion-toggle collapsed" id="accordion2" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                <td>2</td>
+                                <td>Intelligent Systems</td>
+                                <td>L4AC</td>
+                                <td>Lab</td>
+                                <td>12</td>
+                                <td>6</td>
+                                <td>0</td>
+                                <td>3</td>
+                                <td>OK</td>
+                                <td>Eligibile</td>
+                            </tr>
+                            <tr class="hide-table-padding">
+                                <td></td>
+                                <td colspan="10">
+                                    <div id="collapseTwo" class="collapse in p-3">
+                                        <div class="table-responsive w-auto">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Week</th>
+                                                        <th scope="col">Session</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Time</th>
+                                                        <th scope="col">Delivery Mode</th>
+                                                        <th scope="col">Session Done</th>
+                                                        <th scope="col">Absence</th>
+                                                        <th scope="col">Tapping Time</th>
+                                                        <th scope="col">Reason</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>1</td>
+                                                        <td>Mon Oct 14 2020</td>
+                                                        <td>13:30 - 15:10</td>
+                                                        <td>F2F</td>
+                                                        <td>Y</td>
+                                                        <td>P</td>
+                                                        <td>Mon Oct 14 2019 15:11:04 GMT+1310 (Indochina Time)</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>2</td>
+                                                        <td>Mon Oct 14 2020</td>
+                                                        <td>15:30 - 17:10</td>
+                                                        <td>F2F</td>
+                                                        <td>Y</td>
+                                                        <td>P</td>
+                                                        <td>Mon Oct 14 2019 15:11:04 GMT+1510 (Indochina Time)</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> <!-- END OF TABLE -->
         </div>
     </div>
-    <!-- END OF PERIOD -->
 
-    <!-- TABLE -->
-    <div class="row" style="margin: 0px !important">
-        <div class="col-md-12 va-info">
-            <div class="table-responsive w-auto">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Course</th>
-                            <th scope="col">Class</th>
-                            <th scope="col">Component</th>
-                            <th scope="col">Total Session</th>
-                            <th scope="col">Session Done</th>
-                            <th scope="col">Total Absence</th>
-                            <th scope="col">Maximum Absence</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Eligibility</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                            <td>1</td>
-                            <td>Web Applicatoin Development and Security</td>
-                            <td>L4AC</td>
-                            <td>Lecturer</td>
-                            <td>12</td>
-                            <td>6</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>Warning, 80%</td>
-                            <td>Eligibile</td>
-                        </tr>
-                        <tr class="hide-table-padding">
-                            <td></td>
-                            <td colspan="10">
-                                <div id="collapseOne" class="collapse in p-3">
-                                    <div class="table-responsive w-auto">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Week</th>
-                                                    <th scope="col">Session</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Time</th>
-                                                    <th scope="col">Delivery Mode</th>
-                                                    <th scope="col">Session Done</th>
-                                                    <th scope="col">Absence</th>
-                                                    <th scope="col">Tapping Time</th>
-                                                    <th scope="col">Reason</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>Mon Oct 14 2020</td>
-                                                    <td>09:30 - 11:10</td>
-                                                    <td>F2F</td>
-                                                    <td>Y</td>
-                                                    <td>P</td>
-                                                    <td>Mon Oct 14 2019 15:11:04 GMT+0910 (Indochina Time)</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>2</td>
-                                                    <td>Mon Oct 14 2020</td>
-                                                    <td>11:30 - 13:10</td>
-                                                    <td>F2F</td>
-                                                    <td>Y</td>
-                                                    <td>P</td>
-                                                    <td>Mon Oct 14 2019 15:11:04 GMT+1110 (Indochina Time)</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="accordion-toggle collapsed" id="accordion2" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                            <td>2</td>
-                            <td>Intelligent Systems</td>
-                            <td>L4AC</td>
-                            <td>Lab</td>
-                            <td>12</td>
-                            <td>6</td>
-                            <td>0</td>
-                            <td>3</td>
-                            <td>OK</td>
-                            <td>Eligibile</td>
-                        </tr>
-                        <tr class="hide-table-padding">
-                            <td></td>
-                            <td colspan="10">
-                                <div id="collapseTwo" class="collapse in p-3">
-                                    <div class="table-responsive w-auto">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Week</th>
-                                                    <th scope="col">Session</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Time</th>
-                                                    <th scope="col">Delivery Mode</th>
-                                                    <th scope="col">Session Done</th>
-                                                    <th scope="col">Absence</th>
-                                                    <th scope="col">Tapping Time</th>
-                                                    <th scope="col">Reason</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>Mon Oct 14 2020</td>
-                                                    <td>13:30 - 15:10</td>
-                                                    <td>F2F</td>
-                                                    <td>Y</td>
-                                                    <td>P</td>
-                                                    <td>Mon Oct 14 2019 15:11:04 GMT+1310 (Indochina Time)</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>2</td>
-                                                    <td>Mon Oct 14 2020</td>
-                                                    <td>15:30 - 17:10</td>
-                                                    <td>F2F</td>
-                                                    <td>Y</td>
-                                                    <td>P</td>
-                                                    <td>Mon Oct 14 2019 15:11:04 GMT+1510 (Indochina Time)</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            </ </div> <!-- END OF TABLE -->
+    <!-- FOOTER -->
+    <?php include("components/footer.html"); ?>
+    <!-- END OF FOOTER -->
 
-            <!-- FOOTER -->
-            <?php include("components/footer.html"); ?>
-            <!-- END OF FOOTER -->
-
-            <!-- OPTIONAL JAVASCRIPT -->
-            <!-- JQUERY FIRST, THE POPPER.JS, THEN BOOTSTRAP JS -->
-            <?php include("components/javascript.html"); ?>
+    <!-- OPTIONAL JAVASCRIPT -->
+    <!-- JQUERY FIRST, THE POPPER.JS, THEN BOOTSTRAP JS -->
+    <?php include("components/javascript.html"); ?>
 </body>
 
 </html>

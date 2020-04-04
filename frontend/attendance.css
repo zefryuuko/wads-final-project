@@ -60,3 +60,8 @@ tr.hide-table-padding td{
 .accordion-toggle.collapsed .expand-button:after{
     content: '+';
 }
+
+.body-content{
+    margin: auto;
+    width: 95%;
+}

@@ -30,7 +30,9 @@
     <?php include("components/navbar_index.html"); ?>
     <!-- END OF NAVBAR -->
 
-    <h1 style="text-align: center; padding: 20px;">Hello World!</h1>
+    <div class="body-content">
+        <h1 style="text-align: center; padding: 20px;">Hello World!</h1>
+    </div>
 
     <!-- FOOTER -->
     <?php include("components/footer.html"); ?>

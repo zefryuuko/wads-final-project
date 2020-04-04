@@ -59,6 +59,10 @@ body{
     font-family: OpenSans-Bold;
 }
 
+.body-content{
+    margin: auto;
+    width: 95%;
+}
 
 /* .custom-combobox {
     display: block;
