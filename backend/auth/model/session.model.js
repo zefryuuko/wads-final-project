@@ -24,7 +24,7 @@ class Session {
     async sessionExists(sessionId) {
         try {
             const result = await db.query(
-                'SELECT session_id FROM sessions WHERE session_id = ? AND NOW() < expiry_time',
+                'SELECT session_id FROM sessions WHERE session_id = ? AND (NOW() < expiry_time OR remember_me = 1)',
                 [
                     sessionId
                 ]
