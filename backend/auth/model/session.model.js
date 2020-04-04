@@ -33,7 +33,15 @@ class Session {
                 await this.revokeSession(sessionId);
                 return false;
             }
-            else return true;
+            else {
+                db.query(
+                    'UPDATE sessions SET expiry_time = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE session_id = ?',
+                    [
+                        sessionId
+                    ]
+                );
+                return true;
+            }
         } catch (err) {
             throw err;
         }
