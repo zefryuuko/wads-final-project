@@ -32,7 +32,10 @@
 
     <div class="row row-bod" style="padding: 0px !important">
         <div class="col-md-12 va-info">
-            <img src="assets/icon/avatar.png" alt="" style="width: 25%; margin: auto">
+            <!-- <img src="assets/icon/avatar.png" alt="" style="width: 25%; margin: auto"> -->
+            <div class="logo">
+                <img src="assets/icon/avatar.jfif" alt="logo" width="100%" />
+            </div>
         </div>
         <div class="col-md-12 va-info">
             <form>
@@ -91,13 +94,13 @@
             </form>
             <div class="row" style="padding: 0px !important;">
                 <div class="col-md-6">
-                    <button type="submit" class="btn btn-primary user-btn" style="width: 100%; font-family: OpenSans-Regular">Save Changes</button>
+                    <button type=" submit" class="btn btn-danger submit-btn" style="width: 100%; font-family: OpenSans-Regular">Discard Changes</button>
                 </div>
                 <div class="col-md-6">
-                    <button type=" submit" class="btn btn-danger user-btn" style="width: 100%; font-family: OpenSans-Regular">Discard Changes</button>
-                    <br><br>
+                    <button type="submit" class="btn btn-primary submit-btn" style="width: 100%; font-family: OpenSans-Regular">Save Changes</button>
                 </div>
             </div>
+            <br><br>
         </div>
     </div>
 

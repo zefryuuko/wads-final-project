@@ -38,12 +38,20 @@ body{
     display: block;
 }
 
-.user-btn{
+.submit-btn{
     box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.52);
     border-radius: 5px;
 }
 
 .user-btn:hover{
     opacity: 0.8;
-    
+}
+
+.logo {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow:hidden;
+    margin: auto;
+    padding: 0 0 20px 0 !important;
 }
