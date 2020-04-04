@@ -34,3 +34,13 @@ body{
     margin: auto;
     width: 95%;
 }
+
+.row-title{
+    background-color: #008ed3;
+}
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+}
