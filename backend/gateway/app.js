@@ -1,11 +1,15 @@
 const express = require('express');
-const httpProxy = require('express-http-proxy');
+const proxy = require('express-http-proxy');
 const request = require('request-promise-native');
 const dotenv = require('dotenv/config');
 
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+// Import Routes
+app.use('/auth', proxy(process.env.AUTH_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
