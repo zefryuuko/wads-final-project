@@ -4,7 +4,9 @@
   "description": "API gateway",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev" : "nodemon app.js",
+    "prod": "node app.js",
+    "ci" : "forever start app.js"
   },
   "author": "Zef",
   "license": "ISC",

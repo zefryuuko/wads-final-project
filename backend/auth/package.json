@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "prod": "node app.js"
+    "prod": "node app.js",
+    "ci": "forever start app.js"
   },
   "author": "zef",
   "license": "ISC",
