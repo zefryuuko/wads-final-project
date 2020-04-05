@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./utils/db');
+const dotenv = require('dotenv/config');
 
 // Express configuration
 const app = express();
@@ -16,6 +17,6 @@ app.get('/', (req, res) => {
 });
 
 // Listen for requests
-app.listen(3000, () => {
-    console.log("Server is listening on port 3000");
+app.listen(process.env.EXPRESS_PORT, () => {
+    console.log(`Server is listening on port ${process.env.EXPRESS_PORT}`);
 });
