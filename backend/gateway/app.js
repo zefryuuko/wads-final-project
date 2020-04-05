@@ -13,7 +13,8 @@ app.use('/auth', proxy(process.env.AUTH_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
-        "message": "API gateway is working"
+        "message": "API gateway is working",
+        "version": "0.1"
     });
 });
 
