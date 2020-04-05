@@ -1,0 +1,36 @@
+name: Deploy to development server
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}   
+      run: |
+         docker login -u DOCKER_USER -p DOCKER_PASSWORD
+    
+    # Build backend services
+    - name: Build auth
+      run: |
+        docker build ./backend/auth -t zefryuuko/wads-auth:latest
+    - name: Build gateway
+      run: |
+        docker build ./backend/gateway -t zefryuuko/wads-gateway:latest
+        
+    # Build frontend services
+    
+    
+    # Push to Docker Hub
+    - name: Push to Docker Hub
+      run: |
+        docker push zefryuuko/wads-auth:latest
+        docker push zefryuuko/wads-gateway:latest
