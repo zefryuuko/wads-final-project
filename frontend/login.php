@@ -49,16 +49,24 @@
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
                     </div>
-                    <div class="form-group form-check">
+                    <div class="form-group form-check" style="padding-top: 12px;">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+                        <label class="form-check-label" for="exampleCheck1" style="OpenSans-Regular;">Remember Me</label>
                     </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
                             Login
                         </button>
                     </div>
-                    <div class="text-center p-t-12" style="padding-top: 158px;">
+                    <div class="text-center" style="padding-top: 12px;">
+                        <span class="txt1">
+                            Forgot
+                        </span>
+                        <a class="txt2" href="#">
+                            Password?
+                        </a>
+                    </div>
+                    <div class="text-center" style="padding-top: 136px;">
                     </div>
                 </form>
             </div>
