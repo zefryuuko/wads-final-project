@@ -207,8 +207,9 @@
                         </tbody>
                     </table>
                 </div>
-            </div> <!-- END OF TABLE -->
+            </div>
         </div>
+        <!-- END OF TABLE -->
     </div>
 
     <!-- FOOTER -->
