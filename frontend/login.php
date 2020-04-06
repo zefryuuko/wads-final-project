@@ -51,14 +51,14 @@
                     </div>
                     <div class="form-group form-check" style="padding-top: 12px;">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1" style="OpenSans-Regular;">Remember Me</label>
+                        <label class="form-check-label" for="exampleCheck1" style="OpenSans-Regular">Remember Me</label>
                     </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
                             Login
                         </button>
                     </div>
-                    <div class="text-center" style="padding-top: 12px;">
+                    <div class="text-center" style="padding-top: 12px">
                         <span class="txt1">
                             Forgot
                         </span>
@@ -66,7 +66,7 @@
                             Password?
                         </a>
                     </div>
-                    <div class="text-center" style="padding-top: 136px;">
+                    <div class="text-center" style="padding-top: 136px">
                     </div>
                 </form>
             </div>
