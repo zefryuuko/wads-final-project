@@ -34,7 +34,7 @@
         <div class="row" style="padding: 0px !important">
             <div class="col-md-12 va-info">
                 <!-- <img src="assets/icon/avatar.png" alt="" style="width: 25%; margin: auto"> -->
-                <div class="logo">
+                <div class="avatar">
                     <img src="assets/icon/avatar.jfif" alt="logo" width="100%" />
                 </div>
             </div>

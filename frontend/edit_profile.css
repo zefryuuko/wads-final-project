@@ -43,11 +43,12 @@ body{
     border-radius: 5px;
 }
 
-.user-btn:hover{
+.user-btn:hover,
+.submit-btn:hover{
     opacity: 0.8;
 }
 
-.logo {
+.avatar {
     width: 300px;
     height: 300px;
     border-radius: 50%;
