@@ -5,12 +5,16 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-containers:
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
-
+    
+    - name: Install build requirements
+      run: |
+        npm install -g @anglular/cli
+       
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -27,10 +31,16 @@ jobs:
         docker build ./backend/gateway -t zefryuuko/wads-gateway:latest
         
     # Build frontend services
-    
+    - name: Build front-end
+      run: |
+        npm install
+        ng build --prod
+        docker build ./frontend -t zefryuuko/wads-frontend:latest
+      working-directory: ./frontend/
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
         docker push zefryuuko/wads-auth:latest
         docker push zefryuuko/wads-gateway:latest
+        docker push zefryuuko/wads-frontend:latest
