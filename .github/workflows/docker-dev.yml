@@ -13,7 +13,7 @@ jobs:
     
     - name: Install build requirements
       run: |
-        npm install -g @anglular/cli
+        npm install -g @angular/cli
        
     - name: Docker login
       env:
@@ -35,7 +35,7 @@ jobs:
       run: |
         npm install
         ng build --prod
-        docker build ./frontend -t zefryuuko/wads-frontend:latest
+        docker build . -t zefryuuko/wads-frontend:latest
       working-directory: ./frontend/
     
     # Push to Docker Hub
