@@ -1,0 +1,67 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: OpenSans-Bold;
+    font-size: 15px !important;
+    margin:0px;
+    height: 100%;
+}
+
+@font-face{
+    font-family: OpenSans-Bold;
+    src: url(fonts/OpenSans-Semibold.ttf);
+  }
+  
+@font-face{
+    font-family: OpenSans-Regular;
+    src: url(fonts/OpenSans-Regular.ttf);
+}  
+
+@font-face{
+    font-family: OpenSans-Light;
+    src: url(fonts/OpenSans-Light.ttf)
+}
+
+.user-btn:hover{
+    opacity: 0.8;
+}
+
+.row-title{
+    background-color: #008ed3;
+}  
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+}
+
+/* TABLE */
+tr.hide-table-padding td{
+    padding: 0px 12px;
+}
+  
+.expand-button{
+    position: relative;
+}
+
+.accordion-toggle .expand-button:after{
+    position: absolute;
+    left:.75rem;
+    top: 50%;
+    transform: translate(0, -50%);
+    content: '-';
+}
+
+.accordion-toggle.collapsed .expand-button:after{
+    content: '+';
+}
+
+.body-content{
+    margin: auto;
+    width: 95%;
+}

@@ -1,0 +1,58 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: OpenSans-Bold;
+    font-size: 15px !important;
+    margin: 0px;
+    height: 100%;
+}
+
+@font-face{
+    font-family: OpenSans-Bold;
+    src: url(fonts/OpenSans-Semibold.ttf);
+  }
+  
+@font-face{
+    font-family: OpenSans-Regular;
+    src: url(fonts/OpenSans-Regular.ttf);
+}  
+
+@font-face{
+    font-family: OpenSans-Light;
+    src: url(fonts/OpenSans-Light.ttf)
+}
+
+.body-content{
+    width: 960px;
+    margin: auto;
+}
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+    display: block;
+}
+
+.submit-btn{
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.52);
+    border-radius: 5px;
+}
+
+.user-btn:hover,
+.submit-btn:hover{
+    opacity: 0.8;
+}
+
+.avatar {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow:hidden;
+    margin: auto;
+    padding: 0 0 20px 0 !important;
+}
