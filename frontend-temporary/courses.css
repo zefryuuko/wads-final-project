@@ -1,0 +1,100 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: OpenSans-Bold;
+    font-size: 15px !important;
+    margin:0px;
+    height: 100%;
+}
+
+@font-face{
+    font-family: OpenSans-Bold;
+    src: url(fonts/OpenSans-Semibold.ttf);
+  }
+  
+@font-face{
+    font-family: OpenSans-Regular;
+    src: url(fonts/OpenSans-Regular.ttf);
+}  
+
+@font-face{
+    font-family: OpenSans-Light;
+    src: url(fonts/OpenSans-Light.ttf)
+}
+
+.user-btn:hover{
+    opacity: 0.8;
+}
+
+.row-title{
+    background-color: #008ed3;
+}
+
+.va-info{
+    padding: 10px 20px !important;
+    font-family: OpenSans-Light;
+    font-size: 17px;
+}
+
+.body-content{
+    margin: auto;
+    width: 95%;
+}
+
+/* CAROUSEL */
+.card{
+    height: 500px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.card-text{
+    font-family: OpenSans-Light;
+    margin: auto;
+}
+
+.card-title{
+    font-family: OpenSans-Bold;
+}
+
+.card-body{
+    margin: auto;
+}
+
+.card:hover{
+    -webkit-box-shadow: 1px 1px 29px 1px rgba(138,138,138,1);
+}
+
+.carousel-inner{
+    margin: auto;
+    width: 100%;
+}
+    
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
+    height: 100px;
+    width: 100px;
+    outline: black;
+    background-size: 100%, 100%;
+    background-image: none;
+}
+    
+.carousel-control-next-icon:after{
+    content: '>';
+    font-size: 55px;
+    color: #c10000;
+}
+    
+.carousel-control-prev-icon:after{
+    content: '<';
+    font-size: 55px;
+    color: #c10000;
+}
+
+.card-header{
+    font-family: OpenSans-Bold;
+}
