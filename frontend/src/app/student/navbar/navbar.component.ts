@@ -12,18 +12,24 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     // Sticky Navbar
     const navbar = document.getElementById('navbar-main');
+    const navbarLogo = document.getElementById('navbar-logo');
     const header = document.getElementById('navbar-head');
     const sticky = navbar.offsetTop;
     function updateNavbar() {
       if (window.pageYOffset > sticky) {
-          navbar.classList.add('sticky');
-          header.classList.add('sticky');
+        navbar.classList.add('sticky');
+        header.classList.add('sticky');
       } else {
-          navbar.classList.remove('sticky');
-          header.classList.remove('sticky');
+        navbar.classList.remove('sticky');
+        navbarLogo.classList.remove('sticky');
+        header.classList.remove('sticky');
+      }
+      if (window.pageYOffset > sticky - 15) {
+        navbarLogo.classList.add('sticky');
+      } else {
+
       }
     }
-
     window.onscroll = () => { updateNavbar(); };
   }
 

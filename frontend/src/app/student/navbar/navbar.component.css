@@ -7,6 +7,17 @@
     height: 60px;
     background: rgb(0, 146, 219);
     color: #FFFFFF;
+    overflow: hidden;
+}
+
+.navbar .logo {
+    height: 50px;
+    width: 0px;
+    background: url('/assets/images/logo-nav.png');
+    background-size: 85px auto;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    transition: width .3s;
 }
 
 .navbar .nav-item a{
@@ -21,6 +32,10 @@
     width: 100%
 }
 
-.nav-head.sticky{
+.nav-head.sticky {
     padding-bottom: 60px;
+}
+
+.navbar .logo.sticky {
+    width: 110px;
 }
