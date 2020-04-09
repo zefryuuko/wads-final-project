@@ -10,6 +10,7 @@ app.use(express.json());
 
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));
+app.use('/courses', proxy(process.env.COURSES_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
