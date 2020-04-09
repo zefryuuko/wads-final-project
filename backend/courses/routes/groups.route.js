@@ -109,7 +109,7 @@ router.patch('/:id', async (req, res) => {
         for (const key of Object.keys(req.body)) {
             toUpdate[key] = req.body[key];
         }
-        const result = await Group.update({_id: req.params.id}, {$set: toUpdate});
+        const result = await Group.updateOne({_id: req.params.id}, {$set: toUpdate});
         if (result.n == 0) {
             res.status(404).json({
                 "message": "Group not found"
