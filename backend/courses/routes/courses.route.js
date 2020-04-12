@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Course = require('../models/course.model');
 const Group = require('../models/group.model');
 const courseUtils = require('../utils/courseutils');
+const groupUtils = require('../utils/grouputils');
 
 router.get('/', async (req, res) => {
     res.json({
@@ -19,7 +20,7 @@ router.post('/', async (req, res) => {
     try {
         // Validate fields that are not automatically validated
         // Validate group ID
-        const groupPrefix = await courseUtils.getGroupPrefix(req.body.group);
+        const groupPrefix = await groupUtils.getGroupPrefix(req.body.group);
         if (!groupPrefix) {
             res.status(400).json({
                 'message': 'Group ID is not found'
@@ -117,5 +118,18 @@ router.get('/:courseCode/:classCode', async (req, res) => {
     }
 
 });
+
+// PATCH course
+// --------------
+// Param:
+// - courseCode: target course code (required)
+// Returns: Course object at specified id
+// router.patch()
+
+// DELETE course
+// --------------
+// Param:
+// - courseCode: target course code (required)
+// Returns: Status of the request
 
 module.exports = router;
