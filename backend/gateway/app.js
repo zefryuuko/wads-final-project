@@ -8,8 +8,15 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Request logging
+app.use(function (req, res, next) {
+    console.log(`${req.method} | ${req.path}`);
+    next()
+});
+
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));
+app.use('/courses', proxy(process.env.COURSES_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
