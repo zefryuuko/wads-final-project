@@ -29,6 +29,9 @@ jobs:
     - name: Build auth
       run: |
         docker build ./backend/auth -t zefryuuko/wads-auth:latest
+    - name: Build courses
+      run: |
+        docker build ./backend/courses -t zefryuuko/wads-auth:latest
     - name: Build gateway
       run: |
         docker build ./backend/gateway -t zefryuuko/wads-gateway:latest
