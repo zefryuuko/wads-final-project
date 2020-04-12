@@ -69,9 +69,9 @@ router.post('/', async (req, res) => {
 // Param:
 // - id: the id of the group (required)
 // Returns: Group object at specified id
-router.get('/:id', async (req, res) => {
+router.get('/:prefix', async (req, res) => {
     try {
-        const result = await Group.find({_id: req.params.id}, {__v: 0});
+        const result = await Group.find({prefix: req.params.prefix}, {__v: 0});
         if (result.length == 0) {
             res.status(404).json({
                 'message': 'Group not found'
@@ -103,13 +103,9 @@ router.get('/:id', async (req, res) => {
 // - name: name of the group
 // - prefix: prefix of the group
 // Returns: Status of the request
-router.patch('/:id', async (req, res) => {
+router.patch('/:prefix', async (req, res) => {
     try {
-        const toUpdate = {};
-        for (const key of Object.keys(req.body)) {
-            toUpdate[key] = req.body[key];
-        }
-        const result = await Group.updateOne({_id: req.params.id}, {$set: toUpdate});
+        const result = await Group.updateOne({prefix: req.params.prefix}, {$set: req.body});
         if (result.n == 0) {
             res.status(404).json({
                 'message': 'Group not found'
@@ -141,9 +137,9 @@ router.patch('/:id', async (req, res) => {
 // Param:
 // - id: id of the group (required)
 // Returns: Status of the request
-router.delete('/:id', async (req, res) => {
+router.delete('/:prefix', async (req, res) => {
     try {
-        const result = await Group.remove({_id: req.params.id})
+        const result = await Group.remove({prefix: req.params.prefix})
         if (result.deletedCount == 0) {
             res.status(404).json({
                 'message': 'Group not found'
