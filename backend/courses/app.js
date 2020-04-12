@@ -25,7 +25,7 @@ mongoose.connect(
 );
 
 // Import routes
-app.use('/', require('./routes/courses.route'));
+app.use('/course', require('./routes/courses.route'));
 app.use('/groups', require('./routes/groups.route'));
 
 // Listen for requests
