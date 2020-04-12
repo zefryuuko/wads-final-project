@@ -146,6 +146,7 @@ router.patch('/:prefix', async (req, res) => {
 // Returns: Status of the request
 router.delete('/:prefix', async (req, res) => {
     try {
+        // Delete the specified group
         const result = await Group.remove({prefix: req.params.prefix})
         if (result.deletedCount == 0) {
             res.status(404).json({
@@ -153,6 +154,10 @@ router.delete('/:prefix', async (req, res) => {
             });
             return;
         }
+
+        // Delete classes under the same prefix
+        await courseUtils.deleteCourses(req.params.prefix);
+
         res.json({
             'message': 'Group deleted successfully'
         });

@@ -30,14 +30,24 @@ class CourseUtils {
                 { code: { $regex: new RegExp('^' + prefix) } },
                 [ { $set: { code: { $concat: [ newPrefix, { $substr: [ '$code', prefix.length, -1 ] } ] } } } ]
             );
+            if (result.n > 0) return true;
+            else return false;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async deleteCourses(prefix) {
+        try {
+            const result = await Course.deleteMany(
+                { code: { $regex: new RegExp('^' + prefix) } }
+            );
+            if (result.n > 0) return true;
+            else return false;
         } catch (err) {
             throw err;
         }
     }
 }
-
-// { code: { $regex: new RegExp('^' + prefix) } },
-
-// { $set: { code: { $concat: { newPrefix, $substr: [ '$code', prefix.length, -1 ] } } } },
 
 module.exports = new CourseUtils();
