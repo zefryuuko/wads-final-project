@@ -74,7 +74,7 @@ router.get('/:id', async (req, res) => {
         const result = await Group.find({_id: req.params.id}, {__v: 0});
         if (result.length == 0) {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
@@ -83,7 +83,7 @@ router.get('/:id', async (req, res) => {
         // Handle invalid _id format
         if (err.name == 'CastError') {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
@@ -112,19 +112,19 @@ router.patch('/:id', async (req, res) => {
         const result = await Group.updateOne({_id: req.params.id}, {$set: toUpdate});
         if (result.n == 0) {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
 
         res.json({
-            "message": "Group updated successfully"
+            'message': 'Group updated successfully'
         });
     } catch (err) {
         // Handle invalid _id format
         if (err.name == 'CastError') {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
@@ -146,18 +146,18 @@ router.delete('/:id', async (req, res) => {
         const result = await Group.remove({_id: req.params.id})
         if (result.deletedCount == 0) {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
         res.json({
-            "message": "Group deleted successfully"
+            'message': 'Group deleted successfully'
         });
     } catch (err) {
         // Handle invalid _id format
         if (err.name == 'CastError') {
             res.status(404).json({
-                "message": "Group not found"
+                'message': 'Group not found'
             });
             return;
         }
