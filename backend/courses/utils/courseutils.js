@@ -23,6 +23,21 @@ class CourseUtils {
             throw err;
         }
     }
+
+    async updatePrefixes(prefix, newPrefix) {
+        try {
+            const result = await Course.updateMany(
+                { code: { $regex: new RegExp('^' + prefix) } },
+                [ { $set: { code: { $concat: [ newPrefix, { $substr: [ '$code', prefix.length, -1 ] } ] } } } ]
+            );
+        } catch (err) {
+            throw err;
+        }
+    }
 }
+
+// { code: { $regex: new RegExp('^' + prefix) } },
+
+// { $set: { code: { $concat: { newPrefix, $substr: [ '$code', prefix.length, -1 ] } } } },
 
 module.exports = new CourseUtils();

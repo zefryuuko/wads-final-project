@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Group = require('../models/group.model');
+const courseUtils = require('../utils/courseutils');
 
 // GET group list
 // --------------
@@ -105,12 +106,18 @@ router.get('/:prefix', async (req, res) => {
 // Returns: Status of the request
 router.patch('/:prefix', async (req, res) => {
     try {
+        // Update group
         const result = await Group.updateOne({prefix: req.params.prefix}, {$set: req.body});
         if (result.n == 0) {
             res.status(404).json({
                 'message': 'Group not found'
             });
             return;
+        }
+        
+        // Update courses that share the same prefix
+        if (req.body.prefix) {
+            await courseUtils.updatePrefixes(req.params.prefix, req.body.prefix);
         }
 
         res.json({
