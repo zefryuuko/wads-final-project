@@ -48,5 +48,6 @@ jobs:
     - name: Push to Docker Hub
       run: |
         docker push zefryuuko/wads-auth:latest
+        docker push zefryuuko/wads-courses:latest
         docker push zefryuuko/wads-gateway:latest
         docker push zefryuuko/wads-frontend:latest
