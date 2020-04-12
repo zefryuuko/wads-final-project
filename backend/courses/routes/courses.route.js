@@ -52,6 +52,7 @@ router.post('/', async (req, res) => {
         req.body._id = mongoose.Types.ObjectId();
         const course = new Course(req.body);
         const result = await course.save();
+        await groupUtils.addCourseToGroup(groupPrefix, req.body._id)
 
         res.json({
             'message': 'Course created successfully'
@@ -62,7 +63,6 @@ router.post('/', async (req, res) => {
             'message': `${err}`
         });
     }
-
 });
 
 // GET course
@@ -88,7 +88,6 @@ router.get('/:courseCode', async (req, res) => {
             'message': `${err}`
         });
     }
-
 });
 
 // GET course with specified class
@@ -100,7 +99,6 @@ router.get('/:courseCode', async (req, res) => {
 router.get('/:courseCode/:classCode', async (req, res) => {
     try {
         // Check if class exists
-        console.log(await courseUtils.classCodeExists(req.params.courseCode, req.params.classCode));
         if (!await courseUtils.classCodeExists(req.params.courseCode, req.params.classCode)) {
             res.status(404).json({
                 'message': `Class with name ${req.params.classCode} does not exist on ${req.params.courseCode}`
@@ -109,14 +107,19 @@ router.get('/:courseCode/:classCode', async (req, res) => {
         }
 
         // Get and send course data
-        const result = await Course.findOne({code: req.params.courseCode}, {__v: 0});
+        const result = await Course.findOne(
+            { code: req.params.courseCode }, 
+            {
+                __v: 0,
+                class: { $elemMatch: { code: req.params.classCode } }
+            }
+        );
         res.json(result);
     } catch (err) {
         res.status(500).json({
             'message': `${err}`
         });
     }
-
 });
 
 // PATCH course
@@ -124,12 +127,66 @@ router.get('/:courseCode/:classCode', async (req, res) => {
 // Param:
 // - courseCode: target course code (required)
 // Returns: Course object at specified id
-// router.patch()
+router.patch('/:courseCode', async (req, res) => {
+    try {
+        if (req.body._id) delete req.body._id;
+        const result = await Course.updateOne(
+            { code: req.params.courseCode },
+            { $set: req.body }
+        );
+        console.log(result);
+        if (result.n > 0) {
+            res.json({
+                'message': 'Course updated successfully'
+            });
+        } else {
+            res.status(404).json({
+                'message': 'Course not found'
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            'message': `${err}`
+        });        
+    }
+});
 
 // DELETE course
 // --------------
 // Param:
 // - courseCode: target course code (required)
 // Returns: Status of the request
+router.delete('/:courseCode', async (req, res) => {
+    try {
+        // Check if course exists
+        if (!await courseUtils.courseCodeExists(req.params.courseCode)) {
+            res.status(404).json({
+                'message': `Course with id ${req.params.courseCode} does not exist`
+            });
+            return;
+        }
+
+        // Delete course reference on groups database
+        const course = await Course.findOne(
+            { code: req.params.courseCode },
+            { _id: 1, group: 1 }
+        );
+        console.log("Course", course);
+        await groupUtils.removeCourseFromGroup(course.group, course._id);
+
+        // Delete course
+        const result = await Course.deleteOne(
+            { code: req.params.courseCode }
+        );
+        
+        res.json({
+            'message': `Course '${req.params.courseCode}' is removed successfully`
+        });
+    } catch (err) {
+        res.status(500).json({
+            'message': `${err}`
+        });
+    }
+});
 
 module.exports = router;
