@@ -4,7 +4,9 @@
   "description": "User service",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "prod": "node app.js",
+    "ci": "forever start app.js"
   },
   "author": "zef",
   "license": "ISC",
