@@ -17,6 +17,7 @@ app.use(function (req, res, next) {
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));
 app.use('/courses', proxy(process.env.COURSES_HOST));
+app.use('/users', proxy(process.env.USER_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
