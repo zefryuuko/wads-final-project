@@ -9,7 +9,7 @@ const courseSchema = mongoose.Schema({
     learningOutcomes: [String],
     scu: { type: Number, required: true },
     class: [{
-        code: { type: String, required: true, uppercase: true, unique: true, dropDups: true },
+        code: { type: String, required: true, uppercase: true },
         textbooks: [
             {
                 title: { type: String, required: true },

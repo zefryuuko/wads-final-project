@@ -1,23 +1,20 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var UserSchema = new Schema({
-    id: {
-        type: String,
-        required: true
+var UserSchema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    id: { type: String, required: true, unique: true, dropDups: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String },
+    primaryEmail: { type: String, required: true },
+    contactEmail: { type: String, required: true },
+    phone: { type: String, required: true },
+    accounts: {
+        type: [{
+            name: { type: String, required: true },
+            id: { type: mongoose.Schema.Types.ObjectId, required: true },
+        }]
     },
-    firstName: {
-        type: String,
-        required: true
-    },
-    lastName: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    }
+    permittedDomains: { type: [mongoose.Schema.Types.ObjectId] }
 });
 
 module.exports = mongoose.model('user', UserSchema);
