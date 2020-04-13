@@ -22,6 +22,7 @@ mongoose.connect(
         console.log("Connected to MongoDB server.");
     }
 );
+mongoose.set('useCreateIndex', true);
 
 // Import Routes
 app.use('/user', require('./routes/user.route')); 
@@ -33,5 +34,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(process.env.EXPRESS_PORT, () => {
-    console.log("Server is listening on port 3000");
+    console.log(`Server is listening on port ${process.env.EXPRESS_PORT}`);
 });
