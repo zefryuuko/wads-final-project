@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-var StudentSchema = new Schema({
-    user: Schema.ObjectId,
+var StudentSchema = new mongoose.Schema({
+    user: mongoose.Schema.types.ObjectId,
     currentGPA: Number,
     currentSAT: Number,
     major: String
