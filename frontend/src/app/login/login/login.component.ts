@@ -1,5 +1,6 @@
 import { AuthService } from './../../shared/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    public router: Router
+  ) {
     this.authService = authService;
   }
 
@@ -16,15 +20,24 @@ export class LoginComponent implements OnInit {
   }
 
   public login(emailAddress: string, password: string) {
-    console.log("LOGIN CALLED");
     this.authService.login(
       emailAddress, password,
-    ).subscribe(
-      (response) => {
-        console.log(response);
+      (res) => {
+        this.authService.storeSessionId(res.sessionId);
+        this.router.navigate(['student']);
       },
-      (error) => {
-        console.error(error);
+      (err) => {
+        // TODO: create message dialog
+        console.log(err);
+        window.alert("Invalid email or password");
+      }
+    );
+  }
+
+  public logout() {
+    this.authService.logout(
+      () => {
+        this.router.navigate(['']);
       }
     );
   }
