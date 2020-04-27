@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       (err) => {
         // TODO: create message dialog
         console.log(err);
-        window.alert("Invalid email or password");
+        window.alert('Invalid email or password');
       }
     );
   }
