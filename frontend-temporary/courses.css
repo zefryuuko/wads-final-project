@@ -38,6 +38,7 @@ body{
     padding: 10px 20px !important;
     font-family: OpenSans-Light;
     font-size: 17px;
+    width: 95%;
 }
 
 .body-content{
@@ -59,6 +60,7 @@ body{
 
 .card-title{
     font-family: OpenSans-Bold;
+    padding: 0px 5px;
 }
 
 .card-body{
@@ -97,4 +99,29 @@ body{
 
 .card-header{
     font-family: OpenSans-Bold;
+}
+
+/* TABLE */
+tr.hide-table-padding td{
+    padding: 0px 12px;
+}
+  
+.expand-button{
+    position: relative;
+}
+
+.accordion-toggle .expand-button:after{
+    position: absolute;
+    left:.75rem;
+    top: 50%;
+    transform: translate(0, -50%);
+    content: '-';
+}
+
+.accordion-toggle.collapsed .expand-button:after{
+    content: '+';
+}
+
+.text-center{
+    height: auto;
 }
