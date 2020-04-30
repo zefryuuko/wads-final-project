@@ -26,7 +26,7 @@ mongoose.set('useCreateIndex', true);
 
 // Import Routes
 app.use('/semester', require('./routes/semester.route')); 
-app.use('/major', require('./routes/semester.route')); 
+app.use('/major', require('./routes/major.route')); 
 
 // Listen
 app.listen(process.env.EXPRESS_PORT, () => {
