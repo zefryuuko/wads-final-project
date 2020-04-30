@@ -112,7 +112,7 @@ router.delete('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const removedMajor = await User.remove({ _id: req.params.id });
+        const removedMajor = await Major.remove({ _id: req.params.id });
 
         if (removedMajor.deletedCount < 1) {
             res.status(404).json({
