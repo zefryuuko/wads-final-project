@@ -9,14 +9,14 @@
                     Login
                 </span>
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: firstname.surname@binus.ac.id">
-                    <input class="input100" type="text" name="email" placeholder="Binusian Email">
+                    <input class="input100" type="text" name="email" placeholder="Binusian Email" #emailAddress autofocus required>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </span>
                 </div>
                 <div class="wrap-input100 validate-input" data-validate="Password is required">
-                    <input class="input100" type="password" name="pass" placeholder="Password">
+                    <input class="input100" type="password" name="pass" placeholder="Password" #password required>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
                         <i class="fa fa-lock" aria-hidden="true"></i>
@@ -27,9 +27,9 @@
                     <label class="form-check-label" for="exampleCheck1" style="font-family: OpenSans-Regular">Remember Me</label>
                 </div>
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn" href="index.php">
+                    <a class="login100-form-btn" (click)="login(emailAddress.value, password.value)">
                         Login
-                    </button>
+                    </a>
                 </div>
                 <div class="text-center" style="padding-top: 12px">
                     <span class="txt1">
