@@ -1,0 +1,21 @@
+{
+  "name": "class",
+  "version": "1.0.0",
+  "description": "Class service",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "prod": "node app.js",
+    "ci": "forever start app.js"
+  },
+  "author": "zef",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

@@ -11,6 +11,7 @@ var UserSchema = new mongoose.Schema({
     accounts: {
         type: [{
             name: { type: String, required: true },
+            accountType: { type: String, required: true },
             id: { type: mongoose.Schema.Types.ObjectId, required: true },
         }]
     },
