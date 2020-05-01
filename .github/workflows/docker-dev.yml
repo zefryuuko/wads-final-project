@@ -35,6 +35,9 @@ jobs:
     - name: Build user
       run: |
         docker build ./backend/user -t zefryuuko/wads-user:latest
+    - name: Build class
+      run: |
+        docker build ./backend/class -t zefryuuko/wads-class:latest
     - name: Build gateway
       run: |
         docker build ./backend/gateway -t zefryuuko/wads-gateway:latest
@@ -54,4 +57,5 @@ jobs:
         docker push zefryuuko/wads-courses:latest
         docker push zefryuuko/wads-gateway:latest
         docker push zefryuuko/wads-user:latest
+        docker push zefryuuko/wads-class:latest
         docker push zefryuuko/wads-frontend:latest
