@@ -11,7 +11,7 @@ const courseUtils = require('../utils/courseutils');
 // - sortBy: sorting order of the result
 // Returns: array of group objects
 router.get('/', async (req, res) => {
-    const { page, sortBy } = req.body;
+    const { page, sortBy } = req.query;
     const itemsPerPage = 10;
     if (!page) page == 1;
     // TODO: implement sort by...
