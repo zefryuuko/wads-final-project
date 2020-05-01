@@ -236,6 +236,23 @@ router.post('/:id', async (req, res) => {
 
         // TODO: Validate course code
 
+        // Prevent multiple instance of classes with the same class and course code
+        const courseExists = await Semester.findOne(
+            {
+                _id: req.params.id,
+                'classes.classCode': { $eq: req.body.classCode },
+                'classes.courseCode': { $eq: req.body.courseCode }
+            },
+            { 'classes.$': 1 }
+        );
+
+        if (courseExists) {
+            res.status(409).json({
+                "message": `Class with code '${req.body.classCode}' and course '${req.body.courseCode}' already exists in this semester.`
+            });
+            return;
+        }
+
         // Add class data
         req.body._id = mongoose.Types.ObjectId();
         const newClass = new Class(req.body);
