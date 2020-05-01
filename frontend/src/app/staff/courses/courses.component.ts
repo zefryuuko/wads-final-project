@@ -10,16 +10,31 @@ export class CoursesComponent implements OnInit {
 
   constructor(public coursesService: CoursesService) { }
   currentPage: number;
-  currentPageData: any;
+  currentPageData: [any];
 
   ngOnInit(): void {
     this.currentPage = 1;
+    this.loadPage();
+  }
+
+  loadPage() {
     this.coursesService.getCourseGroups(
       this.currentPage,
       (res) => {
         this.currentPageData = res;
+        console.log(res);
       },
       (err) => {}
     );
+  }
+
+  nextPage() {
+    this.currentPage++;
+    this.loadPage();
+  }
+
+  prevPage() {
+    this.currentPage--;
+    this.loadPage();
   }
 }
