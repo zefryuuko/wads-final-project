@@ -4,10 +4,20 @@ const mongoose = require('mongoose');
 const Major = require('../models/major.model');
 
 router.get('/', async (req, res) => {
-    // TODO: Add pagination
-    res.status(400).json({
-        "message": "invalid request"
-    });
+    const itemsLimit = 10;
+    const itemsToSkip = req.query.page ? req.query.page - 1 : 0;
+    try {
+        const major = await Major.find(
+            {  },
+            { __v: 0, linkedSemesters: 0 },
+            { skip: itemsToSkip, limit: itemsLimit }
+        );
+        res.status(200).json(major);
+    } catch (err) {
+        res.status(500).json({
+            "message": err
+        });
+    }
 });
 
 router.get('/:id', async (req, res) => {
