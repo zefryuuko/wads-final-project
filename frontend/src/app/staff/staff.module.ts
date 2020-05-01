@@ -1,0 +1,21 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
+import { StaffRoutingModule } from './staff-routing.module';
+import { CoursesComponent } from './courses/courses.component';
+
+
+@NgModule({
+  declarations: [
+    DashboardComponent,
+    NavbarComponent,
+    CoursesComponent
+  ],
+  imports: [
+    CommonModule,
+    StaffRoutingModule
+  ]
+})
+export class StaffModule { }

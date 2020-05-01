@@ -1,0 +1,7 @@
+<bm-staff-navbar></bm-staff-navbar>
+<div class="container">
+    <h1>Courses</h1>
+    <div class="list-group">
+        <a *ngFor="let group of currentPageData" href="/staff/courses/{{ group.prefix }}" class="list-group-item list-group-item-action"><span class="badge badge-secondary">{{ group.prefix }}</span>{{ group.name }}</a>
+    </div>
+</div>
