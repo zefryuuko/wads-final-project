@@ -188,24 +188,14 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/:id/:classCode/:courseCode', async (req, res) => {
     try {
-        const semester = await Semester.aggregate([
-            { 
-                $match: {
-                    _id: req.params.id,
-                    classes: {
-                        $elemMatch: {
-                            classCode: { $eq: req.params.classCode },
-                            courseCode: { $eq: req.params.courseCode }
-                        }
-                    }
-                }
-            },
+        const semester = await Semester.findOne(
             {
-                $project: {
-                    'classes.classCode': 1      // FOR FUCK SAKE PLS WORK
-                }
-            }
-        ]);
+                _id: req.params.id,
+                'classes.classCode': { $eq: req.params.classCode },
+                'classes.courseCode': { $eq: req.params.courseCode }
+            },
+            { 'classes.$': 1 }
+        );
         
         if (!semester) {
             res.status(404).json({
