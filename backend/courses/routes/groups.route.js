@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     const itemsPerPage = 10;
     if (!page) page == 1;
     // TODO: implement sort by...
-    const result = await Group.find({}, {__v: 0})
+    const result = await Group.find({}, {_id: 0, __v: 0, courses: 0})
         .skip((page - 1) * itemsPerPage)
         .limit(itemsPerPage);
     res.json(result);
@@ -72,7 +72,10 @@ router.post('/', async (req, res) => {
 // Returns: Group object at specified id
 router.get('/:prefix', async (req, res) => {
     try {
-        const result = await Group.find({prefix: req.params.prefix}, {__v: 0});
+        const result = await Group.find(
+            { prefix: req.params.prefix },
+            { _id: 0, __v: 0, 'courses._id': 0, 'course.id': 0 }
+        );
         if (result.length == 0) {
             res.status(404).json({
                 'message': 'Group not found'
