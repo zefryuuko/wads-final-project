@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         req.body._id = mongoose.Types.ObjectId();
         const course = new Course(req.body);
         const result = await course.save();
-        await groupUtils.addCourseToGroup(groupPrefix, req.body._id)
+        await groupUtils.addCourseToGroup(groupPrefix, req.body.code, req.body.name, req.body._id)
 
         res.json({
             'message': 'Course created successfully'
@@ -134,8 +134,9 @@ router.patch('/:courseCode', async (req, res) => {
             { code: req.params.courseCode },
             { $set: req.body }
         );
-        console.log(result);
+
         if (result.n > 0) {
+            groupUtils.updateCourseOnGroup(req.params.courseCode, req.body.code, req.body.name)
             res.json({
                 'message': 'Course updated successfully'
             });
