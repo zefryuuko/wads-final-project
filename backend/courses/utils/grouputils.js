@@ -101,7 +101,6 @@ class GroupUtils {
                     } 
                 }
             );
-            console.log("Remove course from group", result);
             if (result.n > 0) return true;
             else return false;
         } catch (err) {

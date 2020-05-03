@@ -172,7 +172,6 @@ router.delete('/:courseCode', async (req, res) => {
             { code: req.params.courseCode },
             { _id: 1, group: 1 }
         );
-        console.log("Course", course);
         await groupUtils.removeCourseFromGroup(course.group, course._id);
 
         // Delete course
