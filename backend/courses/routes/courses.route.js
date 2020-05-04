@@ -130,6 +130,15 @@ router.get('/:courseCode/:classCode', async (req, res) => {
 router.patch('/:courseCode', async (req, res) => {
     try {
         if (req.body._id) delete req.body._id;
+        if (req.body.courseCode && (req.body.courseCode != req.params.courseCode)){
+            if (courseUtils.courseCodeExists(req.body.code)) {
+                res.status(409).json({
+                    'message': `Course code '${req.body.code}' already exists`
+                });
+                return;
+            }
+        }
+
         const result = await Course.updateOne(
             { code: req.params.courseCode },
             { $set: req.body }
