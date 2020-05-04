@@ -1,0 +1,10 @@
+<bm-staff-navbar></bm-staff-navbar>
+<div class="container">
+    <h1>Courses</h1>
+    <div class="list-group">
+        <a *ngFor="let group of currentPageData" href="/staff/courses/{{ group.prefix }}" class="list-group-item list-group-item-action"><span class="badge badge-secondary">{{ group.prefix }}</span>{{ group.name }}</a>
+    </div>
+    <a class="btn btn-light" (click)="this.prevPage()">Previous</a>
+    <a class="btn btn-secondary">{{ this.currentPage }}</a>
+    <a class="btn btn-light" (click)="nextPage()">Next</a>
+</div>
