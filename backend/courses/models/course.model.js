@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const classSchema = require('./class.schema');
 
 const courseSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -8,22 +9,7 @@ const courseSchema = mongoose.Schema({
     description: { type: String, required: true },
     learningOutcomes: [String],
     scu: { type: Number, required: true },
-    class: [{
-        code: { type: String, required: true, uppercase: true },
-        textbooks: [
-            {
-                title: { type: String, required: true },
-                author: String,
-                year: Number,
-                publisher: String,
-                isbn: String
-            }],
-        evaluation: [{
-                name: { type: String, required: true },
-                evaluatedLearningOutcomes: { type: [Boolean], required: true },
-                weight: { type: Number, required: true },
-            }],
-    }],
+    class: [classSchema],
 });
 
 module.exports = mongoose.model('Course', courseSchema);

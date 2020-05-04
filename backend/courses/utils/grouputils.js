@@ -30,11 +30,19 @@ class GroupUtils {
         }
     }
 
-    async addCourseToGroup(prefix, courseId) {
+    async addCourseToGroup(prefix, courseCode, courseName, courseId) {
         try {
             const result = await Group.updateOne(
                 { prefix: prefix },
-                { $push: { courses: courseId } }
+                { 
+                    $push: {
+                        courses:  {
+                            id: courseId,
+                            code: courseCode,
+                            name: courseName
+                        }
+                    } 
+                }
                 );
             if (result.n > 0) return true;
             else return false;
@@ -43,13 +51,56 @@ class GroupUtils {
         }
     }
 
+    async updateCourseOnGroup(courseCode, newCourseCode, newCourseName) {
+        try {
+            newCourseCode = newCourseCode ? newCourseCode : courseCode;
+
+            // Update courseCode
+            const updateCourseCodeResult = await Group.findOneAndUpdate(
+                { courses: { $elemMatch: { code: courseCode } } },
+                {
+                    $set: {
+                        'courses.$.code': newCourseCode
+                    }
+                },
+                { new: true }
+            );
+            console.log("updateCourseCode:", updateCourseCodeResult);
+            
+            // Update courseName
+            if (newCourseName) {
+                const updateCourseNameResult = await Group.findOneAndUpdate(
+                    { courses: { $elemMatch: { code: newCourseCode } } },
+                    {
+                        $set: {
+                            'courses.$.name': newCourseName
+                        }
+                    },
+                    { new: true }
+                );
+                console.log("UpdateCourseName:", updateCourseNameResult);
+            }
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
     async removeCourseFromGroup(groupId, courseId) {
         try {
-            const result = await Group.updateOne(
-                { _id: groupId },
-                { $pull: { courses: courseId } }
-                );
-            console.log("Remove course from group", result);
+            const result = await Group.findOneAndUpdate(
+                { 
+                    _id: groupId,
+                    'courses.id': { $eq: courseId }
+                },
+                {
+                    $pull: { 
+                        courses:  {
+                            id: courseId
+                        }
+                    } 
+                }
+            );
             if (result.n > 0) return true;
             else return false;
         } catch (err) {
