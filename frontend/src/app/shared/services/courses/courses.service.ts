@@ -18,4 +18,14 @@ export class CoursesService {
       err => failedCallback(err)
     );
   }
+
+  public getCoursesInGroup(code: string, successCallback: (res: any) => void, failedCallback: (err: any) => void) {
+    const url = `${environment.apiEndpoint}/courses/groups/${code}`;
+    this.httpClient.get(
+      url
+    ).subscribe(
+      res => successCallback(res),
+      err => failedCallback(err)
+    );
+  }
 }
