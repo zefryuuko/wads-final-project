@@ -62,310 +62,82 @@
 
         <!-- CAROUSEL COURSES SUBJECTS -->
         <div class="row bod" style="margin-top: 40px; padding-bottom: 80px">
-            <div class="col-md-12">
-                <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class=" carousel-item active">
-                            <div class="row" style="padding: 0px !important">
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">COMP6345 - Intelligent Systems </h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D6034 - Andreas Kurniawan</h7>
-                                                <hr>
-                                                <p class="card-text">The course provides students with the knowledge of Artificial Intelligence (AI) concepts and enables them to develop intelligent programs. The course covers the basic intelligent building blocks such as solution searching algorithms, knowledge representation, logical reasoning (inference) and learning algorithms that allow an intelligent agent to operate autonomously in a complex environment to achieve its design purpose. It also covers the history of AI, the present, the future and the challenges that will broaden the students' perspectives on the field. Some projects that require programming work will provide the students with the opportunity to apply various techniques learned in the class to solve practical problems.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">COMP6210 - Ethical Hacking and Penetration Testing</h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D5863 - Kalpin Erlangga S</h7>
-                                                <hr>
-                                                <p class="card-text">This course prepares student to perform offensive security for the purpose of penetration testing. It introduces hacking tools, techniques, and the theory behind how the tools are used and where they work. The materials follow ethical hacking steps such as foot printing, enumeration, system hacking, escalating privilege, and covering tracks. Areas of instruction include setting up a lab to act as a victim, understanding vulnerabilities of operating systems, using various tools used by hackers to access unauthorized information. The course includes hands-on lab on attacking and defending the systems and network.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">COMP6343 - Web Application Development and Security</h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D5757 - Ida Bagus Kerthyayana</h7>
-                                                <hr>
-                                                <p class="card-text">This course is designed to teach the major web-related topics with several technologies as a unifying theme. It introduces students to the concepts and techniques of a dynamic web page construction, basic web protocols, explore design issues and techniques, and its implementation in Scripting language and Java server–side programming. Students will be exposed to development using those programming languages in solving common problems in the areas of development, and systems administration on a particular operating systems platform.</p>
-                                            </div>
-                                        </div>
-                                    </a>
+            <div class="col-md-12" style="padding: 20px 0px;">
+                <div class="row" style="padding: 0px !important">
+                    <div class="col-md-4">
+                        <a id="cardHover" href="each_course.php" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">COMP6345 - Intelligent Systems </h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D6034 - Andreas Kurniawan</h7>
+                                    <hr>
                                 </div>
                             </div>
-                        </div>
-                        <div class="carousel-item ">
-                            <div class="row" style="padding: 0px !important;">
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">COMP6504 - Computer Architecture and Operating Systems</h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D3378 - Benfano Soewito</h7>
-                                                <hr>
-                                                <p class="card-text">The course is designed to explain about computer architecture and organization, which includes computer evolution and performance, computer interconnection structures, internal and external memory, I/O, operating systems support, computer arithmetic, instruction sets, CPU structure and function, RISC, superscalar processors, control unit operation, micro-programmed control, multiprocessors and vector processing, and digital logic. In addition, it is also designed to explain the mechanism of general modern operating systems, which includes the history of most operating systems, their concepts, components, and functions, and how the common operating systems work in the hardware framework. Furthermore, the hands-on lab session will be the focus in an open source operating system, such as Linux, with the intention of broadening students’ minds, knowledge, and interest of an alternative open-source operating system.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">ENGL6171 - Academic English I</h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D5332 - Michael Setiawan</h7>
-                                                <hr>
-                                                <p class="card-text">This course is designed to increase student understanding of academic discourse, both written and spoken, and the ability to produce such discourse, at a certain level, in relation to general and student specific studies. Reading skills, such as skimming and scanning, and dealing with unknown vocabulary, are integrated with the production of various essay types, such as logical division of ideas, comparison-contrast and cause and effect. The course also focuses on the production and performance of professional outputs in the form of oral presentations in relation to students’ current studies. Language skills are provided by a workshop series for remediation in grammar, syntax and academic lexis acquisition. The course also emphasizes heavily on other academic skills such as paraphrasing, quoting, summarizing, and referencing.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                                        <div class="card">
-                                            <h2 class="card-title">LANG6061 - Indonesian</h2>
-                                            <div class="card-body">
-                                                <h7 class="card-text">D4553 - Kristianus Oktriono</h7>
-                                                <hr>
-                                                <p class="card-text">The course Indonesian as a subject of personality development in college emphasizes students' skills to use Indonesian good and right, especially in preparing the essay academics with diction, effective sentence, and paragraphs coherence, and be able to present it in a variety of scientific language.</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
                     </div>
-                    <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev" style="margin-left: -35px; width: 40px; overflow-x: hidden;">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-slide="next" style="margin-right: -35px; width: 40px; overflow-x: hidden;">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    <div class="col-md-4">
+                        <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">COMP6210 - Ethical Hacking and Penetration Testing</h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D5863 - Kalpin Erlangga S</h7>
+                                    <hr>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">COMP6343 - Web Application Development and Security</h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D5757 - Ida Bagus Kerthyayana</h7>
+                                    <hr>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="padding: 20px 0px;">
+                <div class="row" style="padding: 0px !important;">
+                    <div class="col-md-4">
+                        <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">COMP6504 - Computer Architecture and Operating Systems</h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D3378 - Benfano Soewito</h7>
+                                    <hr>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">ENGL6171 - Academic English I</h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D5332 - Michael Setiawan</h7>
+                                    <hr>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
+                            <div class="card">
+                                <h2 class="card-title">LANG6061 - Indonesian</h2>
+                                <div class="card-body">
+                                    <h7 class="card-text">D4553 - Kristianus Oktriono</h7>
+                                    <hr>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- END OF CAROUSEL SUBJECTS -->
-
-        <!-- CARDS -->
-        <!-- CLASS MATERIALS -->
-        <div class="row" style="padding: 0px !important">
-            <div class="col-md-12 va-info">
-                <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Forum
-                        </div>
-                        <div class="card-body" style="margin: auto 0px;">
-                            <div class="row" style="margin: 0px !important">
-                                <div class="col-md-12 va-info">
-                                    <div class="table-responsive w-auto">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">No</th>
-                                                    <th scope="col">Course</th>
-                                                    <th scope="col">Class</th>
-                                                    <th scope="col">Component</th>
-                                                    <th scope="col">Total Session</th>
-                                                    <th scope="col">Session Done</th>
-                                                    <th scope="col">Total Absence</th>
-                                                    <th scope="col">Maximum Absence</th>
-                                                    <th scope="col">Status</th>
-                                                    <th scope="col">Eligibility</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                                                    <td>1</td>
-                                                    <td>Web Applicatoin Development and Security</td>
-                                                    <td>L4AC</td>
-                                                    <td>Lecturer</td>
-                                                    <td>12</td>
-                                                    <td>6</td>
-                                                    <td>3</td>
-                                                    <td>3</td>
-                                                    <td>Warning, 80%</td>
-                                                    <td>Eligibile</td>
-                                                </tr>
-                                                <tr class="hide-table-padding">
-                                                    <td></td>
-                                                    <td colspan="10">
-                                                        <div id="collapseOne" class="collapse in p-3">
-                                                            <div class="table-responsive w-auto">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col">Week</th>
-                                                                            <th scope="col">Session</th>
-                                                                            <th scope="col">Date</th>
-                                                                            <th scope="col">Time</th>
-                                                                            <th scope="col">Delivery Mode</th>
-                                                                            <th scope="col">Session Done</th>
-                                                                            <th scope="col">Absence</th>
-                                                                            <th scope="col">Tapping Time</th>
-                                                                            <th scope="col">Reason</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>1</td>
-                                                                            <td>Mon Oct 14 2020</td>
-                                                                            <td>09:30 - 11:10</td>
-                                                                            <td>F2F</td>
-                                                                            <td>Y</td>
-                                                                            <td>P</td>
-                                                                            <td>Mon Oct 14 2019 15:11:04 GMT+0910 (Indochina Time)</td>
-                                                                            <td>-</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>2</td>
-                                                                            <td>Mon Oct 14 2020</td>
-                                                                            <td>11:30 - 13:10</td>
-                                                                            <td>F2F</td>
-                                                                            <td>Y</td>
-                                                                            <td>P</td>
-                                                                            <td>Mon Oct 14 2019 15:11:04 GMT+1110 (Indochina Time)</td>
-                                                                            <td>-</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr class="accordion-toggle collapsed" id="accordion2" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                                                    <td>2</td>
-                                                    <td>Intelligent Systems</td>
-                                                    <td>L4AC</td>
-                                                    <td>Lab</td>
-                                                    <td>12</td>
-                                                    <td>6</td>
-                                                    <td>0</td>
-                                                    <td>3</td>
-                                                    <td>OK</td>
-                                                    <td>Eligibile</td>
-                                                </tr>
-                                                <tr class="hide-table-padding">
-                                                    <td></td>
-                                                    <td colspan="10">
-                                                        <div id="collapseTwo" class="collapse in p-3">
-                                                            <div class="table-responsive w-auto">
-                                                                <table class="table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col">Week</th>
-                                                                            <th scope="col">Session</th>
-                                                                            <th scope="col">Date</th>
-                                                                            <th scope="col">Time</th>
-                                                                            <th scope="col">Delivery Mode</th>
-                                                                            <th scope="col">Session Done</th>
-                                                                            <th scope="col">Absence</th>
-                                                                            <th scope="col">Tapping Time</th>
-                                                                            <th scope="col">Reason</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>1</td>
-                                                                            <td>Mon Oct 14 2020</td>
-                                                                            <td>13:30 - 15:10</td>
-                                                                            <td>F2F</td>
-                                                                            <td>Y</td>
-                                                                            <td>P</td>
-                                                                            <td>Mon Oct 14 2019 15:11:04 GMT+1310 (Indochina Time)</td>
-                                                                            <td>-</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>1</td>
-                                                                            <td>2</td>
-                                                                            <td>Mon Oct 14 2020</td>
-                                                                            <td>15:30 - 17:10</td>
-                                                                            <td>F2F</td>
-                                                                            <td>Y</td>
-                                                                            <td>P</td>
-                                                                            <td>Mon Oct 14 2019 15:11:04 GMT+1510 (Indochina Time)</td>
-                                                                            <td>-</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Updated: 4th April 2020
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- END OF CLASS MATERIALS -->
-
-        <!-- FORUM -->
-        <div class="row" style="padding: 0px !important">
-            <div class="col-md-12 va-info">
-                <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Forum
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Updated: 4th April 2020
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- END OF FORUM -->
-
-        <!-- ASSIGNMENTS -->
-        <div class="row" style="padding: 0px !important">
-            <div class="col-md-12 va-info">
-                <a id="cardHover" href="#" style="text-decoration: none; color: black; text-align: center">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            Assignments
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Updated: 4th April 2020
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <!-- END OF ASSIGNMENTS -->
-
-        <!-- END OF CARDS -->
         <br>
         <br>
         <br>
