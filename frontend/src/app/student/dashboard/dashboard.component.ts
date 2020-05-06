@@ -17,8 +17,8 @@ export class DashboardComponent implements OnInit {
   }
 
   loadUserData() {
-    const userId = localStorage.getItem('userId');
-    this.userService.getUserDetails(userId).subscribe(
+    const universalId = localStorage.getItem('universalId');
+    this.userService.getUserDetails(universalId).subscribe(
       res => { this.userData = res; },
       err => {  }
     );

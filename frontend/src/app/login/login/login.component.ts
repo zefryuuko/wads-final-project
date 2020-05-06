@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(
       emailAddress, password,
       (res) => {
-        this.authService.storeSessionId(res.sessionId);
+        this.authService.storeSessionId(res.sessionId, res.universalId);
         this.router.navigate(['student']);
       },
       (err) => {
