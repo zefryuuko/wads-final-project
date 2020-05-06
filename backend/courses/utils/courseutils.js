@@ -16,7 +16,10 @@ class CourseUtils {
     async classCodeExists(courseCode, classCode) {
         try {
             if (!(courseCode || classCode)) return false;
-            const result = await Course.find({"code": "COMP6343", "class": {$elemMatch: {"code":classCode}}});
+            const result = await Course.find({
+                "code": courseCode, 
+                "class.code": { $eq: classCode } 
+            });
             if (result.length > 0) return true;
             else return false;
         } catch (err) {

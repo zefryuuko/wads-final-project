@@ -4,9 +4,9 @@ const account = require('../model/account.model');
 const session = require('../model/session.model');
 
 router.get('/', async (req, res) => {
-    const { sessionId } = req.body;
+    const { sessionId, universalId } = req.body;
 
-    if (!sessionId) {
+    if (!(sessionId && universalId)) {
         res.status(400).json({
             "message": "Missing parameter(s)"
         });
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const isValidSession = await session.sessionExists(sessionId);
+        const isValidSession = await session.sessionExists(sessionId, universalId);
         if (!isValidSession) {
             res.status(403).json( {
                 "message": "Invalid session"
@@ -50,9 +50,11 @@ router.post('/', async (req, res) => {
             return;
         }
         const sessionId = await session.addSession(accountId, rememberMe);
+        const universalId = await account.getUniversalId(emailAddress, password);
         res.json({
             "message": "Logged in successfully",
-            "sessionId": sessionId
+            "sessionId": sessionId,
+            "universalId": universalId
         });
     } catch (err) {
         res.status(500).json( {

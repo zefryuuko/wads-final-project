@@ -218,12 +218,21 @@ router.get('/:courseCode/:classCode', async (req, res) => {
     }
 });
 
+// Add new class in a course
 router.post('/:courseCode', async (req, res) => {
     try {
-        // Check if class exists (prevent duplicate)
-        if (await courseUtils.classCodeExists(req.params.courseCode, req.body.classCode)) {
+        // Check if course exists
+        if (!await courseUtils.courseCodeExists(req.params.courseCode)) {
             res.status(404).json({
-                'message': `Class with name ${req.params.classCode} already exist on ${req.params.courseCode}`
+                'message': `Course with id ${req.params.courseCode} does not exist`
+            });
+            return;
+        }
+
+        // Check if class exists (prevent duplicate)
+        if (await courseUtils.classCodeExists(req.params.courseCode, req.body.code)) {
+            res.status(404).json({
+                'message': `Class with name ${req.body.code} already exist on ${req.params.courseCode}`
             });
             return;
         }
@@ -231,11 +240,11 @@ router.post('/:courseCode', async (req, res) => {
         // Get and send course data
         req.body._id = mongoose.Types.ObjectId();
         const newClass = new Class(req.body);
-        const result = Course.updateOne(
+        const result = await Course.updateOne(
             { code: req.params.courseCode },
-            { $push: { class: newClass } }
+            { $push: { class: newClass } },
+            { new: true }
         );
-        // const result = await newClass.save();
 
         res.json({
             "message": "Class created successfully"
@@ -250,6 +259,53 @@ router.post('/:courseCode', async (req, res) => {
             return;
         }
 
+        res.status(500).json({
+            'message': `${err}`
+        });
+    }
+});
+
+router.patch('/:courseCode/:classCode', async (req, res) => {
+     
+});
+
+router.delete('/:courseCode/:classCode', async (req, res) => {
+    try {
+        // Check if course exists
+        if (!await courseUtils.courseCodeExists(req.params.courseCode)) {
+            res.status(404).json({
+                'message': `Course with id ${req.params.courseCode} does not exist`
+            });
+            return;
+        }
+
+        // Check if class exists (prevent duplicate)
+        if (!await courseUtils.classCodeExists(req.params.courseCode, req.params.classCode)) {
+            res.status(404).json({
+                'message': `Class with name ${req.params.classCode} does not exist on ${req.params.courseCode}`
+            });
+            return;
+        }
+
+        const result = await Course.findOneAndUpdate(
+            { 
+                code: req.params.courseCode,
+                'class.code': { $eq: req.params.classCode }
+            },
+            {
+                $pull: {
+                    class: {
+                        code: req.params.classCode
+                    }
+                }
+            },
+            { new: true }
+        );
+
+        res.json({
+            "message": "Class deleted successfully"
+        });
+    } catch (err) {
         res.status(500).json({
             'message': `${err}`
         });
