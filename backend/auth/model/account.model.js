@@ -2,13 +2,14 @@ const db = require('../utils/db');
 const dotenv = require('dotenv/config');
 
 class Account {
-    async addCredentials(emailAddress, password) {
+    async addCredentials(emailAddress, password, universalId) {
         try {
             const result = await db.query(
-                'INSERT INTO accounts (email_address, password) VALUES (?, SHA2(?, 512))',
+                'INSERT INTO accounts (email_address, password, universal_id) VALUES (?, SHA2(?, 512), ?)',
                 [
                     emailAddress,
-                    password + process.env.CRYPTO_SALT
+                    password + process.env.CRYPTO_SALT,
+                    universalId
                 ]
             )
             if (result[0].affectedRows == 1) return true;
@@ -35,7 +36,23 @@ class Account {
         }
     }
 
-    async updateCredentials(currentEmailAddress, emailAddress, password) {
+    async getUniversalId(emailAddress, password) {
+        try {
+            const result = await db.query(
+                'SELECT universal_id FROM accounts WHERE email_address = ? AND password = SHA2(?, 512)',
+                [
+                    emailAddress,
+                    password + process.env.CRYPTO_SALT
+                ]
+            );
+            if (result[0].length == 0) return undefined;
+            else return result[0][0].universal_id;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateCredentials(currentEmailAddress, emailAddress, password, universalId) {
         try {
             var conn = await db.getConnection();
             await conn.beginTransaction();
@@ -65,6 +82,21 @@ class Account {
                     return false;
                 }
             }
+
+            if (universalId) {
+                const result = await conn.query(
+                    'UPDATE accounts SET universal_id = ? WHERE email_address = ?',
+                    [
+                        universalId,
+                        currentEmailAddress
+                    ]
+                );
+                if (result[0].affectedRows == 0) {
+                    await conn.rollback();
+                    return false;
+                }
+            }
+
             await conn.commit();
             return true;
         } catch (err) {

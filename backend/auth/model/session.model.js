@@ -21,12 +21,13 @@ class Session {
         }
     }
 
-    async sessionExists(sessionId) {
+    async sessionExists(sessionId, universalId) {
         try {
             const result = await db.query(
-                'SELECT session_id FROM sessions WHERE session_id = ? AND (NOW() < expiry_time OR remember_me = 1)',
+                'SELECT session_id, universal_id FROM sessions LEFT JOIN accounts ON accounts.account_id = sessions.account_id WHERE session_id = ? AND (NOW() < expiry_time OR remember_me = 1) AND accounts.universal_id = ?;',
                 [
-                    sessionId
+                    sessionId,
+                    universalId
                 ]
             );
             if (result[0].length == 0) {
