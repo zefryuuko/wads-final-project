@@ -39,6 +39,12 @@ export class AuthGuard implements CanActivate {
   // }
 
   canActivate(): boolean {
+    const sessionId = localStorage.getItem('sessionId');
+    const universalId = localStorage.getItem('universalId');
+    // this.authService.isSessionValid(sessionId, universalId).subscribe(
+    //   res => { return true; },
+    //   err => { this.router.navigate(['']); }
+    // );
     return true;
   }
 }
