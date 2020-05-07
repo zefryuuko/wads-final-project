@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 const mongoose = require('mongoose');
 const Major = require('../models/major.model');
 const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
+const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
     // TODO: Add pagination
@@ -235,6 +237,9 @@ router.post('/:id', async (req, res) => {
         }
 
         // TODO: Validate course code
+        // Check if passed course and class type combination exists
+        const courseMetadataUrl = `${coursesServiceEndpoint}/course/${req.body.courseCode}/${req.body.classType}`;
+        const courseMetadata = await axios.get(courseMetadataUrl);
 
         // Prevent multiple instance of classes with the same class and course code
         const courseExists = await Semester.findOne(
@@ -255,6 +260,7 @@ router.post('/:id', async (req, res) => {
 
         // Add class data
         req.body._id = mongoose.Types.ObjectId();
+        req.body.metadata = courseMetadata.data;
         const newClass = new Class(req.body);
         const result = await Semester.updateOne(
             { _id: req.params.id }, 
@@ -289,6 +295,14 @@ router.post('/:id', async (req, res) => {
         if (err.name == "CastError") {
             res.status(404).json({
                 "message": `Class with id ${req.body.majorId} does not exist`
+            });
+            return;
+        }
+
+        // Handle invalid course code and class type combination
+        if (err.response && (err.response.status == 404)) {
+            res.status(404).json({
+                "message": `Course code and class type combination does not exist`
             });
             return;
         }
