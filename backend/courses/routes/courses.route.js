@@ -206,7 +206,9 @@ router.get('/:courseCode/:classCode', async (req, res) => {
         const result = await Course.findOne(
             { code: req.params.courseCode }, 
             {
-                __v: 0,
+                code: 1,
+                name: 1,
+                description: 1,
                 class: { $elemMatch: { code: req.params.classCode } }
             }
         );
