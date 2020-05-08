@@ -63,15 +63,15 @@ class Sidebar extends React.Component {
                                     </span></a>
                             </li>
 
-                            <li className="sidebar-item"> <a className="sidebar-link has-arrow" href="javascript:void(0)"
+                            <li className="sidebar-item"> <span className="sidebar-link has-arrow" onClick={e => e.preventDefault()}
                                     aria-expanded="false"><i data-feather="feather" className="feather-icon"></i><span
                                         className="hide-menu">Icons
-                                    </span></a>
+                                    </span></span>
                                 <ul aria-expanded="false" className="collapse first-level base-level-line">
                                     <li className="sidebar-item"><a href="icon-fontawesome.html" className="sidebar-link"><span
                                                 className="hide-menu"> Fontawesome Icons </span></a></li>
 
-                                    <li className="sidebar-item"><a href="icon-simple-lineicon.html" className="sidebar-link"><span
+                                    <li className="sidebar-item"><a href="/icon-simple-lineicon.html" className="sidebar-link"><span
                                                 className="hide-menu"> Simple Line Icons </span></a></li>
                                 </ul>
                             </li>

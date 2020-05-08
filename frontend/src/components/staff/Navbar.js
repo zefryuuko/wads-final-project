@@ -7,8 +7,8 @@ class Navbar extends React.Component {
                 <nav className="navbar top-navbar navbar-expand-md">
                     <div className="navbar-header" data-logobg="skin6">
                         {/* <!-- This is for the sidebar toggle which is visible on mobile only --> */}
-                        <a className="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
-                                className="ti-menu ti-close"></i></a>
+                        <span className="nav-toggler waves-effect waves-light d-block d-md-none" onClick={e => e.preventDefault()}><i
+                                className="ti-menu ti-close"></i></span>
                         <div className="navbar-brand">
                             {/* <!-- Logo icon --> */}
                             <a href="index.html">
@@ -23,10 +23,10 @@ class Navbar extends React.Component {
                             </a>
                         </div>
                         {/* <!-- Toggle which is visible on mobile only --> */}
-                        <a className="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        <span className="topbartoggler d-block d-md-none waves-effect waves-light" onClick={e => e.preventDefault()}
                             data-toggle="collapse" data-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
-                                className="ti-more"></i></a>
+                                className="ti-more"></i></span>
                     </div>
 
                     <div className="navbar-collapse collapse" id="navbarSupportedContent">
@@ -37,7 +37,7 @@ class Navbar extends React.Component {
                                 </span>
                             </li>
                             <li className="nav-item d-none d-md-block">
-                                <a className="nav-link" href="javascript:void(0)">
+                                <span className="nav-link" onClick={e => e.preventDefault()}>
                                     <div className="customize-input">
                                         <select
                                             className="custom-select form-control bg-white custom-radius custom-shadow border-0">
@@ -47,12 +47,12 @@ class Navbar extends React.Component {
                                             <option value="3">BE</option>
                                         </select>
                                     </div>
-                                </a>
+                                </span>
                             </li>
                         </ul>
                         <ul className="navbar-nav float-right">
                             <li className="nav-item d-none d-md-block">
-                                <a className="nav-link" href="javascript:void(0)">
+                                <span className="nav-link" onClick={e => e.preventDefault()}>
                                     <form>
                                         <div className="customize-input">
                                             <input className="form-control custom-shadow custom-radius border-0 bg-white"
@@ -60,38 +60,38 @@ class Navbar extends React.Component {
                                             <i className="form-control-icon" data-feather="search"></i>
                                         </div>
                                     </form>
-                                </a>
+                                </span>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
+                                <span className="nav-link dropdown-toggle" onClick={e => e.preventDefault()} data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                     <img src="/assets/images/users/profile-pic.jpg" alt="user" className="rounded-circle"
                                         width="40"/>
                                     <span className="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
                                             className="text-dark">Jason Doe</span> <i data-feather="chevron-down"
                                             className="svg-icon"></i></span>
-                                </a>
+                                </span>
                                 <div className="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                    <a className="dropdown-item" href="javascript:void(0)"><i data-feather="user"
+                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="user"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        My Profile</a>
-                                    <a className="dropdown-item" href="javascript:void(0)"><i data-feather="credit-card"
+                                        My Profile</span>
+                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="credit-card"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        My Balance</a>
-                                    <a className="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
+                                        My Balance</span>
+                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="mail"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        Inbox</a>
+                                        Inbox</span>
                                     <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="javascript:void(0)"><i data-feather="settings"
+                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="settings"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        Account Setting</a>
+                                        Account Setting</span>
                                     <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="javascript:void(0)"><i data-feather="power"
+                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="power"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        Logout</a>
+                                        Logout</span>
                                     <div className="dropdown-divider"></div>
-                                    <div className="pl-4 p-3"><a href="javascript:void(0)" className="btn btn-sm btn-info">View
-                                            Profile</a></div>
+                                    <div className="pl-4 p-3"><span onClick={e => e.preventDefault()} className="btn btn-sm btn-info">View
+                                            Profile</span></div>
                                 </div>
                             </li>
                         </ul>
