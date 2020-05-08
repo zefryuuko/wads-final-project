@@ -13,18 +13,22 @@ import StudentDashboard from './components/student/StudentDashboard';
 import StaffDashboard from './components/staff/StaffDashboard';
 import StaffCoursesList from './components/staff/StaffCoursesList';
 
+import TestingGrounds from './components/TestingGrounds';
+
 function App() {
   return (
       <BrowserRouter>
         {/* Landing */}
-        <Route exact path="/" component={Landing}></Route>
-        
+        <Route exact path="/" component={Landing}/>
         {/* Student Routes */}
-        <Route exact path="/student" component={StudentDashboard}></Route>
+        <Route exact path="/student" component={StudentDashboard}/>
 
         {/* Staff Routes */}
-        <Route exact path="/staff" component={StaffDashboard}></Route>
-        <Route exact path="/staff/courses" component={StaffCoursesList}></Route>
+        <Route exact path="/staff" component={StaffDashboard}/>
+        <Route exact path="/staff/courses" component={StaffCoursesList}/>
+
+        {/* Testing Grounds */}
+        <Route path="/testing-grounds" component={TestingGrounds}/>
       </BrowserRouter>
   );
 }
