@@ -48,7 +48,7 @@ body{
 
 /* CAROUSEL */
 .card{
-    height: 500px;
+    height: 190px;
     overflow: hidden;
     text-align: center;
 }
@@ -71,57 +71,6 @@ body{
     -webkit-box-shadow: 1px 1px 29px 1px rgba(138,138,138,1);
 }
 
-.carousel-inner{
-    margin: auto;
-    width: 100%;
-}
-    
-.carousel-control-prev-icon,
-.carousel-control-next-icon{
-    height: 100px;
-    width: 100px;
-    outline: black;
-    background-size: 100%, 100%;
-    background-image: none;
-}
-    
-.carousel-control-next-icon:after{
-    content: '>';
-    font-size: 55px;
-    color: #c10000;
-}
-    
-.carousel-control-prev-icon:after{
-    content: '<';
-    font-size: 55px;
-    color: #c10000;
-}
-
 .card-header{
     font-family: OpenSans-Bold;
-}
-
-/* TABLE */
-tr.hide-table-padding td{
-    padding: 0px 12px;
-}
-  
-.expand-button{
-    position: relative;
-}
-
-.accordion-toggle .expand-button:after{
-    position: absolute;
-    left:.75rem;
-    top: 50%;
-    transform: translate(0, -50%);
-    content: '-';
-}
-
-.accordion-toggle.collapsed .expand-button:after{
-    content: '+';
-}
-
-.text-center{
-    height: auto;
 }

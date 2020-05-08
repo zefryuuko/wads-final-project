@@ -1,0 +1,159 @@
+body {
+    /* background: url('/img/landing-bg.png') no-repeat center center fixed;
+    background-size: cover; */
+}
+
+.headline-container {
+    padding-top: 50%;
+    padding-bottom: 50%;
+    /* height: 100%; */
+    width: 100%;
+    background: url('/assets/images/landing-bg.png') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.headline-container .logo {
+    height: 40px;
+    margin-left: 5px;
+}
+
+.headline-container .headline {
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    font-size: 65px;
+    line-height: 70px;
+    font-weight: 500;
+}
+
+.headline-container .description {
+    margin-top: 10px;
+    font-family: 'Noto Serif', serif;
+    font-size: 20px;
+    line-height: 20px;
+    color: white;
+}
+
+.btn-login {
+    width: 100%;
+    margin: auto;
+    margin-top: 10px;
+    border: 3px solid rgb(249, 178, 27);
+    color: white !important;
+    /* border: solid black; */
+    border-radius: 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+}
+
+.login-form {
+    height: 500px;
+    padding: 50px 10px 10px 10px;
+    background: white;
+}
+
+.login-form h1 {
+    padding-bottom: 30px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+}
+
+.login-form .form-control {
+    border-radius: 0;
+}
+
+.login-form .remember-me {
+    text-align: center;
+}
+
+.login-form .btn-login {
+    background: rgb(249, 178, 27);
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+@media (min-width: 1000px) {
+    .landing-parent {
+        height: 100%;
+        width: 100%;
+        background: url('/assets/images/landing-bg.png') no-repeat center center fixed;
+        background-size: cover;
+        background-attachment: scroll;
+        /* margin-top: -25px; */
+        /* margin-left: -400px; */
+        /* top: 50%; */
+        /* left: 50%; */
+        position: absolute;
+    }
+    
+    .landing-subparent {
+        height: 500px;
+        margin: auto;
+        position: absolute;
+        margin-top: -250px;
+        top: 50%;
+        left: 50%;
+        margin-left: -50%;
+    }
+
+    .landing-parent:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .headline-container {
+        margin: 0;
+        background-image: none;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        width: 300px;
+        height: 400px;
+        /* display: inline-block; */
+        
+        float: left;
+        width: 50%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .login-form {
+        margin: 0 30px 0 30px;
+        height: 400px;
+        padding: 50px;
+        /* display: inline-block; */
+
+        float: right;
+        width: 400px;
+        box-sizing: border-box;
+    }
+
+    .login-form .btn-login {
+        display: initial;
+    }
+    .btn-login {
+        display: none;
+    }
+}
+
+@media (min-width: 1300px) {
+    .landing-subparent {
+        width: 90%;
+        margin-left: -45%;
+    }
+}
+
+@media (min-width: 1900px) {
+    .landing-subparent {
+        width: 80%;
+        margin-left: -40%;
+    }
+}
+
+@media (min-width: 2300px) {
+    .landing-subparent {
+        width: 70%;
+        margin-left: -35%;
+    }
+}
