@@ -1,6 +1,5 @@
 import React from 'react'
 
-import './StaffDashboard.css';
 // import Preloader from '../Preloader';
 import MainWrapper from '../MainWrapper';
 import Navbar from './Navbar';
