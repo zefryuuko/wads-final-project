@@ -11,6 +11,7 @@ import Landing from './components/Landing'
 import StudentDashboard from './components/student/StudentDashboard';
 
 import StaffDashboard from './components/staff/StaffDashboard';
+import StaffCoursesList from './components/staff/StaffCoursesList';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
 
         {/* Staff Routes */}
         <Route exact path="/staff" component={StaffDashboard}></Route>
+        <Route exact path="/staff/courses" component={StaffCoursesList}></Route>
       </BrowserRouter>
   );
 }
