@@ -36,7 +36,7 @@ class Navbar extends React.Component {
                                     <i data-feather="user" className="svg-icon" color="rgb(188, 195, 213)"></i>
                                 </span>
                             </li>
-                            <li className="nav-item d-none d-md-block">
+                            <li className="nav-item d-md-block">
                                 <span className="nav-link" onClick={e => e.preventDefault()}>
                                     <div className="customize-input">
                                         <select
