@@ -46,7 +46,7 @@ jobs:
     - name: Build front-end
       run: |
         npm install
-        ng build --prod
+        npm build
         docker build . -t zefryuuko/wads-frontend:latest
       working-directory: ./frontend/
     
