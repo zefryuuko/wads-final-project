@@ -3,8 +3,8 @@ import {Redirect} from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
 
-// import Preloader from '../Preloader';
 import MainWrapper from '../MainWrapper';
+import Preloader from '../Preloader';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
@@ -45,12 +45,14 @@ class StaffDashboard extends React.Component {
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
         return (
-            <MainWrapper style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
-                {/* <Preloader/> */}
-                <Navbar />
-                <Sidebar />
-                <h1>Staff Dash Body</h1>
-                <Footer />
+            <MainWrapper>
+                <Preloader/>
+                <div style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
+                    <Navbar />
+                    <Sidebar />
+                    <h1>Staff Dash Body</h1>
+                    <Footer />
+                </div>
             </MainWrapper>
         );
     }
