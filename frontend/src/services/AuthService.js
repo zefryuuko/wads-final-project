@@ -11,24 +11,33 @@ class AuthService {
         return result.data;
     }
 
-    async isLoggedIn(sessionId, universalId) {
+    async isLoggedIn(sessionId, universalId, callback) {
         try {
-            const url = `${this.API_ENDPOINT}/auth/session?sessionId=${sessionId}&universalId=${universalId}`;
-            const result = await axios.get(url);
-            return result.data;
+            const url = `${this.API_ENDPOINT}auth/session?sessionId=${sessionId}&universalId=${universalId}`;
+            const res = await axios.get(url);
+            if (callback) callback(res.data);
+            return res.data;
         } catch (err) {
-            return err.response.data;
+            if (callback) callback(err);
+            return err;
         }
     }
 
-    async login(emailAddress, password) {
+    async login(emailAddress, password, callback) {
         try {
-            const url = `${this.API_ENDPOINT}/auth/session`;
-            const result = await axios.post(url, {emailAddress, password});
-            return result.data;
+            const url = `${this.API_ENDPOINT}auth/session`;
+            const res = await axios.post(url, {emailAddress, password});
+            if (callback) callback(res.data);
+            return res.data;
         } catch (err) {
-            return err.response.data;
+            if (callback) callback(err);
+            return err;
         }
+    }
+
+    saveSession(data) {
+        localStorage.setItem('sessionId', data.sessionId);
+        localStorage.setItem('universalId', data.universalId);
     }
 }
 
