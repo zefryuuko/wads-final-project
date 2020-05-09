@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Redirect} from 'react-router-dom'; 
 import AuthService from '../../services/AuthService';
                                     
-class AuthMiddleware extends React.Component {
+class PublicMiddleware extends React.Component {
     
     constructor(props, context) {
         super(props, context);
@@ -28,13 +28,13 @@ class AuthMiddleware extends React.Component {
     
     render() {
         return this.state.isLoading ? null :
-        this.state.isLoggedIn ?
+        !this.state.isLoggedIn ?
         <Route path={this.props.path} component={this.props.component} exact={this.props.exact}/> :
-        <Redirect to={{ pathname: '/', state: { from: this.props.location } }} />
+        <Redirect to={{ pathname: '/staff', state: { from: this.props.location } }} />
         
     }
     
 }
                                     
 
-export default AuthMiddleware;
+export default PublicMiddleware;
