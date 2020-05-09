@@ -86,9 +86,9 @@ class Navbar extends React.Component {
                                             className="svg-icon mr-2 ml-1"></i>
                                         Account Setting</span>
                                     <div className="dropdown-divider"></div>
-                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="power"
+                                    <a className="dropdown-item" href="/logout"><i data-feather="power"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        Logout</span>
+                                        Logout</a>
                                     <div className="dropdown-divider"></div>
                                     <div className="pl-4 p-3"><span onClick={e => e.preventDefault()} className="btn btn-sm btn-info">View
                                             Profile</span></div>
