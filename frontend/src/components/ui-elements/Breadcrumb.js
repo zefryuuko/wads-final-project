@@ -9,7 +9,7 @@ class Breadcrumb extends Component {
                         this.props.contents ? 
                             this.props.contents.map(element => {
                                 return (
-                                    <li className="breadcrumb-item">
+                                    <li className="breadcrumb-item" key={element.name}>
                                         {element.url ? <a href={element.url} className="text-muted">{element.name}</a> : element.name} 
                                     </li>
                                 );

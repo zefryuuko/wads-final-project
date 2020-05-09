@@ -1,7 +1,9 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
 
+// Services
 import AuthService from '../../services/AuthService';
+import UserService from '../../services/UserService';
 
 // UI Elements
 import MainWrapper from '../ui-elements/MainWrapper';
@@ -20,7 +22,10 @@ class StaffDashboard extends React.Component {
         super();
         this.state = {
             isLoading: true,
-            isLoggedIn: false
+            isLoggedIn: false,
+            userFirstName: "",
+            userFirstFullName: "",
+            userLastName: "",
         }
 
         // Set page display mode when loading
@@ -43,6 +48,16 @@ class StaffDashboard extends React.Component {
                         isLoggedIn: true
                     })
             });
+        
+        // Load user info
+        UserService.getUserData()
+            .then(res => {
+                this.setState({
+                    userFirstName: res.firstName.split(' ')[0],
+                    userFirstFullName: res.firstName,
+                    userLastName: res.lastName
+                })
+            });
     }
 
     render() {
@@ -54,7 +69,7 @@ class StaffDashboard extends React.Component {
                     <Navbar />
                     <Sidebar />
                     <PageWrapper>
-                        <PageBreadcrumb title="Welcome Back, Jason!" breadcrumb={<Breadcrumb current="Dashboard"/>}/>
+                        <PageBreadcrumb title={`Welcome Back, ${this.state.userFirstName}!`} breadcrumb={<Breadcrumb current="Dashboard"/>}/>
                         <h1>Staff Dash Body</h1>
                         <Footer />
                     </PageWrapper>

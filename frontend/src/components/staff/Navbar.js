@@ -1,6 +1,21 @@
 import React from 'react';
 
+// Services
+import UserService from '../../services/UserService';
+
 class Navbar extends React.Component {
+    constructor() {
+        super();
+        this.state = {userFullName: ""}
+    }
+
+    componentDidMount() {
+        UserService.getUserData()
+        .then(res => this.setState({
+            userFullName: `${res.firstName} ${res.lastName}`
+        }))
+    }
+
     render() {
         return (
             <header className="topbar" data-navbarbg="skin6">
@@ -67,8 +82,8 @@ class Navbar extends React.Component {
                                     aria-haspopup="true" aria-expanded="false">
                                     <img src="/assets/images/users/profile-pic.jpg" alt="user" className="rounded-circle"
                                         width="40"/>
-                                    <span className="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                            className="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                                    <span className="ml-2 d-none d-lg-inline-block"><span
+                                            className="text-dark">{this.state.userFullName}</span> <i data-feather="chevron-down"
                                             className="svg-icon"></i></span>
                                 </span>
                                 <div className="dropdown-menu dropdown-menu-right user-dd animated flipInY">

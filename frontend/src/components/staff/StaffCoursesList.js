@@ -1,6 +1,7 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom';
 
+// Services
 import AuthService from '../../services/AuthService';
 
 // UI Elements
@@ -13,7 +14,6 @@ import Preloader from '../Preloader';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
-import Breadcrumb from '../ui-elements/Breadcrumb';
 
 class StaffCourseList extends React.Component {
     constructor() {
@@ -55,7 +55,7 @@ class StaffCourseList extends React.Component {
                     <Sidebar />
                     <PageWrapper>
                         <PageBreadcrumb title="Courses" root="Course Administration"/>
-                        <h1>Staff Dash Body</h1>
+                        <h1>Staff Courses Body</h1>
                         <Footer />
                     </PageWrapper>
                 </div>
