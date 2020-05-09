@@ -7,10 +7,13 @@ import './App.css';
 // import 'bootstrap/dist/js/bootstrap.bundle';
 // import 'feather-icons';
 
-import Landing from './components/Landing'
+// import AuthMiddleware from './components/middleware/AuthMiddleware';
+// import PublicMiddleware from './components/middleware/PublicMiddleware';
 
-import AuthMiddleware from './components/middleware/AuthMiddleware';
-import PublicMiddleware from './components/middleware/PublicMiddleware';
+import Landing from './components/Landing';
+// TODO: add credits page
+
+import Logout from './components/Logout';
 
 import StudentDashboard from './components/student/StudentDashboard';
 
@@ -24,14 +27,17 @@ function App() {
   return (
       <BrowserRouter>
         {/* Landing */}
-        <PublicMiddleware exact path="/" component={Landing}/>
+        <Route exact path="/" component={Landing}/>
         
+        {/* Routes only accessible when logged in */}
+        <Route exact path="/logout" component={Logout}/>
+
         {/* Student Routes */}
         <Route exact path="/student" component={StudentDashboard}/>
 
         {/* Staff Routes */}
-        <AuthMiddleware exact path="/staff" component={StaffDashboard}/>
-        <AuthMiddleware exact path="/staff/courses" component={StaffCoursesList}/>
+        <Route exact path="/staff" component={StaffDashboard}/>
+        <Route exact path="/staff/courses" component={StaffCoursesList}/>
 
         {/* Testing Grounds */}
         <Route path="/testing-grounds" component={TestingGrounds}/>

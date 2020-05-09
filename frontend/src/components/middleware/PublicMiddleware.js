@@ -9,7 +9,7 @@ class PublicMiddleware extends React.Component {
         
         this.state = {
             isLoading: false,
-            isLoggedIn: true
+            isLoggedIn: false
         };
 
         const sessionId = localStorage.getItem('sessionId');
