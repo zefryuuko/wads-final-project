@@ -11,8 +11,10 @@ class AuthService {
         return result.data;
     }
 
-    async isLoggedIn(sessionId, universalId, callback) {
+    async isLoggedIn(callback) {
         try {
+            const sessionId = localStorage.getItem('sessionId');
+            const universalId = localStorage.getItem('universalId');
             const url = `${this.API_ENDPOINT}auth/session?sessionId=${sessionId}&universalId=${universalId}`;
             const res = await axios.get(url);
             if (callback) callback(res.data);
