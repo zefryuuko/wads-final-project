@@ -3,14 +3,17 @@ import {Redirect} from 'react-router-dom';
 
 import AuthService from '../../services/AuthService';
 
-import MainWrapper from '../MainWrapper';
+// UI Elements
+import MainWrapper from '../ui-elements/MainWrapper';
+import PageWrapper from '../ui-elements/PageWrapper';
+import PageBreadcrumb from '../ui-elements/PageBreadcrumb';
+import Breadcrumb from '../ui-elements/Breadcrumb';
+
+// Components
 import Preloader from '../Preloader';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
-
-// import $ from 'jquery/dist/jquery';
-// import './custom.min.js'
 
 class StaffDashboard extends React.Component {
     constructor() {
@@ -50,8 +53,11 @@ class StaffDashboard extends React.Component {
                 <div style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <Navbar />
                     <Sidebar />
-                    <h1>Staff Dash Body</h1>
-                    <Footer />
+                    <PageWrapper>
+                        <PageBreadcrumb title="Welcome Back, Jason!" breadcrumb={<Breadcrumb current="Dashboard"/>}/>
+                        <h1>Staff Dash Body</h1>
+                        <Footer />
+                    </PageWrapper>
                 </div>
             </MainWrapper>
         );
