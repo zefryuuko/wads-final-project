@@ -8,8 +8,10 @@ const isAuthServiceActive = async () => {
 }
 
 const isLoggedIn = async () => {
-    const result = await AuthService.isLoggedIn("00e12e42-2e8f-4223-8f11-15ba25a1c9e6", "2201796970");
-    console.log(result);
+    AuthService.isLoggedIn("00e12e42-2e8f-4223-8f11-15ba25a1c9e6", "2201796970", (res) => {
+        console.log(res.response.status);
+    });
+    
 }
 
 const login = async () => {
