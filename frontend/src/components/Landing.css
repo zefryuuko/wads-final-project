@@ -50,12 +50,13 @@ body {
     height: 500px;
     padding: 50px 10px 10px 10px;
     background: white;
+    color: black;
 }
 
 .login-form h1 {
     padding-bottom: 30px;
     text-align: center;
-    font-family: 'Oswald', sans-serif;
+    /* font-family: 'Oswald', sans-serif; */
 }
 
 .login-form .form-control {
@@ -73,7 +74,7 @@ body {
 }
 
 
-@media (min-width: 1000px) {
+@media (min-width: 950px) {
     .landing-parent {
         height: 100%;
         width: 100%;
@@ -120,13 +121,14 @@ body {
 
     .login-form {
         margin: 0 30px 0 30px;
-        height: 400px;
+        /* height: 450px; */
         padding: 50px;
         /* display: inline-block; */
 
         float: right;
         width: 400px;
         box-sizing: border-box;
+        box-shadow: 0 3px 9px 0 rgba(212, 190, 127, 0.15);
     }
 
     .login-form .btn-login {
@@ -135,6 +137,15 @@ body {
     .btn-login {
         display: none;
     }
+
+    .headline-container .container {
+        margin-top: 100px
+    }
+
+    .headline-container .headline {
+        font-size: 80px;
+        line-height: 85px;
+    }
 }
 
 @media (min-width: 1300px) {
@@ -142,12 +153,22 @@ body {
         width: 90%;
         margin-left: -45%;
     }
+
+    .headline-container .headline {
+        font-size: 85px;
+        line-height: 90px;
+    }
 }
 
 @media (min-width: 1900px) {
     .landing-subparent {
         width: 80%;
         margin-left: -40%;
+    }
+
+    .headline-container .headline {
+        font-size: 100px;
+        line-height: 105px;
     }
 }
 

@@ -1,6 +1,21 @@
 import React from 'react';
 
+// Services
+import UserService from '../../services/UserService';
+
 class Navbar extends React.Component {
+    constructor() {
+        super();
+        this.state = {userFullName: ""}
+    }
+
+    componentDidMount() {
+        UserService.getUserData()
+        .then(res => this.setState({
+            userFullName: `${res.firstName} ${res.lastName}`
+        }))
+    }
+
     render() {
         return (
             <header className="topbar" data-navbarbg="skin6">
@@ -36,7 +51,7 @@ class Navbar extends React.Component {
                                     <i data-feather="user" className="svg-icon" color="rgb(188, 195, 213)"></i>
                                 </span>
                             </li>
-                            <li className="nav-item d-none d-md-block">
+                            <li className="nav-item d-md-block">
                                 <span className="nav-link" onClick={e => e.preventDefault()}>
                                     <div className="customize-input">
                                         <select
@@ -67,8 +82,8 @@ class Navbar extends React.Component {
                                     aria-haspopup="true" aria-expanded="false">
                                     <img src="/assets/images/users/profile-pic.jpg" alt="user" className="rounded-circle"
                                         width="40"/>
-                                    <span className="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
-                                            className="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                                    <span className="ml-2 d-none d-lg-inline-block"><span
+                                            className="text-dark">{this.state.userFullName}</span> <i data-feather="chevron-down"
                                             className="svg-icon"></i></span>
                                 </span>
                                 <div className="dropdown-menu dropdown-menu-right user-dd animated flipInY">
@@ -86,9 +101,9 @@ class Navbar extends React.Component {
                                             className="svg-icon mr-2 ml-1"></i>
                                         Account Setting</span>
                                     <div className="dropdown-divider"></div>
-                                    <span className="dropdown-item" onClick={e => e.preventDefault()}><i data-feather="power"
+                                    <a className="dropdown-item" href="/logout"><i data-feather="power"
                                             className="svg-icon mr-2 ml-1"></i>
-                                        Logout</span>
+                                        Logout</a>
                                     <div className="dropdown-divider"></div>
                                     <div className="pl-4 p-3"><span onClick={e => e.preventDefault()} className="btn btn-sm btn-info">View
                                             Profile</span></div>

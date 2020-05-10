@@ -4,8 +4,8 @@ class Footer extends React.Component {
     render() {
         return (
             <footer className="footer text-center">
-            All Rights Reserved by Adminmart. Designed and Developed by <a
-                href="https://wrappixel.com">WrapPixel</a>.
+                © 2020 BINUSMAYA.<br/>
+                <a href="https://www.adminmart.com">Adminmart</a> template designed and developed by <a href="https://wrappixel.com">WrapPixel</a>.
             </footer>
         );
     }

@@ -1,0 +1,14 @@
+.lo-ol {
+    counter-reset: item;
+}
+
+.lo {
+    list-style: none;
+    
+}
+
+.lo::before{
+    content: "LO" counter(item) ": ";
+    counter-increment: item;
+    margin-left: -2.5em;
+}
