@@ -13,7 +13,7 @@ class Landing extends React.Component {
                         <div className="container">
                             <img className="logo" src="/assets/images/logo-alt.png" alt="logo"></img>
                             <div className="headline">One place for everything BINUS</div>
-                            <p className="description">Schedule, assignments, materials, you name it. Everything is accessible in one place.</p>
+                            {/* <p className="description">Schedule, assignments, materials, you name it. Everything is accessible in one place.</p> */}
                             <a className="btn btn-login" href="#login-form">Log in</a>
                         </div>
                     </div>

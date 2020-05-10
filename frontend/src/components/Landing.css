@@ -137,6 +137,15 @@ body {
     .btn-login {
         display: none;
     }
+
+    .headline-container .container {
+        margin-top: 100px
+    }
+
+    .headline-container .headline {
+        font-size: 80px;
+        line-height: 85px;
+    }
 }
 
 @media (min-width: 1300px) {
@@ -144,12 +153,22 @@ body {
         width: 90%;
         margin-left: -45%;
     }
+
+    .headline-container .headline {
+        font-size: 85px;
+        line-height: 90px;
+    }
 }
 
 @media (min-width: 1900px) {
     .landing-subparent {
         width: 80%;
         margin-left: -40%;
+    }
+
+    .headline-container .headline {
+        font-size: 100px;
+        line-height: 105px;
     }
 }
 

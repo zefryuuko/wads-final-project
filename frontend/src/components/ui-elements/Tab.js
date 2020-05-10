@@ -13,7 +13,7 @@ class Tab extends Component {
                                     <li className="nav-item" key={`tab-${element.name}-${index}`}>
                                             <a href={`#tab-${element.name}-${index}`} data-toggle="tab" aria-expanded="false" className={`nav-link ${index > 0 ? "" : "active"}`}>
                                             <i className="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                            <span className="d-none d-lg-block">{element.name}</span>
+                                            <span className="d-lg-block">{element.name}</span>
                                         </a>
                                     </li>
                                 )
