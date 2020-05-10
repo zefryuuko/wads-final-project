@@ -14,10 +14,14 @@ import Preloader from '../Preloader';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
+
+// Course Administration
 import Dashboard from './Dashboard';
 import CourseGroups from './courses/CourseGroups';
 import CourseList from './courses/CourseList';
 import Course from './courses/Course';
+import MajorList from './classes/MajorList';
+import ClassList from './classes/ClassList';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -81,6 +85,10 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/courses`}><CourseGroups/></Route>
                         <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route>
                         <Route exact path={`${path}/courses/:groupId/:courseId`}><Course/></Route>
+
+                        {/* Classes */}
+                        <Route exact path={`${path}/classes`}><MajorList/></Route>
+                        <Route exact path={`${path}/classes/:majorId`}><ClassList/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
