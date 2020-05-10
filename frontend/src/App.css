@@ -37,3 +37,13 @@
     transform: rotate(360deg);
   }
 } */
+
+body {
+  background-color: #f9fbfd;
+}
+
+.ease-on-load {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s linear;
+}

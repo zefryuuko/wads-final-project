@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 class Breadcrumb extends Component {
     render() { 
@@ -10,7 +11,7 @@ class Breadcrumb extends Component {
                             this.props.contents.map(element => {
                                 return (
                                     <li className="breadcrumb-item" key={element.name}>
-                                        {element.url ? <a href={element.url} className="text-muted">{element.name}</a> : element.name} 
+                                        {element.url ? <Link to={element.url} className="text-muted">{element.name}</Link> : element.name} 
                                     </li>
                                 );
                             })

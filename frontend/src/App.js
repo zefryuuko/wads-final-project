@@ -17,8 +17,9 @@ import Logout from './components/Logout';
 
 import StudentDashboard from './components/student/StudentDashboard';
 
-import StaffDashboard from './components/staff/StaffDashboard';
-import StaffCoursesList from './components/staff/StaffCoursesList';
+import StaffDashboardPage from './components/staff/StaffDashboardPage';
+// import StaffDashboard from './components/staff/StaffDashboard';
+// import StaffCoursesList from './components/staff/StaffCoursesList';
 
 import TestingGrounds from './components/TestingGrounds';
 
@@ -36,8 +37,8 @@ function App() {
         <Route exact path="/student" component={StudentDashboard}/>
 
         {/* Staff Routes */}
-        <Route exact path="/staff" component={StaffDashboard}/>
-        <Route exact path="/staff/courses" component={StaffCoursesList}/>
+        <Route path="/staff" component={StaffDashboardPage}/>
+        {/* <Route exact path="/staff/courses" component={StaffCoursesList}/> */}
 
         {/* Testing Grounds */}
         <Route path="/testing-grounds" component={TestingGrounds}/>

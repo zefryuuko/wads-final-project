@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class Sidebar extends React.Component {
     render() {
@@ -10,18 +11,18 @@ class Sidebar extends React.Component {
                     <nav className="sidebar-nav">
                         <ul id="sidebarnav">
                             {/* Dashboard */}
-                            <li className="sidebar-item"> <a className="sidebar-link sidebar-link" href="/staff"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff"
                                     aria-expanded="false"><i data-feather="home" className="feather-icon"></i><span
-                                        className="hide-menu">Dashboard</span></a></li>
+                                        className="hide-menu">Dashboard</span></Link></li>
                             <li className="list-divider"></li>
 
                             {/* Course Administration */}
                             <li className="nav-small-cap"><span className="hide-menu">Course Administration</span></li>
 
-                            <li className="sidebar-item"> <a className="sidebar-link" href="/staff/courses"
+                            <li className="sidebar-item"> <Link className="sidebar-link" to="/staff/courses"
                                     aria-expanded="false"><i data-feather="edit-3" className="feather-icon"></i><span
                                         className="hide-menu">Courses
-                                    </span></a>
+                                    </span></Link>
                             </li>
                             <li className="sidebar-item"> <a className="sidebar-link sidebar-link" href="/staff/semester/"
                                     aria-expanded="false"><i data-feather="grid" className="feather-icon"></i><span
