@@ -15,7 +15,7 @@ class Textbooks extends Component {
                     }))}>
                         {this.props.data.map((element, index) => {
                             return <tr key={index}>
-                                <th scope="row">{element.name}</th>
+                                <th scope="row">{element.name} ({element.weight}%)</th>
                                 {element.evaluatedLearningOutcomes.map((isEvaluated, index) => {
                                     return <td key={index}>{isEvaluated ? <span><i className="icon-check"/></span> : <span>-</span>}</td>
                                 })}
