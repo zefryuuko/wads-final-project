@@ -47,6 +47,7 @@ class StaffDashboard extends React.Component {
         // Load user info
         UserService.getUserData()
             .then(res => {
+                if (res.firstName)
                 this.setState({
                     userFirstName: res.firstName.split(' ')[0],
                     userFirstFullName: res.firstName,
