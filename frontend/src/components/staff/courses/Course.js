@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, Redirect, withRouter} from 'react-router-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
@@ -11,8 +11,8 @@ import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Tab from '../../ui-elements/Tab';
-import Table from '../../ui-elements/Table';
-import Button from '../../ui-elements/Button';
+// import Table from '../../ui-elements/Table';
+// import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
