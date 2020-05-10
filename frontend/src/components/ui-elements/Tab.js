@@ -21,10 +21,10 @@ class Tab extends Component {
                         </ul>
 
                         {/* Table Body */}
-                        <div class="tab-content">
+                        <div className="tab-content">
                             {this.props.data.map((element, index) => {
                                 return (
-                                    <div class={`tab-pane ${index > 0 ? "" : "show active"}`} id={`tab-${element.name}-${index}`} key={`tab-${element.name}-${index}`}>
+                                    <div className={`tab-pane ${index > 0 ? "" : "show active"}`} id={`tab-${element.name}-${index}`} key={`tab-${element.name}-${index}`}>
                                         {element.component ? element.component : null}
                                     </div>
                                 )
