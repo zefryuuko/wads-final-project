@@ -6,6 +6,9 @@ package-lock.json
 auth-inf.json
 *.env
 
+# React
+frontend/build
+
 # Dev Environment
 .vscode
 
