@@ -16,6 +16,8 @@ import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
+import Textbooks from '../../ui-elements/Textbooks';
+import Evaluation from '../../ui-elements/Evaluation';
 
 // Components
 
@@ -66,10 +68,11 @@ class Course extends React.Component {
 
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
+        let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" style={{lineHeight:0}}><i className="icon-trash"/></button></div>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title={this.state.courseData ? this.state.courseData.name : "Loading..."} breadcrumb={<Breadcrumb current={this.state.courseData ? this.state.courseData.code : ""} contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}, {name: this.props.match.params.groupId, url: `/staff/courses/${this.props.match.params.groupId}`}]}/>}/>
+                    <PageBreadcrumb title={this.state.courseData ? this.state.courseData.name : "Loading..."} rightComponent={courseActions} breadcrumb={<Breadcrumb current={this.state.courseData ? this.state.courseData.code : ""} contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}, {name: this.props.match.params.groupId, url: `/staff/courses/${this.props.match.params.groupId}`}]}/>}/>
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
@@ -83,11 +86,15 @@ class Course extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <Card title="Classes" right={<a href="#edit1">Edit</a>} padding>
+                                <Card title="Classes" padding>
                                     <Tab data={
                                         this.state.courseData ? this.state.courseData.class.map(element => {
                                             return {
-                                                name: element.code
+                                                name: element.code,
+                                                component: <div>
+                                                    <Textbooks data={element.textbooks} right={<a href="#edit1">Edit</a>}/>
+                                                    <Evaluation data={element.evaluation} right={<a href="#edit1">Edit</a>}/>
+                                                </div>
                                             }
                                         }) : []
                                     }/>
