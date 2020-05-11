@@ -1,0 +1,36 @@
+name: Deploy to development server
+
+on:
+  push:
+    branches: [ master ]
+  paths:
+    - 'frontend/**'
+
+jobs:
+  build-containers:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2 
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '13.x'
+       
+    - name: Docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}   
+      run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  
+    - name: Build frontend
+      run: |
+        npm install
+        npm run build
+        docker build . -t zefryuuko/wads-frontend:latest
+      working-directory: ./frontend/
+    
+    # Push to Docker Hub
+    - name: Push to Docker Hub
+      run: |
+        docker push zefryuuko/wads-frontend:latest
