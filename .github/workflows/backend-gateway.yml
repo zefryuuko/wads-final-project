@@ -3,8 +3,8 @@ name: Deploy to development server
 on:
   push:
     branches: [ master ]
-  paths:
-    - 'backend/gateway/**'
+    paths:
+      - 'backend/gateway/**'
 
 jobs:
   build-containers:
