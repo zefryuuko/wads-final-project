@@ -16,9 +16,20 @@ class UserService {
         }
     }
 
-    async getClasses(majorId, page, callback) {
+    async getSemesters(majorId, page, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/major/${majorId}?page=${page}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            return err;
+        }
+    }
+
+    async getClasses(semesterId, page, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}?page=${page}`);
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {

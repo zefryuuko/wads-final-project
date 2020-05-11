@@ -16,7 +16,7 @@ import Button from '../../ui-elements/Button';
 
 // Components
 
-class ClassList extends React.Component {
+class SemesterList extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -24,8 +24,7 @@ class ClassList extends React.Component {
             isLoggedIn: false,
             currentTablePage: 1,
             currentTableContent: [],
-            pageTitle: "Loading...",
-            currentSemester: "Loading..."
+            pageTitle: "Loading..."
         }
 
         // Set page display mode when loading
@@ -59,15 +58,8 @@ class ClassList extends React.Component {
         ClassService.getSemesters(this.props.match.params.majorId, this.state.currentTablePage).then(res => {
             // TODO: add error validation
             this.setState({
-                currentSemester: res.name
-            });
-        })
-
-        ClassService.getClasses(this.props.match.params.semesterId, this.state.currentTablePage).then(res => {
-            // TODO: add error validation
-            this.setState({
-                pageTitle: `${res.period} ${res.name}`,
-                currentTableContent: res.classes,
+                pageTitle: res.name,
+                currentTableContent: res.linkedSemesters,
             });
         })
     }
@@ -77,23 +69,17 @@ class ClassList extends React.Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb 
-                        title={this.state.pageTitle} 
-                        root="Course Administration" 
-                        breadcrumb={<Breadcrumb 
-                            current={this.state.pageTitle} 
-                            contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}]}/>
-                        }/>
+                    <PageBreadcrumb title={this.state.pageTitle} root="Course Administration" breadcrumb={<Breadcrumb current={this.state.pageTitle} contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}]}/>}/>
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
                                 <Card>
                                     <Table header={["Period", "Name", "Actions"]}>
-                                        {(this.state.currentTableContent.length > 0) ? this.state.currentTableContent.map(row => {
+                                        {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
                                             return (
                                                 <tr key={row._id}>
-                                                    <th scope="row">{row.classCode}</th>
-                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${row._id}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
+                                                    <th scope="row">{row.period}</th>
+                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${row.semesterId}`}>{row.name}</Link></td>
                                                     <td style={{width: "150px", minWidth: "150px"}}>
                                                         <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
                                                         <Button className="btn btn-sm btn-danger">Delete</Button>
@@ -113,4 +99,4 @@ class ClassList extends React.Component {
     }
 }
 
-export default withRouter(ClassList);
+export default withRouter(SemesterList);
