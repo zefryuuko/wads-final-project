@@ -1,4 +1,4 @@
-name: Deploy to development server
+name: backend/courses
 
 on:
   push:
