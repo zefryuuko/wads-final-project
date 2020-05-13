@@ -1,3 +1,9 @@
-wads-final-project
+# Binusmaya
+A Web Application Development and Security final project.
 
-![Deploy to development server](https://github.com/zefryuuko/wads-final-project/workflows/Deploy%20to%20development%20server/badge.svg)
+![frontend](https://github.com/zefryuuko/wads-final-project/workflows/frontend/badge.svg)
+![backend/gateway](https://github.com/zefryuuko/wads-final-project/workflows/backend/gateway/badge.svg)
+![backend/auth](https://github.com/zefryuuko/wads-final-project/workflows/backend/auth/badge.svg)
+![backend/user](https://github.com/zefryuuko/wads-final-project/workflows/backend/user/badge.svg)
+![backend/courses](https://github.com/zefryuuko/wads-final-project/workflows/backend/courses/badge.svg)
+![backend/class](https://github.com/zefryuuko/wads-final-project/workflows/backend/class/badge.svg)
