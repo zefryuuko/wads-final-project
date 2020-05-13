@@ -196,16 +196,20 @@ router.get('/:id/:classCode/:courseCode', async (req, res) => {
                 'classes.classCode': { $eq: req.params.classCode },
                 'classes.courseCode': { $eq: req.params.courseCode }
             },
-            { 'classes.$': 1 }
+            // { 'classes.$': 1 }
         );
-        
+
         if (!semester) {
             res.status(404).json({
                 "message": 'One or more parameters are not found'
             });
         }
         else {
-            res.status(200).send(semester);
+            semester.classes.forEach((element) => {
+                if (element.classCode == req.params.classCode && element.courseCode == req.params.courseCode) {
+                    res.status(200).send(element);
+                }
+            })
         }
     } catch (err) {
         if (err.name == "CastError") {
