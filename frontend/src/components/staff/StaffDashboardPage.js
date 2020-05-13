@@ -23,6 +23,7 @@ import Course from './courses/Course';
 import MajorList from './classes/MajorList';
 import SemesterList from './classes/SemesterList';
 import ClassList from './classes/ClassList';
+import Class from './classes/Class';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -91,6 +92,8 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/classes`}><MajorList/></Route>
                         <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route>
                         <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route>
+                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
+                        <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:CourseId`}><Class/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
