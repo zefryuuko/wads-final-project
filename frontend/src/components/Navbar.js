@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Services
-import UserService from '../../services/UserService';
+import UserService from '../services/UserService';
 
 class Navbar extends React.Component {
     constructor() {
@@ -95,17 +95,6 @@ class Navbar extends React.Component {
                             </li>
                         </ul>
                         <ul className="navbar-nav float-right">
-                            <li className="nav-item d-none d-md-block">
-                                <span className="nav-link" onClick={e => e.preventDefault()}>
-                                    <form>
-                                        <div className="customize-input">
-                                            <input className="form-control custom-shadow custom-radius border-0 bg-white"
-                                                type="search" placeholder="Search" aria-label="Search"/>
-                                            <i className="form-control-icon" data-feather="search"></i>
-                                        </div>
-                                    </form>
-                                </span>
-                            </li>
                             <li className="nav-item dropdown">
                                 <span className="nav-link dropdown-toggle" onClick={e => e.preventDefault()} data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">

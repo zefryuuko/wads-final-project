@@ -15,7 +15,7 @@ import Landing from './components/Landing';
 
 import Logout from './components/Logout';
 
-import StudentDashboard from './components/student/StudentDashboard';
+import StudentDashboardPage from './components/student/StudentDashboardPage';
 
 import StaffDashboardPage from './components/staff/StaffDashboardPage';
 // import StaffDashboard from './components/staff/StaffDashboard';
@@ -34,7 +34,7 @@ function App() {
         <Route exact path="/logout" component={Logout}/>
 
         {/* Student Routes */}
-        <Route exact path="/student" component={StudentDashboard}/>
+        <Route exact path="/student" component={StudentDashboardPage}/>
 
         {/* Staff Routes */}
         <Route path="/staff" component={StaffDashboardPage}/>

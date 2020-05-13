@@ -17,15 +17,8 @@ import Footer from '../Footer';
 
 // Course Administration
 import Dashboard from './Dashboard';
-import CourseGroups from './courses/CourseGroups';
-import CourseList from './courses/CourseList';
-import Course from './courses/Course';
-import MajorList from './classes/MajorList';
-import SemesterList from './classes/SemesterList';
-import ClassList from './classes/ClassList';
-import Class from './classes/Class';
 
-class StaffDashboardPage extends Component {
+class Student extends Component {
     constructor() {
         super();
         this.state = {
@@ -84,16 +77,16 @@ class StaffDashboardPage extends Component {
                         <Route exact path={path}><Dashboard/></Route>
 
                         {/* Courses */}
-                        <Route exact path={`${path}/courses`}><CourseGroups/></Route>
-                        <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route>
-                        <Route exact path={`${path}/courses/:groupId/:courseId`}><Course/></Route>
+                        {/* <Route exact path={`${path}/courses`}><CourseGroups/></Route> */}
+                        {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
+                        {/* <Route exact path={`${path}/courses/:groupId/:courseId`}><Course/></Route> */}
 
                         {/* Classes */}
-                        <Route exact path={`${path}/classes`}><MajorList/></Route>
-                        <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route>
-                        <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route>
+                        {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}
+                        {/* <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route> */}
+                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route> */}
                         {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
-                        <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route>
+                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route> */}
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
@@ -102,4 +95,4 @@ class StaffDashboardPage extends Component {
     }
 }
  
-export default withRouter(StaffDashboardPage);
+export default withRouter(Student);
