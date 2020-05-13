@@ -6,19 +6,45 @@ import UserService from '../../services/UserService';
 class Navbar extends React.Component {
     constructor() {
         super();
-        this.state = {userFullName: ""}
+        this.state = {
+            userFullName: "",
+            userAccounts: undefined,
+            activeAccount: localStorage.getItem('activeAccount')
+        }
+
+        this.switchAccount = this.switchAccount.bind(this);
     }
 
     componentDidMount() {
         UserService.getUserData()
         .then(res => this.setState({
-            userFullName: `${res.firstName} ${res.lastName}`
+            userFullName: `${res.firstName} ${res.lastName}`,
+            userAccounts: res.accounts
         }))
+    }
+
+    switchAccount(e) {
+        const value = e.target.value.split(',');
+        localStorage.setItem('activeAccount', value);
+        this.setState({ activeAccount: value })
+
+        switch(value[1]) {
+            case "student":
+                window.location.href = "/student"
+                break;
+            case "lecturer":
+                window.location.href = "/lecturer"
+                break;
+            case "staff":
+                window.location.href = "/staff"
+                break;
+        }
     }
 
     render() {
         return (
             <header className="topbar" data-navbarbg="skin6">
+                {console.log(this.state.activeAccount)}
                 <nav className="navbar top-navbar navbar-expand-md">
                     <div className="navbar-header" data-logobg="skin6">
                         {/* <!-- This is for the sidebar toggle which is visible on mobile only --> */}
@@ -54,12 +80,13 @@ class Navbar extends React.Component {
                             <li className="nav-item d-md-block">
                                 <span className="nav-link" onClick={e => e.preventDefault()}>
                                     <div className="customize-input">
-                                        <select
-                                            className="custom-select form-control bg-white custom-radius custom-shadow border-0">
-                                            <option defaultValue>Staff</option>
-                                            <option value="1">Student</option>
-                                            <option value="2">Lecturer</option>
-                                            <option value="3">BE</option>
+                                        <select value={ this.state.activeAccount } onChange={ this.switchAccount } className="custom-select form-control bg-white custom-radius custom-shadow border-0">
+                                            {this.state.userAccounts ?
+                                                this.state.userAccounts.map((element) => {
+                                                    return <option key={element._id}  value={[element._id, element.accountType]}>{element.name}</option>
+                                                })
+                                            : <option>Account</option>
+                                            }
                                         </select>
                                     </div>
                                 </span>
