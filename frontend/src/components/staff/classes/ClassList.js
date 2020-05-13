@@ -25,7 +25,8 @@ class ClassList extends React.Component {
             currentTablePage: 1,
             currentTableContent: [],
             pageTitle: "Loading...",
-            currentSemester: "Loading..."
+            currentSemester: "Loading...",
+            semesterId: undefined
         }
 
         // Set page display mode when loading
@@ -67,6 +68,7 @@ class ClassList extends React.Component {
             // TODO: add error validation
             this.setState({
                 pageTitle: `${res.period} ${res.name}`,
+                semesterId: res._id,
                 currentTableContent: res.classes,
             });
         })
@@ -93,7 +95,7 @@ class ClassList extends React.Component {
                                             return (
                                                 <tr key={row._id}>
                                                     <th scope="row">{row.classCode}</th>
-                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${row._id}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
+                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${this.state.semesterId}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
                                                     <td style={{width: "150px", minWidth: "150px"}}>
                                                         <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
                                                         <Button className="btn btn-sm btn-danger">Delete</Button>
