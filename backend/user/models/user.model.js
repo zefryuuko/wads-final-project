@@ -12,7 +12,7 @@ var UserSchema = new mongoose.Schema({
         type: [{
             name: { type: String, required: true },
             accountType: { type: String, required: true },
-            id: { type: mongoose.Schema.Types.ObjectId, required: true },
+            metadata: { type: Object , required: true },
         }]
     },
     permittedDomains: { type: [mongoose.Schema.Types.ObjectId] }
