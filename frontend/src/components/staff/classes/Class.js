@@ -13,6 +13,8 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
+import CourseDescription from '../../ui-elements/CourseDescription';
+import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 
 // Components
 
@@ -23,9 +25,9 @@ class Class extends React.Component {
             isLoading: true,
             isLoggedIn: false,
             currentTablePage: 1,
-            currentTableContent: [],
+            currentTableContent: undefined,
             pageTitle: "Loading...",
-            currentSemester: "Loading..."
+            semesterName: "Loading..."
         }
 
         // Set page display mode when loading
@@ -61,15 +63,23 @@ class Class extends React.Component {
             this.setState({
                 currentSemester: res.name
             });
-        })
+        });
 
         ClassService.getClasses(this.props.match.params.semesterId, this.state.currentTablePage).then(res => {
             // TODO: add error validation
             this.setState({
-                pageTitle: `${res.period} ${res.name}`,
-                currentTableContent: res.classes,
+                semesterName: `${res.period} ${res.name}`,
             });
-        })
+        });
+
+        ClassService.getClass(this.props.match.params.semesterId, this.props.match.params.classId, this.props.match.params.courseId).then(res => {
+            // TODO: add error validation
+            console.log(res.metadata.description)
+            this.setState({
+                pageTitle: `${res.metadata.name}`,
+                currentTableContent: res,
+            });
+        });
     }
 
     render() {
@@ -81,14 +91,16 @@ class Class extends React.Component {
                         title={this.state.pageTitle} 
                         root="Course Administration" 
                         breadcrumb={<Breadcrumb 
-                            current={this.state.pageTitle} 
-                            contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}]}/>
+                            current={this.state.currentTableContent ? `${this.state.currentTableContent.classCode} - ${this.state.currentTableContent.courseCode}` : "Loading..."} 
+                            contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}, {name: this.state.semesterName, url: `/staff/classes/${this.props.match.params.majorId}/${this.props.match.params.semesterId}`}]}/>
                         }/>
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
+                                <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined} right={<a href="#editzzz">Edit</a>}/>
                                 <Card padding>
-                                    CONTENT LMAO
+                                    lmao
                                 </Card>
                             </div>
                         </div>
