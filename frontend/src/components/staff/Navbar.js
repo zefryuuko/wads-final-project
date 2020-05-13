@@ -28,7 +28,7 @@ class Navbar extends React.Component {
         localStorage.setItem('activeAccount', value);
         this.setState({ activeAccount: value })
 
-        switch(value[1]) {
+        switch (value[1]) {
             case "student":
                 window.location.href = "/student"
                 break;
@@ -38,6 +38,8 @@ class Navbar extends React.Component {
             case "staff":
                 window.location.href = "/staff"
                 break;
+            default:
+                window.location.href = "/"
         }
     }
 
