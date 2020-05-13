@@ -93,7 +93,7 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route>
                         <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route>
                         {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
-                        <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:CourseId`}><Class/></Route>
+                        <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
