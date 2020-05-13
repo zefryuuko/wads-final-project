@@ -15,6 +15,7 @@ import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 import CourseDescription from '../../ui-elements/CourseDescription';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
+import Evaluation from '../../ui-elements/Evaluation';
 
 // Components
 
@@ -74,7 +75,6 @@ class Class extends React.Component {
 
         ClassService.getClass(this.props.match.params.semesterId, this.props.match.params.classId, this.props.match.params.courseId).then(res => {
             // TODO: add error validation
-            console.log(res.metadata.description)
             this.setState({
                 pageTitle: `${res.metadata.name}`,
                 currentTableContent: res,
@@ -100,7 +100,10 @@ class Class extends React.Component {
                                 <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined} right={<a href="#editzzz">Edit</a>}/>
                                 <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined} right={<a href="#editzzz">Edit</a>}/>
                                 <Card padding>
-                                    lmao
+                                    <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                </Card>
+                                <Card title="Add dis crap" padding>
+                                    Students, Schedule
                                 </Card>
                             </div>
                         </div>
