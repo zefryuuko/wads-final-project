@@ -16,7 +16,7 @@ class LearningOutcomes extends Component {
                             return <li className="lo" key={index} style={this.olStyle}>{outcome}</li>
                         })}
                     </ol>
-                : <div style={{textAlign: "center"}}>No description</div>
+                : <div style={{textAlign: "center"}}>Learning outcomes are unavailable for this course.</div>
                 }
             </Card>
         );
