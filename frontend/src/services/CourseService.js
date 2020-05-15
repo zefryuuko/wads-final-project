@@ -82,6 +82,20 @@ class UserService {
             return err;
         }
     }
+
+    async createCourse(group, code, name, description, scu, callback) {
+        try {
+            const res = await axios.post(
+                `${this.API_ENDPOINT}/course`,
+                {group, code, name, description, scu}
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
