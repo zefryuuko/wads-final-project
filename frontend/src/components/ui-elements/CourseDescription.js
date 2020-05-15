@@ -10,6 +10,7 @@ class CourseDescription extends Component {
                 {this.props.data? <p>{this.props.data}</p>
                 : <div style={{textAlign: "center"}}>No description.</div>
                 }
+                {this.props.scu ? <p>This course is {this.props.scu} SCU.</p> : null}
             </Card>
         );
     }

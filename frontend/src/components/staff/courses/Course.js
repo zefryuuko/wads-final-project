@@ -76,7 +76,7 @@ class Course extends React.Component {
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
-                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} right={<a href="#edit1">Edit</a>}/>
+                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} scu={this.state.courseData ? this.state.courseData.scu : undefined} right={<a href="#edit1">Edit</a>}/>
                             </div>
                         </div>
                         <div className="row">
