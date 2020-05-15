@@ -133,7 +133,7 @@ class CourseList extends React.Component {
                 </PageWrapper>
                 
                 {/* Edit course group modal */}
-                <EditCourseGroupModal key={this.state.coursePrefix} prefix={this.state.coursePrefix} redirectOnSuccess={'/staff/courses/'} name={this.state.courseName} success={this.updateSuccess} error={this.showError}/>
+                <EditCourseGroupModal key={this.state.coursePrefix} prefix={this.state.coursePrefix} redirectOnSuccess={'/staff/courses'} name={this.state.courseName} success={this.updateSuccess} error={this.showError}/>
                 
                 {/* Create course modal */}
                 <CreateCourseModal prefix={this.state.coursePrefix} success={this.updateSuccess} error={this.showError}/>
