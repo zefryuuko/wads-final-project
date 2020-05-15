@@ -83,7 +83,7 @@ class DeleteCourseGroupModal extends Component {
                         <div className="pl-3 pr-3">
                             {this.state.showErrorAlert ? <ErrorAlert>{this.state.errorAlertMessage}</ErrorAlert> : null}
                             <input type="hidden" name="originalPrefix" value={this.state.prefix}/>
-                            <p>Are you sure you would want to delete the course {this.state.prefix} - {this.state.name}?<br/>This action is destructive and cannot be undone.</p>
+                            <p>Are you sure you would want to delete the course group {this.state.prefix} - {this.state.name}?<br/>This action is destructive and cannot be undone.</p>
                             <p>By deleting this course group, all courses that belongs to this group will be deleted. A class that already made with the courses will not be deleted.</p>
                             <div className="form-group">
                                 <label htmlFor="confirmationTextBox">Enter the course group code to confirm</label>
