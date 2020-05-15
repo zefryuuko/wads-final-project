@@ -44,8 +44,8 @@ class CourseUtils {
                                 as: 'c',
                                 in: {
                                     name: '$$c.name',
-                                    _id: '$c._id',
-                                    id: '$c.id',
+                                    _id: '$$c._id',
+                                    id: '$$c.id',
                                     code: {
                                         $concat: [ newPrefix, { $substr: [ '$$c.code', prefix.length, -1 ] } ] 
                                     }
