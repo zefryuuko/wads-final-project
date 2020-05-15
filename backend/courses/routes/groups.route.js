@@ -72,32 +72,10 @@ router.post('/', async (req, res) => {
 // Returns: Group object at specified id
 router.get('/:prefix', async (req, res) => {
     try {
-        let result = await Group.find(
+        const result = await Group.find(
             { prefix: req.params.prefix },
             { _id: 0, __v: 0, 'courses._id': 0, 'course.id': 0 }
         );
-
-        result = await Group.aggregate(
-            [{
-                $project: {
-                    courses: { 
-                        $map: {
-                            input: '$courses',
-                            as: 'c',
-                            in: {
-                                name: '$$c.name',
-                                _id: '$$c._id',
-                                id: '$$c.id',
-                                code: {
-                                    $concat: [ "NPRX", { $substr: [ '$$c.code', "OLDP".length, -1 ] } ] 
-                                }
-                            }
-                        }
-                    } 
-                }
-            }]
-        )
-
         if (result.length == 0) {
             res.status(404).json({
                 'message': 'Group not found'
