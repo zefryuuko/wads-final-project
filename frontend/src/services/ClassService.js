@@ -38,6 +38,17 @@ class UserService {
         }
     }
 
+    async getClass(semesterId, classId, courseId, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            return err;
+        }
+    }
+
     async getCourse(code, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/course/${code}`);

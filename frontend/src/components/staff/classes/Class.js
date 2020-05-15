@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, Redirect, withRouter} from 'react-router-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
@@ -11,22 +11,24 @@ import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
-import Table from '../../ui-elements/Table';
-import Button from '../../ui-elements/Button';
+// import Table from '../../ui-elements/Table';
+// import Button from '../../ui-elements/Button';
+import CourseDescription from '../../ui-elements/CourseDescription';
+import LearningOutcomes from '../../ui-elements/LearningOutcomes';
+import Evaluation from '../../ui-elements/Evaluation';
 
 // Components
 
-class ClassList extends React.Component {
+class Class extends React.Component {
     constructor() {
         super();
         this.state = {
             isLoading: true,
             isLoggedIn: false,
             currentTablePage: 1,
-            currentTableContent: [],
+            currentTableContent: undefined,
             pageTitle: "Loading...",
-            currentSemester: "Loading...",
-            semesterId: undefined
+            semesterName: "Loading..."
         }
 
         // Set page display mode when loading
@@ -62,16 +64,22 @@ class ClassList extends React.Component {
             this.setState({
                 currentSemester: res.name
             });
-        })
+        });
 
         ClassService.getClasses(this.props.match.params.semesterId, this.state.currentTablePage).then(res => {
             // TODO: add error validation
             this.setState({
-                pageTitle: `${res.period} ${res.name}`,
-                semesterId: res._id,
-                currentTableContent: res.classes,
+                semesterName: `${res.period} ${res.name}`,
             });
-        })
+        });
+
+        ClassService.getClass(this.props.match.params.semesterId, this.props.match.params.classId, this.props.match.params.courseId).then(res => {
+            // TODO: add error validation
+            this.setState({
+                pageTitle: `${res.metadata.name}`,
+                currentTableContent: res,
+            });
+        });
     }
 
     render() {
@@ -83,27 +91,19 @@ class ClassList extends React.Component {
                         title={this.state.pageTitle} 
                         root="Course Administration" 
                         breadcrumb={<Breadcrumb 
-                            current={this.state.pageTitle} 
-                            contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}]}/>
+                            current={this.state.currentTableContent ? `${this.state.currentTableContent.classCode} - ${this.state.currentTableContent.courseCode}` : "Loading..."} 
+                            contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}, {name: this.state.semesterName, url: `/staff/classes/${this.props.match.params.majorId}/${this.props.match.params.semesterId}`}]}/>
                         }/>
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
-                                <Card>
-                                    <Table header={["Period", "Name", "Actions"]}>
-                                        {(this.state.currentTableContent.length > 0) ? this.state.currentTableContent.map(row => {
-                                            return (
-                                                <tr key={row._id}>
-                                                    <th scope="row">{row.classCode}</th>
-                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${this.state.semesterId}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
-                                                    <td style={{width: "150px", minWidth: "150px"}}>
-                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
-                                    </Table>
+                                <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                <Card padding>
+                                    <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                </Card>
+                                <Card title="Add dis crap" padding>
+                                    Students, Schedule
                                 </Card>
                             </div>
                         </div>
@@ -115,4 +115,4 @@ class ClassList extends React.Component {
     }
 }
 
-export default withRouter(ClassList);
+export default withRouter(Class);

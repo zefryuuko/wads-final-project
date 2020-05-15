@@ -8,7 +8,7 @@ class CourseDescription extends Component {
         return (
             <Card title="Course Description" right={this.props.right ? this.props.right : null} padding>
                 {this.props.data? <p>{this.props.data}</p>
-                : <div style={{textAlign: "center"}}>Learning outcomes data is unavailable for this course.</div>
+                : <div style={{textAlign: "center"}}>No description.</div>
                 }
             </Card>
         );
