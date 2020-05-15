@@ -71,7 +71,7 @@ class EditCourseGroupModal extends Component {
                     this.setState({isUpdating: false});
                 } else {
                     this.props.error();
-                    this.closeModal();
+                    this.closeModal(`#createCourseModal`);
                     this.setState({isUpdating: false});
                 }
             });
