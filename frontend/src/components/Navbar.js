@@ -46,7 +46,6 @@ class Navbar extends React.Component {
     render() {
         return (
             <header className="topbar" data-navbarbg="skin6">
-                {console.log(this.state.activeAccount)}
                 <nav className="navbar top-navbar navbar-expand-md">
                     <div className="navbar-header" data-logobg="skin6">
                         {/* <!-- This is for the sidebar toggle which is visible on mobile only --> */}
