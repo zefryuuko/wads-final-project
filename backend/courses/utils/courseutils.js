@@ -38,7 +38,7 @@ class CourseUtils {
                 { 'courses.code': { $regex: new RegExp('^' + prefix) } },
                 [ { 
                     $set: { 
-                        'courses': { 
+                        courses: { 
                             $map: {
                                 input: '$courses',
                                 as: 'c',
