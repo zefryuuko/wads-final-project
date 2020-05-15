@@ -36,8 +36,7 @@ class EditCourseGroupModal extends Component {
         if (name === 'prefix' && !/^[a-zA-Z()]*$/.test(value)) value = this.state.prefix;
         else if (name === 'prefix') value = value.toUpperCase();
         this.setState({
-            [name]: value,
-            showInvalidCredentialsMessage: "none"
+            [name]: value
         });
     }
 
