@@ -7,7 +7,7 @@ class Session {
         try {
             const sessionId = uuid();
             const result = await db.query(
-                'INSERT INTO sessions (session_id, account_id, expiry_time, remember_me) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR), ?)',
+                'INSERT INTO sessions (session_id, account_id, expiry_time, remember_me) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 2 HOUR), ?)',
                 [
                     sessionId,
                     accountId,
@@ -36,7 +36,7 @@ class Session {
             }
             else {
                 db.query(
-                    'UPDATE sessions SET expiry_time = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE session_id = ?',
+                    'UPDATE sessions SET expiry_time = DATE_ADD(NOW(), INTERVAL 2 HOUR) WHERE session_id = ?',
                     [
                         sessionId
                     ]
