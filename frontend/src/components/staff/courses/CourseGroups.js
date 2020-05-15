@@ -15,6 +15,8 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import EditCourseGroupModal from './components/EditCourseGroupModal';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
+import DeleteCourseGroupModal from './components/DeleteCourseGroupModal';
+import CreateCourseGroupModal from './components/CreateCourseGroupModal';
 
 // Components
 
@@ -93,7 +95,7 @@ class CourseGroups extends React.Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title="Courses" root="Course Administration"/>
+                    <PageBreadcrumb title="Courses" root="Course Administration" rightComponent={<button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseGroupModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}/>
                     <ContentWrapper>
                         {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
                         {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
@@ -120,6 +122,9 @@ class CourseGroups extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
+                
+                {/* Render create course group modal */}
+                <CreateCourseGroupModal success={this.updateSuccess} error={this.showError}/>
 
                 {/* Generate edit modals */}
                 {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
@@ -127,6 +132,9 @@ class CourseGroups extends React.Component {
                 }): null}
 
                 {/* Generate delete modals */}
+                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                    return <DeleteCourseGroupModal key={row.prefix} prefix={row.prefix} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                }): null}
             </div>
         );
     }
