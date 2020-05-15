@@ -1,28 +1,14 @@
 import React from 'react';
-import {BrowserRouter, Route,} from 'react-router-dom'; 
+import {BrowserRouter, Route} from 'react-router-dom'; 
 
 import './App.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'jquery/dist/jquery';
-// import 'bootstrap/dist/js/bootstrap.bundle';
-// import 'feather-icons';
-
-// import AuthMiddleware from './components/middleware/AuthMiddleware';
-// import PublicMiddleware from './components/middleware/PublicMiddleware';
 
 import Landing from './components/Landing';
 // TODO: add credits page
-
 import Logout from './components/Logout';
-
 import StudentDashboardPage from './components/student/StudentDashboardPage';
-
 import StaffDashboardPage from './components/staff/StaffDashboardPage';
-// import StaffDashboard from './components/staff/StaffDashboard';
-// import StaffCoursesList from './components/staff/StaffCoursesList';
-
 import TestingGrounds from './components/TestingGrounds';
-
 
 function App() {
   return (
