@@ -16,6 +16,23 @@ class UserService {
         }
     }
 
+    async updateCourseGroup(originalPrefix, newPrefix, newName, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/groups/${originalPrefix}`,
+                {
+                    prefix: newPrefix,
+                    name: newName
+                }
+            );
+            if (callback) callback(res);
+            return res;
+        } catch (err) {
+            if (callback) callback(undefined, err);
+            throw err;
+        }
+    }
+
     async getCourseGroupCourses(group, page, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/groups/${group}?page=${page}`);
