@@ -12,6 +12,9 @@ import Card from '../../ui-elements/Card';
 import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
+import EditCourseGroupModal from './components/EditCourseGroupModal';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
 
 // Components
 
@@ -22,7 +25,9 @@ class CourseGroups extends React.Component {
             isLoading: true,
             isLoggedIn: false,
             currentTablePage: 1,
-            currentTableContent: []
+            currentTableContent: [],
+            showErrorMessage: false,
+            showSuccessMessage: false,
         }
 
         // Set page display mode when loading
@@ -31,10 +36,29 @@ class CourseGroups extends React.Component {
 
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.showError = this.showError.bind(this);
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        // Load table content
+        CourseService.getCourseGroup(this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({currentTableContent: res});
+        });
+    }
+
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+
+        CourseService.getCourseGroup(this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({currentTableContent: res});
+        });
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
     }
     
     componentDidMount() {
@@ -60,6 +84,10 @@ class CourseGroups extends React.Component {
         })
     }
 
+    onSaveEditClicked(e) {
+        console.log(e.target);
+    }
+
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
         return (
@@ -67,6 +95,8 @@ class CourseGroups extends React.Component {
                 <PageWrapper>
                     <PageBreadcrumb title="Courses" root="Course Administration"/>
                     <ContentWrapper>
+                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
                                 <Card>
@@ -77,8 +107,9 @@ class CourseGroups extends React.Component {
                                                     <th scope="row">{row.prefix}</th>
                                                     <td><Link to={`/staff/courses/${row.prefix}`}>{row.name}</Link></td>
                                                     <td style={{width: "150px", minWidth: "150px"}}>
-                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editModal-${row.prefix}`}>Edit</Button>
+
+                                                        <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.prefix}`}>Delete</Button>
                                                     </td>
                                                 </tr>
                                             )
@@ -89,8 +120,14 @@ class CourseGroups extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
-            </div>
 
+                {/* Generate edit modals */}
+                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                    return <EditCourseGroupModal key={row.prefix} prefix={row.prefix} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                }): null}
+
+                {/* Generate delete modals */}
+            </div>
         );
     }
 }
