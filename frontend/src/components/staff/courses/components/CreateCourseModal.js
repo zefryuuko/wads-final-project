@@ -31,7 +31,6 @@ class CreateCourseModal extends Component {
 
     handleChange(event) {
         let {name, value} = event.target;
-        console.log(Number.parseInt(this.state.scu))
         this.setState({
             [name]: value
         });

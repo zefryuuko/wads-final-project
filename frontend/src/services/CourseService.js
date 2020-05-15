@@ -25,7 +25,6 @@ class UserService {
             if (callback) callback(res);
             return res;
         } catch (err) {
-            console.log(err)
             if (callback) callback(undefined, err);
             throw err;
         }

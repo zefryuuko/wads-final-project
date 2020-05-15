@@ -86,10 +86,6 @@ class CourseGroups extends React.Component {
         })
     }
 
-    onSaveEditClicked(e) {
-        console.log(e.target);
-    }
-
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
         return (
