@@ -16,6 +16,21 @@ class UserService {
         }
     }
 
+    async createCourseGroup(prefix, name, callback) {
+        try {
+            const res = await axios.post(
+                `${this.API_ENDPOINT}/groups/`,
+                {prefix,name}
+            );
+            if (callback) callback(res);
+            return res;
+        } catch (err) {
+            console.log(err)
+            if (callback) callback(undefined, err);
+            throw err;
+        }
+    }
+
     async updateCourseGroup(originalPrefix, newPrefix, newName, callback) {
         try {
             const res = await axios.patch(
@@ -24,6 +39,19 @@ class UserService {
                     prefix: newPrefix,
                     name: newName
                 }
+            );
+            if (callback) callback(res);
+            return res;
+        } catch (err) {
+            if (callback) callback(undefined, err);
+            throw err;
+        }
+    }
+
+    async deleteCourseGroup(prefix, callback) {
+        try {
+            const res = await axios.delete(
+                `${this.API_ENDPOINT}/groups/${prefix}`,
             );
             if (callback) callback(res);
             return res;
