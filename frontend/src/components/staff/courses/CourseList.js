@@ -13,6 +13,11 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
+import EditCourseGroupModal from './components/EditCourseGroupModal';
+import CreateCourseModal from './components/CreateCourseModal';
+import DeleteCourseModal from './components/DeleteCourseModal';
 
 // Components
 
@@ -25,7 +30,9 @@ class CourseList extends React.Component {
             currentTablePage: 1,
             currentTableContent: [],
             courseName: "",
-            coursePrefix: ""
+            coursePrefix: "",
+            showErrorMessage: false,
+            showSuccessMessage: false,
         }
 
         // Set page display mode when loading
@@ -34,10 +41,29 @@ class CourseList extends React.Component {
 
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.showError = this.showError.bind(this);
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        // Load table content
+        CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({
+                currentTableContent: res[0].courses,
+                courseName: res[0].name,
+                coursePrefix: res[0].prefix
+            });
+        });
+    }
+
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+        this.reloadTable();
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
     }
     
     componentDidMount() {
@@ -63,7 +89,7 @@ class CourseList extends React.Component {
                 courseName: res[0].name,
                 coursePrefix: res[0].prefix
             });
-        })
+        });
     }
 
     render() {
@@ -71,8 +97,18 @@ class CourseList extends React.Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title={`${this.state.courseName} Courses`} breadcrumb={<Breadcrumb current={this.state.coursePrefix} contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}]}/>}/>
+                    <PageBreadcrumb 
+                        title={`${this.state.courseName} Courses`} 
+                        breadcrumb={<Breadcrumb current={this.state.coursePrefix} 
+                        contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}]}/>}
+                        rightComponent={<div>
+                            <button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>
+                            <button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.coursePrefix}`} style={{lineHeight:0}}><i className="icon-pencil"/></button>
+                        </div>}
+                    />
                     <ContentWrapper>
+                    {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
                                 <Card>
@@ -84,7 +120,7 @@ class CourseList extends React.Component {
                                                     <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
                                                     <td style={{width: "150px", minWidth: "150px"}}>
                                                         <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                        <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
                                                     </td>
                                                 </tr>
                                             )
@@ -95,6 +131,17 @@ class CourseList extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
+                
+                {/* Edit course group modal */}
+                <EditCourseGroupModal key={this.state.coursePrefix} prefix={this.state.coursePrefix} redirectOnSuccess={'/staff/courses'} name={this.state.courseName} success={this.updateSuccess} error={this.showError}/>
+                
+                {/* Create course modal */}
+                <CreateCourseModal prefix={this.state.coursePrefix} success={this.updateSuccess} error={this.showError}/>
+                
+                {/* Generate delete course modal */}
+                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                    return <DeleteCourseModal key={row.code} prefix={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                }): null}
             </div>
 
         );

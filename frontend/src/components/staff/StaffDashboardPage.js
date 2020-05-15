@@ -3,7 +3,6 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../services/AuthService';
-import UserService from '../../services/UserService';
 
 // UI Elements
 import MainWrapper from '../ui-elements/MainWrapper';
@@ -30,10 +29,7 @@ class StaffDashboardPage extends Component {
         super();
         this.state = {
             isLoading: true,
-            isLoggedIn: false,
-            userFirstName: "",
-            userFirstFullName: "",
-            userLastName: "",
+            isLoggedIn: false
         }
 
         // Set page display mode when loading
@@ -57,16 +53,6 @@ class StaffDashboardPage extends Component {
                         isLoading: false,
                         isLoggedIn: true
                     })
-            });
-        
-        // Load user info
-        UserService.getUserData()
-            .then(res => {
-                this.setState({
-                    userFirstName: res.firstName.split(' ')[0],
-                    userFirstFullName: res.firstName,
-                    userLastName: res.lastName
-                })
             });
     }
 

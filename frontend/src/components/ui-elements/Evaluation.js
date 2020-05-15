@@ -6,7 +6,6 @@ class Textbooks extends Component {
     render() { 
         return (
             <div>
-                {console.log(this.props.data)}
                 <div className="float-right">{this.props.right ? this.props.right : null}</div>
                 <div className="card-title">Evaluations</div>
                     {this.props.data && (this.props.data.length > 0) ?
