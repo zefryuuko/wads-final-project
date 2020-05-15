@@ -21,8 +21,9 @@ router.post('/', async (req, res) => {
     try {
         // Validate fields that are not automatically validated
         // Validate group ID
-        const groupPrefix = await groupUtils.getGroupPrefix(req.body.group);
-        if (!groupPrefix) {
+        const groupPrefix = req.body.group;
+        const groupId = await groupUtils.getGroupId(req.body.group);
+        if (!groupId) {
             res.status(400).json({
                 'message': 'Group ID is not found'
             });
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
             });
             return;
         }
-        if (!req.body.code.startsWith(groupPrefix)) {
+        if (!req.body.code.startsWith(req.body.group)) {
             res.status(400).json({
                 'message': 'Course code does not match group\'s prefix'
             });
@@ -51,6 +52,7 @@ router.post('/', async (req, res) => {
 
         // Add data to database
         req.body._id = mongoose.Types.ObjectId();
+        req.body.group = groupId;
         const course = new Course(req.body);
         const result = await course.save();
         await groupUtils.addCourseToGroup(groupPrefix, req.body.code, req.body.name, req.body._id)
