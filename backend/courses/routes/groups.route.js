@@ -135,6 +135,16 @@ router.patch('/:prefix', async (req, res) => {
             return;
         }
 
+        // Handle duplicate key error
+        if (err && err.code === 11000) {
+            const duplicateKey = Object.keys(err.keyValue)[0];
+            res.status(409).json({
+                'message': `${err.keyValue[duplicateKey]} already exists`,
+                'key': `${err.keyValue[duplicateKey]}`
+            });
+            return;
+        }
+
         // Respond with internal server error
         res.status(500).json({
             'message': `${err}`
