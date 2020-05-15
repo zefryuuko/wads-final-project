@@ -87,7 +87,7 @@ class DeleteCourseGroupModal extends Component {
                             <p>By deleting this course group, all courses that belongs to this group will be deleted. A class that already made with the courses will not be deleted.</p>
                             <div className="form-group">
                                 <label htmlFor="confirmationTextBox">Enter the course group code to confirm</label>
-                                <input className="form-control" name="confirmationTextBox" placeholder="Course Group Name" value={this.state.confirmationTextBox} onChange={this.handleChange} disabled={this.state.isUpdating} minLength="4" maxLength="4" required/>
+                                <input className="form-control" name="confirmationTextBox" placeholder="Course Group Code" value={this.state.confirmationTextBox} onChange={this.handleChange} disabled={this.state.isUpdating} minLength="4" maxLength="4" required/>
                             </div>
                         </div>
                         <ModalFooter disableClose={this.state.isUpdating}>
