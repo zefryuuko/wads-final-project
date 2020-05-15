@@ -17,6 +17,7 @@ import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import EditCourseGroupModal from './components/EditCourseGroupModal';
 import CreateCourseModal from './components/CreateCourseModal';
+import DeleteCourseModal from './components/DeleteCourseModal';
 
 // Components
 
@@ -119,7 +120,7 @@ class CourseList extends React.Component {
                                                     <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
                                                     <td style={{width: "150px", minWidth: "150px"}}>
                                                         <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                        <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
                                                     </td>
                                                 </tr>
                                             )
@@ -137,6 +138,10 @@ class CourseList extends React.Component {
                 {/* Create course modal */}
                 <CreateCourseModal prefix={this.state.coursePrefix} success={this.updateSuccess} error={this.showError}/>
                 
+                {/* Generate delete course modal */}
+                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                    return <DeleteCourseModal key={row.code} prefix={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                }): null}
             </div>
 
         );

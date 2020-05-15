@@ -95,6 +95,21 @@ class UserService {
             throw err;
         }
     }
+
+    async updateCourse() {
+        // ...
+    }
+
+    async deleteCourse(code, callback) {
+        try {
+            const res = await axios.delete(`${this.API_ENDPOINT}/course/${code}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
