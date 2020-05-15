@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 
 // Services
 import CourseService from '../../../../services/CourseService';
@@ -21,7 +22,8 @@ class EditCourseGroupModal extends Component {
             name: this.props.name,
             isUpdating: false,
             showErrorAlert: false,
-            errorAlertMessage: ""
+            errorAlertMessage: "",
+            redirect: undefined,
         }
         
         // Bind functions
@@ -58,6 +60,7 @@ class EditCourseGroupModal extends Component {
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
         CourseService.updateCourseGroup(this.state.originalPrefix, this.state.prefix, this.state.name)
             .then((res) => {
+                if (this.props.redirectOnSuccess) this.setState({redirect: this.props.redirectOnSuccess});
                 this.props.success();
                 this.closeModal(`#editModal-${this.state.prefix}`);
                 this.setState({isUpdating: false});
@@ -77,7 +80,8 @@ class EditCourseGroupModal extends Component {
     render() { 
         return (
             <Modal id={`editModal-${this.state.prefix}`}>
-                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
+                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
+                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}/${this.state.prefix}`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
