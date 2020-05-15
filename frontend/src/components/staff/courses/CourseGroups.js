@@ -95,7 +95,7 @@ class CourseGroups extends React.Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title="Courses" root="Course Administration" rightComponent={<button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseGroupModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}/>
+                    <PageBreadcrumb title="Courses" root="Course Administration" rightComponent={<button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseGroupModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}/>
                     <ContentWrapper>
                         {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
                         {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
