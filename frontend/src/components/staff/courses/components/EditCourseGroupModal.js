@@ -81,7 +81,7 @@ class EditCourseGroupModal extends Component {
         return (
             <Modal id={`editModal-${this.state.prefix}`}>
                 {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
-                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}/${this.state.prefix}`} disableClose={this.state.isUpdating}/>
+                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
