@@ -7,9 +7,21 @@ const Lecturer = require('../models/lecturer.model');
 const Staff = require('../models/staff.model');
 
 router.get('/', async (req, res) => {
-    res.status(400).json({
-        "message": "invalid request"
-    });
+    try {
+        const { staff, lecturer, student } = req.query;
+        console.log(staff ? 'staff' : lecturer ? 'lecturer' : student ? 'student' : 'none')
+        const users = await User.find(
+            {
+                'accounts.accountType': staff ? 'staff' : lecturer ? 'lecturer' : student ? 'student' : { $regex: new RegExp('', 'i') }
+            },
+            { __v: 0, _id: 0, accounts: 0, permittedDomains: 0 }
+        );
+        res.send(users);
+    } catch (err) {
+        res.status(500).json({
+            "message": err
+        });
+    }
 });
 
 router.get('/:id', async (req, res) => {
