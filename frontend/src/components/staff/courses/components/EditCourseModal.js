@@ -77,7 +77,7 @@ class EditCourseModal extends Component {
     render() { 
         return (
             <Modal id={`editModal-${this.state.originalCode}`}>
-                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
+                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}${this.state.code}`}/> : null}
                 <ModalHeader title={`Edit ${this.state.originalCode} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
