@@ -9,11 +9,11 @@ const Staff = require('../models/staff.model');
 router.get('/', async (req, res) => {
     try {
         const { staff, lecturer, student } = req.query;
-        console.log(staff ? 'staff' : lecturer ? 'lecturer' : student ? 'student' : 'none')
+        
         const users = await User.find(
-            {
+            (staff || lecturer || student) ? {
                 'accounts.accountType': staff ? 'staff' : lecturer ? 'lecturer' : student ? 'student' : { $regex: new RegExp('', 'i') }
-            },
+            } : {},
             { __v: 0, _id: 0, accounts: 0, permittedDomains: 0 }
         );
         res.send(users);
