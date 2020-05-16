@@ -11,22 +11,12 @@ const courseUtils = require('../utils/courseutils');
 // - sortBy: sorting order of the result
 // Returns: array of group objects
 router.get('/', async (req, res) => {
-    const { page, search } = req.query;
-    const itemsPerPage = 10;
-    if (!page) page == 1;
     // TODO: implement sort by...
     const result = await Group.find(
-        {
-            $or: [
-                { prefix: req.query.search ? req.query.search.toUpperCase() : "" },
-                { name: { $regex: new RegExp(search, 'i') } }
-            ]
-        }, 
+        {}, 
         {_id: 0, __v: 0, courses: 0}
     )
-        .sort({prefix: 'ascending'})
-        .skip((page - 1) * itemsPerPage)
-        .limit(itemsPerPage);
+        .sort({prefix: 'ascending'});
     res.json(result);
 });
 
