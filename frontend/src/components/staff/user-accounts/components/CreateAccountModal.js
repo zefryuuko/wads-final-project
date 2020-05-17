@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
 
 // Services
 import CourseService from '../../../../services/CourseService';
@@ -12,18 +11,15 @@ import ModalFooter from '../../../ui-elements/ModalFooter';
 import Button from '../../../ui-elements/Button';
 import ErrorAlert from '../../../ui-elements/ErrorAlert';
 
-class EditCourseGroupModal extends Component {
+class CreateAccountModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            originalPrefix: this.props.prefix,
-            originalName: this.props.name,
-            prefix: this.props.prefix,
-            name: this.props.name,
+            prefix: "",
+            name: "",
             isUpdating: false,
             showErrorAlert: false,
-            errorAlertMessage: "",
-            redirect: undefined,
+            errorAlertMessage: ""
         }
         
         // Bind functions
@@ -58,20 +54,19 @@ class EditCourseGroupModal extends Component {
     onSaveChangesClicked(e) {
         e.preventDefault();
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
-        CourseService.updateCourseGroup(this.state.originalPrefix, this.state.prefix, this.state.name)
+        CourseService.createCourseGroup(this.state.prefix, this.state.name)
             .then((res) => {
-                if (this.props.redirectOnSuccess) this.setState({redirect: this.props.redirectOnSuccess});
                 this.props.success();
-                this.closeModal(`#editModal-${this.state.prefix}`);
-                this.setState({isUpdating: false});
+                this.closeModal(`#createAccountModal`);
+                this.setState({isUpdating: false, prefix: "", name: ""});
             })
-            .catch(err =>{
-                if (err.response.status === 409) {
+            .catch((res, err) =>{
+                if (err.response.status === 409) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
                 } else {
                     this.props.error();
-                    this.closeModal(`#editModal-${this.state.prefix}`);
+                    this.closeModal(`#createAccountModal`);
                     this.setState({isUpdating: false});
                 }
             });
@@ -79,9 +74,8 @@ class EditCourseGroupModal extends Component {
 
     render() { 
         return (
-            <Modal id={`editModal-${this.state.prefix}`}>
-                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
-                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
+            <Modal id={`createAccountModal`}>
+                <ModalHeader title={`Create new account`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
@@ -98,7 +92,7 @@ class EditCourseGroupModal extends Component {
                             </div>
                         </div>
                         <ModalFooter disableClose={this.state.isUpdating}>
-                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Save changes</Button>
+                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Create</Button>
                         </ModalFooter>
                     </form>
                 </ModalBody>
@@ -107,4 +101,4 @@ class EditCourseGroupModal extends Component {
     }
 }
  
-export default EditCourseGroupModal;
+export default CreateAccountModal;

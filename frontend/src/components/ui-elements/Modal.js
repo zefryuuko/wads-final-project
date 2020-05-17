@@ -4,7 +4,7 @@ class Modal extends Component {
     render() { 
         return (
             <div id={this.props.id} className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
+                <div className={`modal-dialog ${this.props.className ? this.props.className : ""}`}>
                     <div className="modal-content">
                         {this.props.children}
                     </div>

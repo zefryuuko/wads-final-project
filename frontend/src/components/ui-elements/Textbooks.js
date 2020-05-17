@@ -4,8 +4,7 @@ class Textbooks extends Component {
     render() { 
         return (
             <div>
-                <div className="float-right">{this.props.right ? this.props.right : null}</div>
-                <div className="card-title">Textbooks</div>
+                <div className="card-title">Textbooks<span className="float-right" style={{fontWeight: "initial"}}>{this.props.right ? this.props.right : null}</span></div>
                     {this.props.data && (this.props.data.length > 0) ?
                     <ol>
                         {this.props.data.map((element, index) => {

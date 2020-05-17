@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
 
 // Services
 import CourseService from '../../../../services/CourseService';
@@ -12,18 +11,15 @@ import ModalFooter from '../../../ui-elements/ModalFooter';
 import Button from '../../../ui-elements/Button';
 import ErrorAlert from '../../../ui-elements/ErrorAlert';
 
-class EditCourseGroupModal extends Component {
+class EditCourseDescriptionModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            originalPrefix: this.props.prefix,
-            originalName: this.props.name,
-            prefix: this.props.prefix,
-            name: this.props.name,
+            description: this.props.description,
+            scu: this.props.scu,
             isUpdating: false,
             showErrorAlert: false,
-            errorAlertMessage: "",
-            redirect: undefined,
+            errorAlertMessage: ""
         }
         
         // Bind functions
@@ -33,10 +29,6 @@ class EditCourseGroupModal extends Component {
 
     handleChange(event) {
         let {name, value} = event.target;
-
-        // Convert prefix to uppercase
-        if (name === 'prefix' && !/^[a-zA-Z()]*$/.test(value)) value = this.state.prefix;
-        else if (name === 'prefix') value = value.toUpperCase();
         this.setState({
             [name]: value
         });
@@ -58,20 +50,19 @@ class EditCourseGroupModal extends Component {
     onSaveChangesClicked(e) {
         e.preventDefault();
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
-        CourseService.updateCourseGroup(this.state.originalPrefix, this.state.prefix, this.state.name)
+        CourseService.updateCourseDescription(this.props.code, this.state.description,  Number.parseInt(this.state.scu))
             .then((res) => {
-                if (this.props.redirectOnSuccess) this.setState({redirect: this.props.redirectOnSuccess});
                 this.props.success();
-                this.closeModal(`#editModal-${this.state.prefix}`);
+                this.closeModal(`#editCourseDescriptionModal`);
                 this.setState({isUpdating: false});
             })
-            .catch(err =>{
-                if (err.response.status === 409) {
+            .catch((err) =>{
+                if (err.response.status === 409) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
                 } else {
                     this.props.error();
-                    this.closeModal(`#editModal-${this.state.prefix}`);
+                    this.closeModal(`#editCourseDescriptionModal`);
                     this.setState({isUpdating: false});
                 }
             });
@@ -79,26 +70,23 @@ class EditCourseGroupModal extends Component {
 
     render() { 
         return (
-            <Modal id={`editModal-${this.state.prefix}`}>
-                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
-                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
+            <Modal id={`editCourseDescriptionModal`} className="modal-lg">
+                <ModalHeader title={`Edit Course Description`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
                             {this.state.showErrorAlert ? <ErrorAlert>{this.state.errorAlertMessage}</ErrorAlert> : null}
-                            <input type="hidden" name="originalPrefix" value={this.state.originalPrefix}/>
                             <div className="form-group">
-                                <label htmlFor="username">Code</label>
-                                <input className="form-control" name="prefix" placeholder="CODE" value={this.state.prefix} onChange={this.handleChange} pattern="[a-zA-Z]*" minLength="4" maxLength="4" disabled={this.state.isUpdating} required/>
-                                <small className="form-text text-muted">A code has to be 4 letters</small>
+                                <label htmlFor="description">Description</label>
+                                <textarea className="form-control" name="description" placeholder="Course Description" value={this.state.description} onChange={this.handleChange} disabled={this.state.isUpdating} style={{minHeight: 200}} required/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="username">Name</label>
-                                <input className="form-control" name="name" placeholder="Course Group Name" value={this.state.name} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                <label htmlFor="scu">SCU</label>
+                                <input className="form-control" type="number" name="scu" placeholder="SCU" value={this.state.scu} onChange={this.handleChange} disabled={this.state.isUpdating} min="1" max="24" required/>
                             </div>
                         </div>
                         <ModalFooter disableClose={this.state.isUpdating}>
-                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Save changes</Button>
+                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Save Changes</Button>
                         </ModalFooter>
                     </form>
                 </ModalBody>
@@ -107,4 +95,4 @@ class EditCourseGroupModal extends Component {
     }
 }
  
-export default EditCourseGroupModal;
+export default EditCourseDescriptionModal;

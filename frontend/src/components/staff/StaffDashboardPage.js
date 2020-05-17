@@ -19,10 +19,17 @@ import Dashboard from './Dashboard';
 import CourseGroups from './courses/CourseGroups';
 import CourseList from './courses/CourseList';
 import Course from './courses/Course';
+
 import MajorList from './classes/MajorList';
 import SemesterList from './classes/SemesterList';
 import ClassList from './classes/ClassList';
 import Class from './classes/Class';
+
+import AccountList from './user-accounts/AccountList';
+import StaffList from './user-accounts/StaffList';
+import LecturerList from './user-accounts/LecturerList';
+import StudentList from './user-accounts/StudentList';
+import Account from './user-accounts/Account';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -80,6 +87,14 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route>
                         {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
                         <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route>
+
+                        {/* Accounts */}
+                        <Route exact path={`${path}/accounts`}><AccountList/></Route>
+                        <Route exact path={`${path}/accounts/staff`}><StaffList/></Route>
+                        <Route exact path={`${path}/accounts/lecturer`}><LecturerList/></Route>
+                        <Route exact path={`${path}/accounts/student`}><StudentList/></Route>
+                        <Route exact path={`${path}/accounts/create`}><Dashboard/></Route>
+                        <Route exact path={`${path}/accounts/:accountId`}><Account/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>

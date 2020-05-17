@@ -96,13 +96,73 @@ class UserService {
         }
     }
 
-    async updateCourse() {
-        // ...
+    async updateCourse(originalCode, newCode, newName, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/course/${originalCode}`,
+                {
+                    code: newCode,
+                    name: newName
+                }
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async updateCourseDescription(code, description, scu, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/course/${code}`,
+                {
+                    description,
+                    scu
+                }
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async updateCourseLearningOutcomes(code, learningOutcomes, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/course/${code}`,
+                {
+                    learningOutcomes
+                }
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
     }
 
     async deleteCourse(code, callback) {
         try {
             const res = await axios.delete(`${this.API_ENDPOINT}/course/${code}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createClass(courseCode, classCode, callback) {
+        try {
+            const res = await axios.post(
+                `${this.API_ENDPOINT}/course/${courseCode}`,
+                {code: classCode}
+            );
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {

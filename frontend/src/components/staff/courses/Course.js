@@ -18,6 +18,12 @@ import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
 import Textbooks from '../../ui-elements/Textbooks';
 import Evaluation from '../../ui-elements/Evaluation';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
+import EditCourseModal from './components/EditCourseModal';
+import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
+import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
+import CreateClassModal from './components/CreateClassModal';
 
 // Components
 
@@ -29,6 +35,8 @@ class Course extends React.Component {
             isLoggedIn: false,
             currentTablePage: 1,
             courseData: undefined,
+            showErrorMessage: false,
+            showSuccessMessage: false,
         }
 
         // Set page display mode when loading
@@ -36,11 +44,26 @@ class Course extends React.Component {
         this.loadedStyle = {visibility: "visible", opacity: 1}
 
         // Bind functions
-        this.reloadTable = this.reloadTable.bind(this);
+        this.reloadData = this.reloadData.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.showError = this.showError.bind(this);
     }
 
-    reloadTable() {
-        this.setState({currentTableContent: []});
+    reloadData() {
+        // Load table content
+        CourseService.getCourse(this.props.match.params.courseId).then(res => {
+            // TODO: add error validation
+            this.setState({courseData: res});
+        })
+    }
+
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+        this.reloadData();
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
     }
     
     componentDidMount() {
@@ -68,25 +91,27 @@ class Course extends React.Component {
 
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
-        let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" style={{lineHeight:0}}><i className="icon-trash"/></button></div>
+        let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" style={{lineHeight:0}}><i className="icon-trash"/></button></div>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
                     <PageBreadcrumb title={this.state.courseData ? this.state.courseData.name : "Loading..."} rightComponent={courseActions} breadcrumb={<Breadcrumb current={this.state.courseData ? this.state.courseData.code : ""} contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}, {name: this.props.match.params.groupId, url: `/staff/courses/${this.props.match.params.groupId}`}]}/>}/>
                     <ContentWrapper>
+                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
-                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} scu={this.state.courseData ? this.state.courseData.scu : undefined} right={<a href="#edit1">Edit</a>}/>
+                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} scu={this.state.courseData ? this.state.courseData.scu : undefined} right={<a href="#editCourseDescriptionModal" data-toggle="modal" data-target="#editCourseDescriptionModal">Edit</a>}/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <LearningOutcomes data={this.state.courseData ? this.state.courseData.learningOutcomes : null} right={<a href="#edit1">Edit</a>}/>
+                                <LearningOutcomes data={this.state.courseData ? this.state.courseData.learningOutcomes : null} right={<a href="#editLearningOutcomesModal" data-toggle="modal" data-target="#editLearningOutcomesModal">Edit</a>}/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <Card title="Classes" padding>
+                                <Card title="Classes" right={<a href="#createClassModal" data-toggle="modal" data-target="#createClassModal">Add</a>} padding>
                                     <Tab data={
                                         this.state.courseData ? this.state.courseData.class.map(element => {
                                             return {
@@ -103,6 +128,11 @@ class Course extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
+
+                {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <EditCourseLearningOutcomesModal code={this.state.courseData.code} data={this.state.courseData.learningOutcomes} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <CreateClassModal code={this.state.courseData.code} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
 
         );

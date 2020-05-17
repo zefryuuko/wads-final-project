@@ -12,14 +12,12 @@ import ModalFooter from '../../../ui-elements/ModalFooter';
 import Button from '../../../ui-elements/Button';
 import ErrorAlert from '../../../ui-elements/ErrorAlert';
 
-class EditCourseGroupModal extends Component {
+class CreateClassModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            originalPrefix: this.props.prefix,
-            originalName: this.props.name,
-            prefix: this.props.prefix,
-            name: this.props.name,
+            classCode: "",
+            courseCode: this.props.code,
             isUpdating: false,
             showErrorAlert: false,
             errorAlertMessage: "",
@@ -34,9 +32,8 @@ class EditCourseGroupModal extends Component {
     handleChange(event) {
         let {name, value} = event.target;
 
-        // Convert prefix to uppercase
-        if (name === 'prefix' && !/^[a-zA-Z()]*$/.test(value)) value = this.state.prefix;
-        else if (name === 'prefix') value = value.toUpperCase();
+        if (name === 'classCode' && !/^[a-zA-Z()]*$/.test(value)) value = this.state.classCode;
+        else if (name === 'classCode') value = value.toUpperCase();
         this.setState({
             [name]: value
         });
@@ -58,20 +55,20 @@ class EditCourseGroupModal extends Component {
     onSaveChangesClicked(e) {
         e.preventDefault();
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
-        CourseService.updateCourseGroup(this.state.originalPrefix, this.state.prefix, this.state.name)
+        CourseService.createClass(this.state.courseCode, this.state.classCode)
             .then((res) => {
                 if (this.props.redirectOnSuccess) this.setState({redirect: this.props.redirectOnSuccess});
                 this.props.success();
-                this.closeModal(`#editModal-${this.state.prefix}`);
-                this.setState({isUpdating: false});
+                this.closeModal(`#createClassModal`);
+                this.setState({isUpdating: false, classCode: ""});
             })
             .catch(err =>{
-                if (err.response.status === 409) {
+                if (err.response.status === 404) {
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
                 } else {
                     this.props.error();
-                    this.closeModal(`#editModal-${this.state.prefix}`);
+                    this.closeModal(`#createClassModal`);
                     this.setState({isUpdating: false});
                 }
             });
@@ -79,26 +76,21 @@ class EditCourseGroupModal extends Component {
 
     render() { 
         return (
-            <Modal id={`editModal-${this.state.prefix}`}>
-                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}`}/> : null}
-                <ModalHeader title={`Edit ${this.state.originalPrefix} - ${this.state.originalName}`} disableClose={this.state.isUpdating}/>
+            <Modal id={`createClassModal`}>
+                {this.state.redirect ? <Redirect to={`${this.state.redirect}/${this.state.prefix}${this.state.code}`}/> : null}
+                <ModalHeader title={`Create new class`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
                             {this.state.showErrorAlert ? <ErrorAlert>{this.state.errorAlertMessage}</ErrorAlert> : null}
-                            <input type="hidden" name="originalPrefix" value={this.state.originalPrefix}/>
                             <div className="form-group">
-                                <label htmlFor="username">Code</label>
-                                <input className="form-control" name="prefix" placeholder="CODE" value={this.state.prefix} onChange={this.handleChange} pattern="[a-zA-Z]*" minLength="4" maxLength="4" disabled={this.state.isUpdating} required/>
-                                <small className="form-text text-muted">A code has to be 4 letters</small>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="username">Name</label>
-                                <input className="form-control" name="name" placeholder="Course Group Name" value={this.state.name} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                <label htmlFor="name">Class Code</label>
+                                <input className="form-control" name="classCode" placeholder="Class Code" value={this.state.classCode} pattern="[a-zA-Z]*" minLength="3" maxLength="3" onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                <small>Class code consists of 3 letters and has to be unique for each course.</small>
                             </div>
                         </div>
                         <ModalFooter disableClose={this.state.isUpdating}>
-                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Save changes</Button>
+                            <Button type="submit" className="btn btn-primary" loading={this.state.isUpdating}>Create</Button>
                         </ModalFooter>
                     </form>
                 </ModalBody>
@@ -107,4 +99,4 @@ class EditCourseGroupModal extends Component {
     }
 }
  
-export default EditCourseGroupModal;
+export default CreateClassModal;

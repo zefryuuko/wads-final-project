@@ -84,7 +84,7 @@ class CreateCourseModal extends Component {
                                     <div className="input-group-prepend">
                                         <div className="input-group-text">{this.props.prefix}</div>
                                     </div>
-                                    <input className="form-control" name="code" placeholder="Course ID Number" value={this.state.code} onChange={this.handleChange} pattern="[1-9]*" minLength="4" maxLength="4" disabled={this.state.isUpdating} required/>
+                                    <input className="form-control" name="code" placeholder="Course ID Number" value={this.state.code} onChange={this.handleChange} pattern="[0-9]*" minLength="4" maxLength="4" disabled={this.state.isUpdating} required/>
                                     <small className="form-text text-muted">A course code consists of the course group prefix and four digit ID.</small>
                                 </div>
                             </div>
