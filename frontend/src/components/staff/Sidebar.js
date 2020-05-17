@@ -39,13 +39,13 @@ class Sidebar extends React.Component {
                                         className="hide-menu">User Accounts
                                     </span></Link>
                             </li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/staff-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/accounts/staff"
                                     aria-expanded="false"><i data-feather="smile" className="feather-icon"></i><span
                                         className="hide-menu">Staff Accounts</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/lecturer-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/accounts/lecturer"
                                     aria-expanded="false"><i data-feather="book" className="feather-icon"></i><span
                                         className="hide-menu">Lecturer Accounts</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/student-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/accounts/student"
                                     aria-expanded="false"><i data-feather="user" className="feather-icon"></i><span
                                         className="hide-menu">Student Accounts</span></Link></li>
                             <li className="list-divider"></li>
