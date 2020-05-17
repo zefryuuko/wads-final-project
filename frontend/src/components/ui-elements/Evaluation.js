@@ -6,8 +6,7 @@ class Textbooks extends Component {
     render() { 
         return (
             <div>
-                <div className="float-right">{this.props.right ? this.props.right : null}</div>
-                <div className="card-title">Evaluations</div>
+                <div className="card-title">Evaluations<span className="float-right" style={{fontWeight: "initial"}}>{this.props.right ? this.props.right : null}</span></div>
                     {this.props.data && (this.props.data.length > 0) ?
                     <Table header={Array.prototype.concat(["Component"], this.props.data[0].evaluatedLearningOutcomes.map((element, index) => {
                         return `LO${index + 1}`
