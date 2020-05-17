@@ -22,6 +22,7 @@ import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import EditCourseModal from './components/EditCourseModal';
 import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
+import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
 
 // Components
 
@@ -104,12 +105,12 @@ class Course extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <LearningOutcomes data={this.state.courseData ? this.state.courseData.learningOutcomes : null} right={<a href="#edit1">Edit</a>}/>
+                                <LearningOutcomes data={this.state.courseData ? this.state.courseData.learningOutcomes : null} right={<a href="#editLearningOutcomesModal" data-toggle="modal" data-target="#editLearningOutcomesModal">Edit</a>}/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <Card title="Classes" padding>
+                                <Card title="Classes" right={<a href="#createClassModal" data-toggle="modal" data-target="#createClassModal">Add</a>} padding>
                                     <Tab data={
                                         this.state.courseData ? this.state.courseData.class.map(element => {
                                             return {
@@ -129,6 +130,7 @@ class Course extends React.Component {
 
                 {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <EditCourseLearningOutcomesModal code={this.state.courseData.code} data={this.state.courseData.learningOutcomes} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
 
         );
