@@ -113,6 +113,23 @@ class UserService {
         }
     }
 
+    async updateCourseDescription(code, description, scu, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/course/${code}`,
+                {
+                    description,
+                    scu
+                }
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async deleteCourse(code, callback) {
         try {
             const res = await axios.delete(`${this.API_ENDPOINT}/course/${code}`);

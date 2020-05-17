@@ -21,6 +21,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import EditCourseModal from './components/EditCourseModal';
+import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
 
 // Components
 
@@ -98,7 +99,7 @@ class Course extends React.Component {
                         {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
-                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} scu={this.state.courseData ? this.state.courseData.scu : undefined} right={<a href="#edit1">Edit</a>}/>
+                            <CourseDescription data={this.state.courseData ? this.state.courseData.description : null} scu={this.state.courseData ? this.state.courseData.scu : undefined} right={<a href="#editCourseDescriptionModal" data-toggle="modal" data-target="#editCourseDescriptionModal">Edit</a>}/>
                             </div>
                         </div>
                         <div className="row">
@@ -126,7 +127,8 @@ class Course extends React.Component {
                     </ContentWrapper>
                 </PageWrapper>
 
-                {this.state.courseData ? <EditCourseModal key={this.state.courseData.code} code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
 
         );
