@@ -170,6 +170,20 @@ class UserService {
             throw err;
         }
     }
+
+    async updateClassTextbooks(courseCode, classCode, textbooks, callback) {
+        try {
+            const res = await axios.patch(
+                `${this.API_ENDPOINT}/course/${courseCode}/${classCode}`,
+                {textbooks}
+            );
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();

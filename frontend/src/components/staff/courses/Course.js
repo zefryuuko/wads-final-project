@@ -24,6 +24,7 @@ import EditCourseModal from './components/EditCourseModal';
 import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
 import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
 import CreateClassModal from './components/CreateClassModal';
+import EditTextbookModal from './components/EditTextbookModal';
 
 // Components
 
@@ -117,8 +118,10 @@ class Course extends React.Component {
                                             return {
                                                 name: element.code,
                                                 component: <div>
-                                                    <Textbooks data={element.textbooks} right={<a href="#edit1">Edit</a>}/>
-                                                    <Evaluation data={element.evaluation} right={<a href="#edit1">Edit</a>}/>
+                                                    <Textbooks data={element.textbooks} right={<a href={`#editTextbookModal-${element.code}`} data-toggle="modal" data-target={`#editTextbookModal-${element.code}`}>Edit</a>}/>
+                                                    <Evaluation data={element.evaluation} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
+
+                                                    <EditTextbookModal courseCode={this.state.courseData.code} classCode={element.code} data={element.textbooks} success={this.updateSuccess} error={this.showError}/>
                                                 </div>
                                             }
                                         }) : []
@@ -129,9 +132,12 @@ class Course extends React.Component {
                     </ContentWrapper>
                 </PageWrapper>
 
+                {/* Course Modals */}
                 {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseLearningOutcomesModal code={this.state.courseData.code} data={this.state.courseData.learningOutcomes} success={this.updateSuccess} error={this.showError}/> : null}
+                
+                {/* Class Modals */}
                 {this.state.courseData ? <CreateClassModal code={this.state.courseData.code} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
 
