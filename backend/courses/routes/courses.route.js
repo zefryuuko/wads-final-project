@@ -271,7 +271,59 @@ router.post('/:courseCode', async (req, res) => {
 });
 
 router.patch('/:courseCode/:classCode', async (req, res) => {
-     
+     try {
+         // Check if course exists
+        if (!await courseUtils.courseCodeExists(req.params.courseCode)) {
+            res.status(404).json({
+                'message': `Course with id ${req.params.courseCode} does not exist`
+            });
+            return;
+        }
+
+        // Check if class exists 
+        if (!await courseUtils.classCodeExists(req.params.courseCode, req.params.classCode)) {
+            res.status(404).json({
+                'message': `Class with name ${req.params.classCode} does not exist on ${req.params.courseCode}`
+            });
+            return;
+        }
+
+        // Update textbooks
+        if (req.body.textbooks) await Course.findOneAndUpdate(
+            { 
+                code: { $eq: req.params.courseCode },
+                'class.code': { $eq: req.params.classCode }
+            },
+            {
+                $set: {
+                    'class.$.textbooks': req.body.textbooks
+                }
+            },
+            { upsert: true }
+        );
+
+        // Update evaluation
+        if (req.body.evaluation) await Course.findOneAndUpdate(
+            { 
+                code: { $eq: req.params.courseCode },
+                'class.code': { $eq: req.params.classCode }
+            },
+            {
+                $set: {
+                    'class.$.evaluation': req.body.evaluation
+                }
+            },
+            { upsert: true }
+        );
+
+        res.json({
+            "message": "Class updated successfully"
+        });
+     } catch (err) {
+        res.status(500).json({
+            'message': `${err}`
+        });
+     }
 });
 
 router.delete('/:courseCode/:classCode', async (req, res) => {
@@ -284,7 +336,7 @@ router.delete('/:courseCode/:classCode', async (req, res) => {
             return;
         }
 
-        // Check if class exists (prevent duplicate)
+        // Check if class exists
         if (!await courseUtils.classCodeExists(req.params.courseCode, req.params.classCode)) {
             res.status(404).json({
                 'message': `Class with name ${req.params.classCode} does not exist on ${req.params.courseCode}`
