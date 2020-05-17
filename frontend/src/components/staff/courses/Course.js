@@ -23,6 +23,7 @@ import SuccessAlert from '../../ui-elements/SuccessAlert';
 import EditCourseModal from './components/EditCourseModal';
 import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
 import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
+import CreateClassModal from './components/CreateClassModal';
 
 // Components
 
@@ -131,6 +132,7 @@ class Course extends React.Component {
                 {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseLearningOutcomesModal code={this.state.courseData.code} data={this.state.courseData.learningOutcomes} success={this.updateSuccess} error={this.showError}/> : null}
+                {this.state.courseData ? <CreateClassModal code={this.state.courseData.code} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
 
         );
