@@ -119,7 +119,7 @@ class Course extends React.Component {
                                                 name: element.code,
                                                 component: <div>
                                                     <Textbooks data={element.textbooks} right={<a href={`#editTextbookModal-${element.code}`} data-toggle="modal" data-target={`#editTextbookModal-${element.code}`}>Edit</a>}/>
-                                                    <Evaluation data={element.evaluation} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
+                                                    <Evaluation data={element.evaluation} loData={this.state.courseData.learningOutcomes} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
 
                                                     <EditTextbookModal courseCode={this.state.courseData.code} classCode={element.code} data={element.textbooks} success={this.updateSuccess} error={this.showError}/>
                                                 </div>
