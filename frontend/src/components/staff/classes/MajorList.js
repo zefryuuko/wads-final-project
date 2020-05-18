@@ -14,6 +14,7 @@ import Button from '../../ui-elements/Button';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import CreateMajorModal from './components/CreateMajorModal';
+import EditMajorModal from './components/EditMajorModal';
 
 // Components
 
@@ -107,7 +108,7 @@ class MajorList extends React.Component {
                                                     <tr key={row._id}>
                                                         <td><Link to={`/staff/classes/${row._id}`}>{row.name}</Link></td>
                                                         <td style={{width: "150px", minWidth: "150px"}}>
-                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
+                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editMajorModal-${row._id}`}>Edit</Button>
                                                             <Button className="btn btn-sm btn-danger">Delete</Button>
                                                         </td>
                                                     </tr>
@@ -124,6 +125,9 @@ class MajorList extends React.Component {
 
                 {/* Create major modal */}
                 <CreateMajorModal success={this.updateSuccess} error={this.showError}/>
+
+                {/* Generate edit major modal */}
+                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => { return <EditMajorModal key={row._id} majorId={row._id} name={row.name} success={this.updateSuccess} error={this.showError}/> }) : null}
             </div>
         );
     }
