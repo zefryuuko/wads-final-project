@@ -43,10 +43,52 @@ class Account extends React.Component {
         this.showError = this.showError.bind(this);
         this.updateSuccess = this.updateSuccess.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.reloadData = this.reloadData.bind(this);
+        this.createStudentAccount = this.createStudentAccount.bind(this);
     }
-    
-    componentDidMount() {
-        // Perform session check
+
+    reloadData() {
+        // Load user info
+        UserService.getUserById(this.props.match.params.accountId)
+            .then(res => {
+                this.setState({
+                    tableData: res,
+                    firstName: res ? res.firstName : "",
+                    lastName: res ? res.lastName: "",
+                    primaryEmail: res ? res.primaryEmail: "",
+                    contactEmail: res ? res.contactEmail: "",
+                    phone: res ? res.phone: "",
+                    studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
+                    lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
+                    staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
+            })
+            // .catch((err) => {
+            //     console.log(err);
+            // });
+        });
+    }
+
+    createStudentAccount() {
+        this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
+        UserService.createStudentAccount(this.props.match.params.accountId)
+            .then((res) => {
+                this.updateSuccess();
+                this.setState({isUpdating: false});
+            })
+            .catch((err) =>{
+                console.log(err)
+                if (err.response && (err.response.status === 409)) { 
+                    this.showError();
+                    this.setState({isUpdating: false});
+                } else {
+                    this.showError();
+                    this.setState({isUpdating: false});
+                }
+            });
+        }   
+        
+        componentDidMount() {
+            // Perform session check
         AuthService.isLoggedIn()
             .then(res => {
                 if (res.response && (res.response.status === 403))
@@ -82,6 +124,7 @@ class Account extends React.Component {
     }
     updateSuccess() {
         this.setState({showSuccessMessage: true, showErrorMessage: false});
+        this.reloadData();
     }
 
     showError() {
@@ -212,7 +255,7 @@ class Account extends React.Component {
                                                 <Button className="btn btn-danger ml-2">Delete Account</Button>
                                             </div>
                                         </div>
-                                    : <p style={{textAlign: "center"}}>This account does not have a student profile. <Link>Create one.</Link></p>}
+                                    : <p style={{textAlign: "center"}}>This account does not have a student profile. <a href="#createStudentAccount" onClick={this.createStudentAccount}>Create one.</a></p>}
                                 </Card>
                             </div>
                         </div>
