@@ -9,10 +9,11 @@ import UserService from '../../../services/UserService';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
-// import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import CreateAccountModal from './components/CreateAccountModal';
 import Button from '../../ui-elements/Button';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
 
 class Account extends React.Component {
     constructor() {
@@ -29,6 +30,8 @@ class Account extends React.Component {
             studentAccount: undefined,
             lecturerAccount: undefined,
             staffAccount: undefined,
+            showErrorMessage: false,
+            showSuccessMessage: false,
         }
 
         // Set page display mode when loading
@@ -37,6 +40,9 @@ class Account extends React.Component {
 
         // Bind functions
         this.handleChange = this.handleChange.bind(this);
+        this.showError = this.showError.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
     
     componentDidMount() {
@@ -74,12 +80,49 @@ class Account extends React.Component {
             // });
         });
     }
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
+    }
 
     handleChange(event) {
         let {name, value} = event.target;
+        if (name === 'firstName' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.firstName;
+        if (name === 'lastName' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.lastName;
+        if (name === 'primaryEmail' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.primaryEmail;
+        if (name === 'id' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.id;
         this.setState({
             [name]: value
         });
+    }
+
+    onSubmitHandler(e) {
+        e.preventDefault();
+        this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
+        UserService.updateUser(this.props.match.params.accountId, {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            primaryEmail: this.state.primaryEmail,
+            contactEmail: this.state.contactEmail,
+            phone: this.state.phone
+        })
+            .then((res) => {
+                this.updateSuccess();
+                this.setState({isUpdating: false});
+            })
+            .catch((err) =>{
+                console.log(err)
+                if (err.response && (err.response.status === 409)) { 
+                    this.showErrorAlert(err.response.data.message);
+                    this.setState({isUpdating: false});
+                } else {
+                    this.showError();
+                    this.setState({isUpdating: false});
+                }
+            });
     }
 
     render() {
@@ -89,10 +132,12 @@ class Account extends React.Component {
                 <PageWrapper>
                     <PageBreadcrumb title="User Account Details" root="Account Administration"/>
                     <ContentWrapper>
+                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-lg-9 col-md-12">
                                 <Card title="Account Details" padding>
-                                    <form>
+                                    <form onSubmit={this.onSubmitHandler}>
                                         <div className="form-row">
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="firstName">First Name</label>
@@ -106,7 +151,7 @@ class Account extends React.Component {
                                         <div className="form-row">
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="primaryEmail">Primary Email</label>
-                                                <input type="email" className="form-control" name="primaryEmail" placeholder="Primary Email" value={this.state.primaryEmail} onChange={this.handleChange} required/>
+                                                <input type="email" className="form-control" name="primaryEmail" placeholder="Primary Email" value={this.state.primaryEmail} onChange={this.handleChange} disabled required/>
                                             </div>
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="contactEmail">Contact Email</label>
@@ -122,7 +167,7 @@ class Account extends React.Component {
                                         <div className="form-row">
                                             <div className="col-lg-6"><small>All fields are required.</small></div>
                                             <div className="col-lg-6">
-                                                <Button className="btn btn-primary float-right">Save Changes</Button>
+                                                <Button type="submit" className="btn btn-primary float-right">Save Changes</Button>
                                             </div>
                                         </div>
                                     </form>

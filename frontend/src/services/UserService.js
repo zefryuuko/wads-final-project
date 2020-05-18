@@ -82,6 +82,17 @@ class UserService {
             throw err;
         }
     }
+
+    async updateUser(userId, data, callback) {
+        try {
+            const res = await axios.patch(`${this.API_ENDPOINT}/user/${userId}`, data);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
