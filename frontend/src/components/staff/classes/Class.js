@@ -97,10 +97,10 @@ class Class extends React.Component {
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
-                                <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined} right={<a href="#editzzz">Edit</a>}/>
-                                <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined}/>
+                                <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined}/>
                                 <Card padding>
-                                    <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined} right={<a href="#editzzz">Edit</a>}/>
+                                    <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined}/>
                                 </Card>
                                 <Card title="Add dis crap" padding>
                                     Students, Schedule
