@@ -10,7 +10,6 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Card from '../../ui-elements/Card';
-import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 
 // Components
@@ -70,20 +69,29 @@ class MajorList extends React.Component {
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
-                                <Card>
-                                    <Table header={["Name", "Actions"]}>
-                                        {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
-                                            return (
-                                                <tr key={row._id}>
-                                                    <td><Link to={`/staff/classes/${row._id}`}>{row.name}</Link></td>
-                                                    <td style={{width: "150px", minWidth: "150px"}}>
-                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
-                                    </Table>
+                                <Card padding>
+                                    <table className="table table-striped no-wrap" id="majorsTable">
+                                        <thead className="bg-primary text-white">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
+                                                return (
+                                                    <tr key={row._id}>
+                                                        <td><Link to={`/staff/classes/${row._id}`}>{row.name}</Link></td>
+                                                        <td style={{width: "150px", minWidth: "150px"}}>
+                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
+                                                            <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
+                                        </tbody>
+                                    </table>
+                                    {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#majorsTable') }</script> : null}
                                 </Card>
                             </div>
                         </div>

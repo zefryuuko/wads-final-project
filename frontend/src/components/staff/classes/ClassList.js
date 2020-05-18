@@ -11,7 +11,6 @@ import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
-import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 
 // Components
@@ -89,21 +88,31 @@ class ClassList extends React.Component {
                     <ContentWrapper>
                         <div className="row">
                             <div className="col-12">
-                                <Card>
-                                    <Table header={["Period", "Name", "Actions"]}>
-                                        {(this.state.currentTableContent.length > 0) ? this.state.currentTableContent.map(row => {
-                                            return (
-                                                <tr key={row._id}>
-                                                    <th scope="row">{row.classCode}</th>
-                                                    <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${this.state.semesterId}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
-                                                    <td style={{width: "150px", minWidth: "150px"}}>
-                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger">Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
-                                    </Table>
+                                <Card padding>
+                                    <table className="table table-striped no-wrap" id="classesTable">
+                                        <thead className="bg-primary text-white">
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {(this.state.currentTableContent.length > 0) ? this.state.currentTableContent.map(row => {
+                                                return (
+                                                    <tr key={row._id}>
+                                                        <th scope="row">{row.classCode}</th>
+                                                        <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${this.state.semesterId}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
+                                                        <td style={{width: "150px", minWidth: "150px"}}>
+                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
+                                                            <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
+                                        </tbody>
+                                    </table>
+                                    {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#classesTable') }</script> : null}
                                 </Card>
                             </div>
                         </div>
