@@ -71,6 +71,17 @@ class UserService {
             throw err;
         }
     }
+
+    async createUser(data, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user`, data);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
