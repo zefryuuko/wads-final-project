@@ -93,6 +93,39 @@ class UserService {
             throw err;
         }
     }
+
+    async createStudentAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/student`, {name: "Student"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createLecturerAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/lecturer`, {name: "Lecturer"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createStaffAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/staff`, {name: "Staff"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();
