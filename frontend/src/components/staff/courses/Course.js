@@ -25,6 +25,7 @@ import EditCourseDescriptionModal from './components/EditCourseDescriptionModal'
 import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
 import CreateClassModal from './components/CreateClassModal';
 import EditTextbookModal from './components/EditTextbookModal';
+import EditEvaluationModal from './components/EditEvaluationModal';
 
 // Components
 
@@ -122,6 +123,7 @@ class Course extends React.Component {
                                                     <Evaluation data={element.evaluation} loData={this.state.courseData.learningOutcomes} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
 
                                                     <EditTextbookModal courseCode={this.state.courseData.code} classCode={element.code} data={element.textbooks} success={this.updateSuccess} error={this.showError}/>
+                                                    <EditEvaluationModal courseCode={this.state.courseData.code} classCode={element.code} loData={this.state.courseData.learningOutcomes} data={element.evaluation} success={this.updateSuccess} error={this.showError}/>
                                                 </div>
                                             }
                                         }) : []
