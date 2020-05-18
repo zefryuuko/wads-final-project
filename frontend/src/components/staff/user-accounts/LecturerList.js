@@ -63,8 +63,8 @@ class LecturerList extends React.Component {
                                 <Card padding>
                                     {/* <div className="table-responsive"> */}
                                     <div className="table-responsive">
-                                        <table id="accountsTable" className="table table-striped table-bordered no-wrap">
-                                            <thead>
+                                        <table id="accountsTable" className="table table-striped no-wrap">
+                                            <thead className="bg-primary text-white">
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Full Name</th>
