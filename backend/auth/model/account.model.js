@@ -105,12 +105,12 @@ class Account {
         }
     }
 
-    async deleteCredentials(emailAddress) {
+    async deleteCredentials(universalId) {
         try {
             const result = await db.query(
-                'DELETE FROM accounts WHERE email_address = ?',
+                'DELETE FROM accounts WHERE universal_id = ?',
                 [
-                    emailAddress
+                    universalId
                 ]
             );
             if (result[0].affectedRows == 1) return true;
