@@ -12,7 +12,7 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Tab from '../../ui-elements/Tab';
 // import Table from '../../ui-elements/Table';
-// import Button from '../../ui-elements/Button';
+import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
@@ -26,6 +26,7 @@ import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutc
 import CreateClassModal from './components/CreateClassModal';
 import EditTextbookModal from './components/EditTextbookModal';
 import EditEvaluationModal from './components/EditEvaluationModal';
+import DeleteClassModal from './components/DeleteClassModal';
 
 // Components
 
@@ -122,8 +123,11 @@ class Course extends React.Component {
                                                     <Textbooks data={element.textbooks} right={<a href={`#editTextbookModal-${element.code}`} data-toggle="modal" data-target={`#editTextbookModal-${element.code}`}>Edit</a>}/>
                                                     <Evaluation data={element.evaluation} loData={this.state.courseData.learningOutcomes} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
 
+                                                    <Button className="btn btn-block btn-danger mt-3" data-toggle="modal" data-target={`#deleteClassModal-${element.code}`}>Delete Class</Button>
+
                                                     <EditTextbookModal courseCode={this.state.courseData.code} classCode={element.code} data={element.textbooks} success={this.updateSuccess} error={this.showError}/>
                                                     <EditEvaluationModal courseCode={this.state.courseData.code} classCode={element.code} loData={this.state.courseData.learningOutcomes} data={element.evaluation} success={this.updateSuccess} error={this.showError}/>
+                                                    <DeleteClassModal courseCode={this.state.courseData.code} classCode={element.code} success={this.updateSuccess} error={this.showError}/>
                                                 </div>
                                             }
                                         }) : []
