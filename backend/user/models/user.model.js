@@ -8,6 +8,7 @@ var UserSchema = new mongoose.Schema({
     primaryEmail: { type: String, required: true },
     contactEmail: { type: String, required: true },
     phone: { type: String, required: true },
+    profilePictureURL: { type: String },
     accounts: {
         type: [{
             name: { type: String, required: true },

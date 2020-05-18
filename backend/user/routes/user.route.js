@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const axios = require('axios');
 const User = require('../models/user.model');
 const Student = require('../models/student.model');
 const Lecturer = require('../models/lecturer.model');
@@ -51,6 +52,13 @@ router.post('/', async (req, res) => {
         req.body._id = mongoose.Types.ObjectId();
         const user = new User (req.body);
         const result = await user.save();
+
+        // Add user to auth db
+        await axios.post(`http://${process.env.AUTH_HOST}/account/register`, {
+            emailAddress: req.body.primaryEmail,
+            password: `${req.body.firstName.split(" ")[0].toLowerCase()}${req.body.id}`,
+            universalId: req.body.id
+        });
 
         res.status(200).json({
             "message": "User added successfully."
@@ -120,6 +128,8 @@ router.delete('/:id', async (req, res) => {
             });
         }
         else {
+            // Delete user credentials
+            await axios.delete(`http://${process.env.AUTH_HOST}/account/${req.params.id}`);
             res.status(200).json({
                 "message": "User deleted successfully."
             });

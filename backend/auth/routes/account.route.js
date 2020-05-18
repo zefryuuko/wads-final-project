@@ -91,22 +91,12 @@ router.patch('/:emailAddress', async (req, res) => {
     }
 });
 
-router.delete('/', async (req, res) => {
-    const { emailAddress } = req.body;
-
-    // Check if parameter(s) are missing
-    if (!emailAddress) {
-        res.status(400).json( {
-            "message": "Missing parameter(s)"
-        });
-        return;
-    }
-
+router.delete('/:universalId', async (req, res) => {
     try {
-        const result = await account.deleteCredentials(emailAddress);
+        const result = await account.deleteCredentials(req.params.universalId);
         if (!result) {
             res.status(404).json({
-                "message": `User with email ${emailAddress} not found`
+                "message": `User with email ${req.params.universalId} not found`
             });
         } else {
             res.json({
