@@ -11,7 +11,6 @@ import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
-import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
@@ -112,21 +111,31 @@ class CourseList extends React.Component {
                         {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
-                                <Card>
-                                    <Table header={["Code", "Name", "Actions"]}>
-                                        {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
-                                            return (
-                                                <tr key={row.code}>
-                                                    <th scope="row">{row.code}</th>
-                                                    <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
-                                                    <td style={{width: "150px", minWidth: "150px"}}>
-                                                        <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editModal-${row.code}`}>Edit</Button>
-                                                        <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
-                                    </Table>
+                                <Card padding>
+                                    <table className="table table-striped no-wrap" id="coursesTable">
+                                        <thead className="bg-primary text-white">
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
+                                                return (
+                                                    <tr key={row.code}>
+                                                        <th scope="row">{row.code}</th>
+                                                        <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
+                                                        <td style={{width: "150px", minWidth: "150px"}}>
+                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editModal-${row.code}`}>Edit</Button>
+                                                            <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            }): <tr><td colSpan="3" align="center">No data</td></tr>}
+                                        </tbody>
+                                    </table>
+                                    {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#coursesTable') }</script> : null}
                                 </Card>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Tab from '../../ui-elements/Tab';
 // import Table from '../../ui-elements/Table';
-// import Button from '../../ui-elements/Button';
+import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
@@ -23,8 +23,11 @@ import SuccessAlert from '../../ui-elements/SuccessAlert';
 import EditCourseModal from './components/EditCourseModal';
 import EditCourseDescriptionModal from './components/EditCourseDescriptionModal';
 import EditCourseLearningOutcomesModal from './components/EditCourseLearningOutcomesModal';
+import DeleteCourseModal from './components/DeleteCourseModal';
 import CreateClassModal from './components/CreateClassModal';
 import EditTextbookModal from './components/EditTextbookModal';
+import EditEvaluationModal from './components/EditEvaluationModal';
+import DeleteClassModal from './components/DeleteClassModal';
 
 // Components
 
@@ -38,6 +41,7 @@ class Course extends React.Component {
             courseData: undefined,
             showErrorMessage: false,
             showSuccessMessage: false,
+            deleted: false
         }
 
         // Set page display mode when loading
@@ -48,6 +52,7 @@ class Course extends React.Component {
         this.reloadData = this.reloadData.bind(this);
         this.updateSuccess = this.updateSuccess.bind(this);
         this.showError = this.showError.bind(this);
+        this.deleteCourseSuccess = this.deleteCourseSuccess.bind(this);
     }
 
     reloadData() {
@@ -61,6 +66,11 @@ class Course extends React.Component {
     updateSuccess() {
         this.setState({showSuccessMessage: true, showErrorMessage: false});
         this.reloadData();
+    }
+
+    deleteCourseSuccess() {
+        console.log("courseDeleteSuccess")
+        this.setState({deleted: true});
     }
 
     showError() {
@@ -84,6 +94,7 @@ class Course extends React.Component {
             });
         
         // Load table content
+        if (!this.state.deleted)
         CourseService.getCourse(this.props.match.params.courseId).then(res => {
             // TODO: add error validation
             this.setState({courseData: res});
@@ -91,8 +102,10 @@ class Course extends React.Component {
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
-        let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" style={{lineHeight:0}}><i className="icon-trash"/></button></div>
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>;
+        console.log(this.state.deleted)
+        if (this.state.deleted) return <script>{window.location.href=`/staff/courses/${this.props.match.params.groupId}`}</script>;
+        let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" data-toggle="modal" data-target={`#deleteModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-trash"/></button></div>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
@@ -121,7 +134,11 @@ class Course extends React.Component {
                                                     <Textbooks data={element.textbooks} right={<a href={`#editTextbookModal-${element.code}`} data-toggle="modal" data-target={`#editTextbookModal-${element.code}`}>Edit</a>}/>
                                                     <Evaluation data={element.evaluation} loData={this.state.courseData.learningOutcomes} right={<a href={`#editEvaluationModal-${element.code}`} data-toggle="modal" data-target={`#editEvaluationModal-${element.code}`}>Edit</a>}/>
 
+                                                    <Button className="btn btn-block btn-danger mt-3" data-toggle="modal" data-target={`#deleteClassModal-${element.code}`}>Delete Class</Button>
+
                                                     <EditTextbookModal courseCode={this.state.courseData.code} classCode={element.code} data={element.textbooks} success={this.updateSuccess} error={this.showError}/>
+                                                    <EditEvaluationModal courseCode={this.state.courseData.code} classCode={element.code} loData={this.state.courseData.learningOutcomes} data={element.evaluation} success={this.updateSuccess} error={this.showError}/>
+                                                    <DeleteClassModal courseCode={this.state.courseData.code} classCode={element.code} success={this.updateSuccess} error={this.showError}/>
                                                 </div>
                                             }
                                         }) : []
@@ -136,7 +153,7 @@ class Course extends React.Component {
                 {this.state.courseData ? <EditCourseModal code={this.state.courseData.code} redirectOnSuccess={`/staff/courses/${this.props.match.params.groupId}`} name={this.state.courseData.name} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseDescriptionModal code={this.state.courseData.code} description={this.state.courseData.description}  scu={this.state.courseData.scu} success={this.updateSuccess} error={this.showError}/> : null}
                 {this.state.courseData ? <EditCourseLearningOutcomesModal code={this.state.courseData.code} data={this.state.courseData.learningOutcomes} success={this.updateSuccess} error={this.showError}/> : null}
-                
+                {this.state.courseData ? <DeleteCourseModal key={this.state.courseData.code} prefix={this.state.courseData.code} name={this.state.courseData.name} success={this.deleteCourseSuccess} error={this.showError}/> : null}                
                 {/* Class Modals */}
                 {this.state.courseData ? <CreateClassModal code={this.state.courseData.code} success={this.updateSuccess} error={this.showError}/> : null}
             </div>
