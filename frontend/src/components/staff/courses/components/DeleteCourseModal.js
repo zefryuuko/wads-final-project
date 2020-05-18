@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 
 // Services
 import CourseService from '../../../../services/CourseService';
@@ -20,7 +21,8 @@ class DeleteCourseModal extends Component {
             isUpdating: false,
             showErrorAlert: false,
             errorAlertMessage: "",
-            confirmationTextBox: ""
+            confirmationTextBox: "",
+            redirect: undefined
         }
         
         // Bind functions
@@ -58,8 +60,9 @@ class DeleteCourseModal extends Component {
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
         CourseService.deleteCourse(this.state.prefix)
             .then((res) => {
-                this.props.success();
+                if (this.props.redirectOnSuccess) this.setState({redirect: this.props.redirectOnSuccess});
                 this.closeModal(`#deleteModal-${this.state.prefix}`);
+                this.props.success();
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
@@ -76,8 +79,10 @@ class DeleteCourseModal extends Component {
     }
 
     render() { 
+        console.log("render modal")
         return (
             <Modal id={`deleteModal-${this.state.prefix}`}>
+                {this.state.redirect ? <Redirect to={`${this.state.redirect}`}/> : null}
                 <ModalHeader title={`Delete ${this.state.prefix} - ${this.state.name}`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
