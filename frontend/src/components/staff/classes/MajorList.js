@@ -11,6 +11,9 @@ import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
+import CreateMajorModal from './components/CreateMajorModal';
 
 // Components
 
@@ -21,7 +24,10 @@ class MajorList extends React.Component {
             isLoading: true,
             isLoggedIn: false,
             currentTablePage: 1,
-            currentTableContent: []
+            currentTableContent: [],
+            showErrorMessage: false,
+            showSuccessMessage: false,
+            
         }
 
         // Set page display mode when loading
@@ -30,10 +36,26 @@ class MajorList extends React.Component {
 
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.showError = this.showError.bind(this);
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        ClassService.getMajors(this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({
+                currentTableContent: res,
+            });
+        })
+    }
+
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+        this.reloadTable();
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
     }
     
     componentDidMount() {
@@ -65,8 +87,10 @@ class MajorList extends React.Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title={`Classes`} root="Course Administration"/>
+                    <PageBreadcrumb title={`Classes`} root="Course Administration" rightComponent={<button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createMajorModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}/>
                     <ContentWrapper>
+                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
                                 <Card padding>
@@ -97,8 +121,10 @@ class MajorList extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
-            </div>
 
+                {/* Create major modal */}
+                <CreateMajorModal success={this.updateSuccess} error={this.showError}/>
+            </div>
         );
     }
 }

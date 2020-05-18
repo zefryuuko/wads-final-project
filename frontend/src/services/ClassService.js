@@ -16,6 +16,17 @@ class UserService {
         }
     }
 
+    async createMajor(name, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/major`, {name});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async getSemesters(majorId, page, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/major/${majorId}?page=${page}`);
