@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         // Add user to auth db
         await axios.post(`http://${process.env.AUTH_HOST}/account/register`, {
             emailAddress: req.body.primaryEmail,
-            password: `${req.body.firstName.split(" ")[0].toLowerCase()}${req.body.id}`,
+            password: `${req.body.firstName.toLowerCase().split(" ")[0]}${req.body.id}`,
             universalId: req.body.id
         });
 
