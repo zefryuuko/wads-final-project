@@ -95,7 +95,7 @@ class Class extends React.Component {
         this.setState(prevState => {
             let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
             currentTableContent.students = currentTableContent.students.filter(element => {
-                return element.universalId != id;
+                return element.universalId !== id;
             });
             return { currentTableContent }
         });
