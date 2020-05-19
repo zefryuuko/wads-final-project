@@ -94,7 +94,6 @@ class ClassService {
     }
 
     async updateClassLecturers(semesterId, classId, courseId, lecturers, callback) {
-        console.log(lecturers)
         try {
             const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {lecturers});
             if (callback) callback(res.data);
