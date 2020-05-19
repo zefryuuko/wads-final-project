@@ -47,6 +47,34 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/:id/reset-password', async (req, res) => {
+    try {
+        const user = await User.findOne(
+            { id: req.params.id },
+            { __v: 0 }
+        );
+        
+        if (!user) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not found.`
+            });
+        }
+        else {
+            await axios.patch(`http://${process.env.AUTH_HOST}/account/${user.primaryEmail}`, {
+                password: `${user.firstName.toLowerCase().split(" ")[0]}${req.params.id}`
+            }); 
+
+            res.status(200).json({
+                "message": "Password changed successfully."
+            });
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": err
+        });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         req.body._id = mongoose.Types.ObjectId();
