@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Major = require('../models/major.model');
 const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
+const Student = require('../models/student.model');
 const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
@@ -341,26 +342,48 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
             }
         }
 
+        const semesterData = await Semester.findOne(
+
+        );
+
         // Update class
         const result = await Semester.findOneAndUpdate(
             { 
                 _id: req.params.id, 
-                'classes.classCode': { $eq: req.params.classCode }, 
-                'classes.courseCode': { $eq: req.params.courseCode } 
+                classes: {
+                    $elemMatch: {
+                        'classCode': { $eq: req.params.classCode },
+                        'courseCode': { $eq: req.params.courseCode }
+                    }
+                }
             }, 
             { $setOnInsert: { 'classes.$': req.body } }                             // TODO: Fix this crap
         );
 
         // Update Students
-        if (req.body.students) 
-            await Semester.findOneAndUpdate(
+        if (req.body.students) {
+            const newStudentBody = req.body.students.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Student(element);
+                return element;
+            })
+            console.log(typeof(newStudentBody[0]))
+            console.log("hasStudents:", newStudentBody)
+            let x = await Semester.updateOne(
                 { 
-                    _id: req.params.id, 
-                    'classes.classCode': { $eq: req.params.classCode }, 
-                    'classes.courseCode': { $eq: req.params.courseCode } 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
                 }, 
-                { $set: { 'classes.$.students': req.body.students } }
+                { $set: { 'classes.$.students': newStudentBody } },
+                { new: true, upsert: true }
             );
+            console.log(x)
+        }
 
         if (!result) {
             res.status(404).json({
