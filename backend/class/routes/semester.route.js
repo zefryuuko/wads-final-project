@@ -351,6 +351,17 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
             { $setOnInsert: { 'classes.$': req.body } }                             // TODO: Fix this crap
         );
 
+        // Update Students
+        if (req.body.students) 
+            await Semester.findOneAndUpdate(
+                { 
+                    _id: req.params.id, 
+                    'classes.classCode': { $eq: req.params.classCode }, 
+                    'classes.courseCode': { $eq: req.params.courseCode } 
+                }, 
+                { $set: { 'classes.$.students': req.body.students } }
+            );
+
         if (!result) {
             res.status(404).json({
                 'message': 'One or more parameters are not found'
