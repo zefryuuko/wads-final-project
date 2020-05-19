@@ -102,8 +102,36 @@ class Class extends React.Component {
                                 <Card padding>
                                     <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined}/>
                                 </Card>
+                                <Card title="Students" padding>
+                                    <div className="table-responsive">
+                                        <table id="studentsTable" className="table table-striped no-wrap">
+                                            <thead className="bg-primary text-white">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.currentTableContent && this.state.currentTableContent.students.length > 0  ? this.state.currentTableContent.students.map(row => {
+                                                    return (
+                                                        <tr key={row.universalId}>
+                                                            <th scope="row">{row.universalId}</th>
+                                                            <td>{row.name}</td>
+                                                            <td><button className="btn btn-danger">Remove</button></td>
+                                                        </tr>
+                                                    )
+                                                }) : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students assigned to this class.</td></tr> }
+                                            </tbody>
+                                            {this.state.currentTableContent ? <script>{ window.loadTable('#studentsTable') }</script> : null}
+                                        </table>
+                                    </div>
+                                    <div className="float-right mt-2">
+                                        <button className="btn btn-secondary" data-toggle="modal" data-target="#enrollStudentModal">Enroll Student</button>
+                                    </div>
+                                </Card>
                                 <Card title="Add dis crap" padding>
-                                    Students, Schedule
+                                    Lecturers, Schedule
                                 </Card>
                             </div>
                         </div>
