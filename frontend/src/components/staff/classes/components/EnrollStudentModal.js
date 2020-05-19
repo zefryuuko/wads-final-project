@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 // Services
 import UserService from '../../../../services/UserService';
-import CourseService from '../../../../services/CourseService';
 
 // UI Elements
 import Modal from '../../../ui-elements/Modal';
@@ -69,7 +68,7 @@ class EnrollStudentModal extends Component {
                             <tbody>
                                 {this.state.studentsList  && this.state.studentsList.length > 0 ? this.state.studentsList.map(row => {
                                     return (
-                                        <tr>
+                                        <tr key={row.id}>
                                             <th scope="row">{row.id}</th>
                                             <td>{row.firstName} {row.lastName}</td>
                                             <td><button className="btn btn-secondary" id={`${row.id}_${row.firstName} ${row.lastName}`} onClick={this.enrollStudent} disabled={this.state.enrolledStudentIds.includes(row.id)}>{!this.state.enrolledStudentIds.includes(row.id) ? "Enroll" : "Enrolled"}</button></td>
