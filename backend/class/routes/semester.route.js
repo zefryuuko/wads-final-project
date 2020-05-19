@@ -368,9 +368,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 element = new Student(element);
                 return element;
             })
-            console.log(typeof(newStudentBody[0]))
-            console.log("hasStudents:", newStudentBody)
-            let x = await Semester.updateOne(
+            await Semester.updateOne(
                 { 
                     _id: { $eq: req.params.id }, 
                     classes: {
@@ -383,7 +381,6 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 { $set: { 'classes.$.students': newStudentBody } },
                 { new: true, upsert: true }
             );
-            console.log(x)
         }
 
         // Update Lecturers
@@ -393,9 +390,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 element = new Lecturer(element);
                 return element;
             })
-            console.log(typeof(newStudentBody[0]))
-            console.log("hasStudents:", newStudentBody)
-            let x = await Semester.updateOne(
+            await Semester.updateOne(
                 { 
                     _id: { $eq: req.params.id }, 
                     classes: {
@@ -408,7 +403,6 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 { $set: { 'classes.$.lecturers': newLecturerBody } },
                 { new: true, upsert: true }
             );
-            console.log(x)
         }
 
         if (!result) {
