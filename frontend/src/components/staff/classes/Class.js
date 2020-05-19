@@ -41,7 +41,27 @@ class Class extends React.Component {
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        ClassService.getSemesters(this.props.match.params.majorId, this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({
+                currentSemester: res.name
+            });
+        });
+
+        ClassService.getClasses(this.props.match.params.semesterId, this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({
+                semesterName: `${res.period} ${res.name}`,
+            });
+        });
+
+        ClassService.getClass(this.props.match.params.semesterId, this.props.match.params.classId, this.props.match.params.courseId).then(res => {
+            // TODO: add error validation
+            this.setState({
+                pageTitle: `${res.metadata.name}`,
+                currentTableContent: res,
+            });
+        });
     }
     
     componentDidMount() {
@@ -129,6 +149,7 @@ class Class extends React.Component {
                                     </div>
                                     <div className="float-right mt-2">
                                         <button className="btn btn-secondary" data-toggle="modal" data-target="#enrollStudentModal">Enroll Student</button>
+                                        <button className="btn btn-primary ml-2">Save changes</button>
                                     </div>
                                 </Card>
                                 <Card title="Add dis crap" padding>
