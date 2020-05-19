@@ -6,6 +6,7 @@ const Major = require('../models/major.model');
 const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
 const Student = require('../models/student.model');
+const Lecturer = require('../models/lecturer.model');
 const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
@@ -367,9 +368,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 element = new Student(element);
                 return element;
             })
-            console.log(typeof(newStudentBody[0]))
-            console.log("hasStudents:", newStudentBody)
-            let x = await Semester.updateOne(
+            await Semester.updateOne(
                 { 
                     _id: { $eq: req.params.id }, 
                     classes: {
@@ -382,7 +381,28 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 { $set: { 'classes.$.students': newStudentBody } },
                 { new: true, upsert: true }
             );
-            console.log(x)
+        }
+
+        // Update Lecturers
+        if (req.body.lecturers) {
+            const newLecturerBody = req.body.lecturers.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Lecturer(element);
+                return element;
+            })
+            await Semester.updateOne(
+                { 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
+                }, 
+                { $set: { 'classes.$.lecturers': newLecturerBody } },
+                { new: true, upsert: true }
+            );
         }
 
         if (!result) {
