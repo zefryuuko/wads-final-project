@@ -7,7 +7,7 @@ const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
 const Student = require('../models/student.model');
 const Lecturer = require('../models/lecturer.model');
-const coursesServiceEndpoint = process.env.COURSES_HOST;
+const courssServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
     // TODO: Add pagination
@@ -45,6 +45,76 @@ router.get('/:id', async (req, res) => {
 
         res.status(500).json({
             "message": err
+        });
+    }
+});
+
+router.get('/searchStudentById/:id', async (req, res) => {
+    try {
+        const semesters = await Semester.find(
+            { 'classes.students.universalId': req.params.id },
+            {}
+        );
+
+        // Filter out results
+        semesters.forEach(semester => {
+            semester.classes = semester.classes.filter(semesterClass => {
+                let isCurrentClassHasSearchedStudent = false
+                semesterClass.students.forEach(student => {
+                    if (student.universalId == req.params.id)
+                        isCurrentClassHasSearchedStudent = true;
+                })
+                return isCurrentClassHasSearchedStudent;
+            })
+        });
+
+        
+        if (semesters.length < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not registered in any courses`
+            });
+        }
+        else {
+            res.status(200).send(semesters);
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.get('/searchLecturerById/:id', async (req, res) => {
+    try {
+        const semesters = await Semester.find(
+            { 'classes.lecturers.universalId': req.params.id },
+            {}
+        );
+
+        // Filter out results
+        semesters.forEach(semester => {
+            semester.classes = semester.classes.filter(semesterClass => {
+                let isCurrentClassHasSearchedLecturer = false
+                semesterClass.lecturers.forEach(lecturer => {
+                    if (lecturer.universalId == req.params.id)
+                        isCurrentClassHasSearchedLecturer = true;
+                })
+                return isCurrentClassHasSearchedLecturer;
+            })
+        });
+
+        
+        if (semesters.length < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not registered in any courses`
+            });
+        }
+        else {
+            res.status(200).send(semesters);
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
         });
     }
 });
