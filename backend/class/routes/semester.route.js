@@ -343,10 +343,6 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
             }
         }
 
-        const semesterData = await Semester.findOne(
-
-        );
-
         // Update class
         const result = await Semester.findOneAndUpdate(
             { 
@@ -367,7 +363,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 if (!element._id) element._id = mongoose.Types.ObjectId();
                 element = new Student(element);
                 return element;
-            })
+            });
             await Semester.updateOne(
                 { 
                     _id: { $eq: req.params.id }, 
@@ -389,7 +385,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 if (!element._id) element._id = mongoose.Types.ObjectId();
                 element = new Lecturer(element);
                 return element;
-            })
+            });
             await Semester.updateOne(
                 { 
                     _id: { $eq: req.params.id }, 
