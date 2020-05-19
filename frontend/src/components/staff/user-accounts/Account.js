@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, Link, withRouter} from 'react-router-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
