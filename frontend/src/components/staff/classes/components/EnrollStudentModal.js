@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 // Services
-
+import UserService from '../../../../services/UserService';
+import CourseService from '../../../../services/CourseService';
 
 // UI Elements
 import Modal from '../../../ui-elements/Modal';
 import ModalHeader from '../../../ui-elements/ModalHeader';
 import ModalBody from '../../../ui-elements/ModalBody';
 import ModalFooter from '../../../ui-elements/ModalFooter';
-import UserService from '../../../../services/UserService';
 
 class EnrollStudentModal extends Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class EnrollStudentModal extends Component {
 
         // Bind functions
         this.loadStudents = this.loadStudents.bind(this);
+        this.enrollStudent = this.enrollStudent.bind(this);
     }
 
     loadStudents() {
@@ -31,6 +32,13 @@ class EnrollStudentModal extends Component {
         .catch(err => {
             // Do something
         })
+    }
+
+    enrollStudent(e) {
+        let { id } = e.target;
+        id = id.split("_");
+        this.props.enrollStudent(id[0], id[1]);
+        this.setState(prevState => { return { enrolledStudentIds: [...prevState.enrolledStudentIds, id[0]] } } )
     }
 
     componentDidMount() {
@@ -64,7 +72,7 @@ class EnrollStudentModal extends Component {
                                         <tr>
                                             <th scope="row">{row.id}</th>
                                             <td>{row.firstName} {row.lastName}</td>
-                                            <td><button className="btn btn-secondary" disabled={this.state.enrolledStudentIds.includes(row.id)}>{!this.state.enrolledStudentIds.includes(row.id) ? "Enroll" : "Enrolled"}</button></td>
+                                            <td><button className="btn btn-secondary" id={`${row.id}_${row.firstName} ${row.lastName}`} onClick={this.enrollStudent} disabled={this.state.enrolledStudentIds.includes(row.id)}>{!this.state.enrolledStudentIds.includes(row.id) ? "Enroll" : "Enrolled"}</button></td>
                                         </tr>
                                     )
                                 })
