@@ -16,6 +16,7 @@ import Card from '../../ui-elements/Card';
 import CourseDescription from '../../ui-elements/CourseDescription';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import Evaluation from '../../ui-elements/Evaluation';
+import EnrollStudentModal from './components/EnrollStudentModal';
 
 // Components
 
@@ -116,9 +117,9 @@ class Class extends React.Component {
                                                 {this.state.currentTableContent && this.state.currentTableContent.students.length > 0  ? this.state.currentTableContent.students.map(row => {
                                                     return (
                                                         <tr key={row.universalId}>
-                                                            <th scope="row">{row.universalId}</th>
+                                                            <th scope="row" style={{width: 200}}>{row.universalId}</th>
                                                             <td>{row.name}</td>
-                                                            <td><button className="btn btn-danger">Remove</button></td>
+                                                            <td style={{width: 100}}><button className="btn btn-danger">Remove</button></td>
                                                         </tr>
                                                     )
                                                 }) : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students assigned to this class.</td></tr> }
@@ -137,6 +138,11 @@ class Class extends React.Component {
                         </div>
                     </ContentWrapper>
                 </PageWrapper>
+                
+                {/* Generate EnrollStudentModal */}
+                { this.state.currentTableContent ? 
+                    <EnrollStudentModal enrolledStudents={this.state.currentTableContent.students}/>
+                : null }
             </div>
 
         );
