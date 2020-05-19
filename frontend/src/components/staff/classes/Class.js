@@ -43,6 +43,7 @@ class Class extends React.Component {
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
         this.enrollStudent = this.enrollStudent.bind(this);
+        this.removeStudent = this.removeStudent.bind(this);
         this.updateSuccess = this.updateSuccess.bind(this);
         this.showError = this.showError.bind(this);
         this.saveStudentsList = this.saveStudentsList.bind(this);
@@ -87,6 +88,17 @@ class Class extends React.Component {
             currentTableContent.students = [...currentTableContent.students, {universalId, name}];
             return { currentTableContent }
         })
+    }
+
+    removeStudent(e) {
+        const { id } = e.target;
+        this.setState(prevState => {
+            let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
+            currentTableContent.students = currentTableContent.students.filter(element => {
+                return element.universalId != id;
+            });
+            return { currentTableContent }
+        });
     }
 
     saveStudentsList() {
@@ -181,7 +193,7 @@ class Class extends React.Component {
                                                         <tr key={row.universalId}>
                                                             <th scope="row" style={{width: 200}}>{row.universalId}</th>
                                                             <td>{row.name}</td>
-                                                            <td style={{width: 100}}><button className="btn btn-danger">Remove</button></td>
+                                                            <td style={{width: 100}}><button id={row.universalId} className="btn btn-danger" onClick={this.removeStudent}>Remove</button></td>
                                                         </tr>
                                                     )
                                                 }) : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students assigned to this class.</td></tr> }
