@@ -348,7 +348,7 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                 'classes.classCode': { $eq: req.params.classCode }, 
                 'classes.courseCode': { $eq: req.params.courseCode } 
             }, 
-            { $setOnInsert: { 'classes.$': req.body } }
+            { $setOnInsert: { 'classes.$': req.body } }                             // TODO: Fix this crap
         );
 
         if (!result) {
