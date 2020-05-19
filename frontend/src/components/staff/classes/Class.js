@@ -17,6 +17,8 @@ import CourseDescription from '../../ui-elements/CourseDescription';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import Evaluation from '../../ui-elements/Evaluation';
 import EnrollStudentModal from './components/EnrollStudentModal';
+import SuccessAlert from '../../ui-elements/SuccessAlert';
+import ErrorAlert from '../../ui-elements/ErrorAlert';
 
 // Components
 
@@ -29,7 +31,9 @@ class Class extends React.Component {
             currentTablePage: 1,
             currentTableContent: undefined,
             pageTitle: "Loading...",
-            semesterName: "Loading..."
+            semesterName: "Loading...",
+            showErrorMessage: false,
+            showSuccessMessage: false,
         }
 
         // Set page display mode when loading
@@ -38,6 +42,10 @@ class Class extends React.Component {
 
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
+        this.enrollStudent = this.enrollStudent.bind(this);
+        this.updateSuccess = this.updateSuccess.bind(this);
+        this.showError = this.showError.bind(this);
+        this.saveStudentsList = this.saveStudentsList.bind(this);
     }
 
     reloadTable() {
@@ -62,6 +70,38 @@ class Class extends React.Component {
                 currentTableContent: res,
             });
         });
+    }
+
+    updateSuccess() {
+        this.setState({showSuccessMessage: true, showErrorMessage: false});
+        this.reloadTable();
+    }
+
+    showError() {
+        this.setState({showErrorMessage: true, showSuccessMessage: false});
+    }
+
+    enrollStudent(universalId, name) {
+        this.setState(prevState => {
+            let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
+            currentTableContent.students = [...currentTableContent.students, {universalId, name}];
+            return { currentTableContent }
+        })
+    }
+
+    saveStudentsList() {
+        ClassService.updateClassStudents(
+            this.props.match.params.semesterId,
+            this.props.match.params.classId,
+            this.props.match.params.courseId,
+            this.state.currentTableContent.students
+        )
+        .then(res => {
+            this.updateSuccess();
+        })
+        .catch(err => {
+
+        })
     }
     
     componentDidMount() {
@@ -116,6 +156,8 @@ class Class extends React.Component {
                             contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}, {name: this.state.semesterName, url: `/staff/classes/${this.props.match.params.majorId}/${this.props.match.params.semesterId}`}]}/>
                         }/>
                     <ContentWrapper>
+                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
                         <div className="row">
                             <div className="col-12">
                                 <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined}/>
@@ -149,7 +191,7 @@ class Class extends React.Component {
                                     </div>
                                     <div className="float-right mt-2">
                                         <button className="btn btn-secondary" data-toggle="modal" data-target="#enrollStudentModal">Enroll Student</button>
-                                        <button className="btn btn-primary ml-2">Save changes</button>
+                                        <button className="btn btn-primary ml-2" onClick={this.saveStudentsList}>Save changes</button>
                                     </div>
                                 </Card>
                                 <Card title="Add dis crap" padding>
@@ -162,7 +204,7 @@ class Class extends React.Component {
                 
                 {/* Generate EnrollStudentModal */}
                 { this.state.currentTableContent ? 
-                    <EnrollStudentModal enrolledStudents={this.state.currentTableContent.students}/>
+                    <EnrollStudentModal enrolledStudents={this.state.currentTableContent.students} enrollStudent={this.enrollStudent}/>
                 : null }
             </div>
 
