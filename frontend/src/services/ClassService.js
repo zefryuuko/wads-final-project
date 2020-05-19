@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import env from '../environments/dev.env';
 
-class UserService {
+class ClassService {
     API_ENDPOINT = `${env.API_ENDPOINT}classes`;
 
     async getMajors(page, callback) {
@@ -13,6 +13,28 @@ class UserService {
         } catch (err) {
             if (callback) callback(err);
             return err;
+        }
+    }
+
+    async createMajor(name, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/major`, {name});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async updateMajor(majorId, name, callback) {
+        try {
+            const res = await axios.patch(`${this.API_ENDPOINT}/major/${majorId}`, {name});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
         }
     }
 
@@ -59,6 +81,17 @@ class UserService {
             return err;
         }
     }
+
+    async updateClassStudents(semesterId, classId, courseId, students, callback) {
+        try {
+            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {students});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
-export default new UserService();
+export default new ClassService();

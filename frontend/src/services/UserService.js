@@ -71,6 +71,83 @@ class UserService {
             throw err;
         }
     }
+
+    async createUser(data, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user`, data);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async updateUser(userId, data, callback) {
+        try {
+            const res = await axios.patch(`${this.API_ENDPOINT}/user/${userId}`, data);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createStudentAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/student`, {name: "Student"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createLecturerAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/lecturer`, {name: "Lecturer"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async createStaffAccount(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/staff`, {name: "Staff"});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async resetUserPassword(userId, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/reset-password`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async deleteUserAccount(userId, accountId, callback) {
+        try {
+            const res = await axios.delete(`${this.API_ENDPOINT}/user/${userId}/${accountId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();

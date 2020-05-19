@@ -30,6 +30,7 @@ import StaffList from './user-accounts/StaffList';
 import LecturerList from './user-accounts/LecturerList';
 import StudentList from './user-accounts/StudentList';
 import Account from './user-accounts/Account';
+import CreateAccount from './user-accounts/CreateAccount';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -93,7 +94,7 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/accounts/staff`}><StaffList/></Route>
                         <Route exact path={`${path}/accounts/lecturer`}><LecturerList/></Route>
                         <Route exact path={`${path}/accounts/student`}><StudentList/></Route>
-                        <Route exact path={`${path}/accounts/create`}><Dashboard/></Route>
+                        <Route exact path={`${path}/accounts/create`}><CreateAccount/></Route>
                         <Route exact path={`${path}/accounts/:accountId`}><Account/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
