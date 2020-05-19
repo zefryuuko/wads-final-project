@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import env from '../environments/dev.env';
 
-class UserService {
+class ClassService {
     API_ENDPOINT = `${env.API_ENDPOINT}classes`;
 
     async getMajors(page, callback) {
@@ -83,4 +83,4 @@ class UserService {
     }
 }
 
-export default new UserService();
+export default new ClassService();
