@@ -19,6 +19,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 import EnrollStudentModal from './components/EnrollStudentModal';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
+import EnrollLecturerModal from './components/EnrollLecturerModal';
 
 // Components
 
@@ -43,10 +44,13 @@ class Class extends React.Component {
         // Bind functions
         this.reloadTable = this.reloadTable.bind(this);
         this.enrollStudent = this.enrollStudent.bind(this);
+        this.enrollLecturer = this.enrollLecturer.bind(this);
         this.removeStudent = this.removeStudent.bind(this);
+        this.removeLecturer = this.removeLecturer.bind(this);
         this.updateSuccess = this.updateSuccess.bind(this);
         this.showError = this.showError.bind(this);
         this.saveStudentsList = this.saveStudentsList.bind(this);
+        this.saveLecturerList = this.saveLecturerList.bind(this);
     }
 
     reloadTable() {
@@ -90,11 +94,30 @@ class Class extends React.Component {
         })
     }
 
+    enrollLecturer(universalId, name) {
+        this.setState(prevState => {
+            let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
+            currentTableContent.lecturers = [...currentTableContent.lecturers, {universalId, name}];
+            return { currentTableContent }
+        })
+    }
+
     removeStudent(e) {
         const { id } = e.target;
         this.setState(prevState => {
             let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
             currentTableContent.students = currentTableContent.students.filter(element => {
+                return element.universalId !== id;
+            });
+            return { currentTableContent }
+        });
+    }
+
+    removeLecturer(e) {
+        const { id } = e.target;
+        this.setState(prevState => {
+            let currentTableContent = JSON.parse(JSON.stringify(prevState.currentTableContent));
+            currentTableContent.lecturers = currentTableContent.lecturers.filter(element => {
                 return element.universalId !== id;
             });
             return { currentTableContent }
@@ -112,7 +135,23 @@ class Class extends React.Component {
             this.updateSuccess();
         })
         .catch(err => {
-
+            this.showError();
+        })
+    }
+    
+    saveLecturerList() {
+        ClassService.updateClassLecturers(
+            this.props.match.params.semesterId,
+            this.props.match.params.classId,
+            this.props.match.params.courseId,
+            this.state.currentTableContent.lecturers
+        )
+        .then(res => {
+            this.updateSuccess();
+        })
+        .catch(err => {
+            this.showError();
+            
         })
     }
     
@@ -206,8 +245,37 @@ class Class extends React.Component {
                                         <button className="btn btn-primary ml-2" onClick={this.saveStudentsList}>Save changes</button>
                                     </div>
                                 </Card>
+                                <Card title="Lecturers" padding>
+                                    <div className="table-responsive">
+                                        <table id="lecturersTable" className="table table-striped no-wrap">
+                                            <thead className="bg-primary text-white">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.currentTableContent && this.state.currentTableContent.lecturers.length > 0  ? this.state.currentTableContent.lecturers.map(row => {
+                                                    return (
+                                                        <tr key={row.universalId}>
+                                                            <th scope="row" style={{width: 200}}>{row.universalId}</th>
+                                                            <td>{row.name}</td>
+                                                            <td style={{width: 100}}><button id={row.universalId} className="btn btn-danger" onClick={this.removeLecturer}>Remove</button></td>
+                                                        </tr>
+                                                    )
+                                                }) : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no lecturers assigned to this class.</td></tr> }
+                                            </tbody>
+                                            {this.state.currentTableContent ? <script>{ window.loadTable('#lecturersTable') }</script> : null}
+                                        </table>
+                                    </div>
+                                    <div className="float-right mt-2">
+                                        <button className="btn btn-secondary" data-toggle="modal" data-target="#enrollLecturerModal">Enroll Lecturer</button>
+                                        <button className="btn btn-primary ml-2" onClick={this.saveLecturerList}>Save changes</button>
+                                    </div>
+                                </Card>
                                 <Card title="Add dis crap" padding>
-                                    Lecturers, Schedule
+                                    Schedule
                                 </Card>
                             </div>
                         </div>
@@ -218,8 +286,12 @@ class Class extends React.Component {
                 { this.state.currentTableContent ? 
                     <EnrollStudentModal enrolledStudents={this.state.currentTableContent.students} enrollStudent={this.enrollStudent}/>
                 : null }
-            </div>
 
+                {/* Generate EnrollLecturerModal */}
+                { this.state.currentTableContent ? 
+                    <EnrollLecturerModal enrolledStudents={this.state.currentTableContent.lecturers} enrollStudent={this.enrollLecturer}/>
+                : null }
+            </div>
         );
     }
 }

@@ -92,6 +92,18 @@ class ClassService {
             throw err;
         }
     }
+
+    async updateClassLecturers(semesterId, classId, courseId, lecturers, callback) {
+        console.log(lecturers)
+        try {
+            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {lecturers});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new ClassService();
