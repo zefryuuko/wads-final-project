@@ -54,6 +54,7 @@ class Account extends React.Component {
         this.deleteStudentAccount = this.deleteStudentAccount.bind(this);
         this.deleteLecturerAccount = this.deleteLecturerAccount.bind(this);
         this.deleteStaffAccount = this.deleteStaffAccount.bind(this);
+        this.resetPassword = this.resetPassword.bind(this);
     }
 
     closeModal(modalId) {
@@ -184,6 +185,26 @@ class Account extends React.Component {
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
         this.closeModal(`#deleteStaffProfile`);
         UserService.deleteUserAccount(this.props.match.params.accountId, this.state.staffAccount._id)
+            .then((res) => {
+                this.updateSuccess();
+                this.setState({isUpdating: false});
+            })
+            .catch((err) =>{
+                console.log(err)
+                if (err.response && (err.response.status === 409)) { 
+                    this.showError();
+                    this.setState({isUpdating: false});
+                } else {
+                    this.showError();
+                    this.setState({isUpdating: false});
+                }
+            });
+    }
+
+    resetPassword() {
+        this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
+        this.closeModal(`#resetPasswordModal`);
+        UserService.resetUserPassword(this.props.match.params.accountId)
             .then((res) => {
                 this.updateSuccess();
                 this.setState({isUpdating: false});
@@ -473,8 +494,18 @@ class Account extends React.Component {
                                 <Card title="Account Settings" padding>
                                     <div className="row">
                                         <div className="col-lg-6">
-                                            <Button className="btn btn-block btn-secondary mb-2">Change Password</Button>
+                                            <Button className="btn btn-block btn-secondary mb-2" data-toggle="modal" data-target="#resetPasswordModal">Reset Password</Button>
                                         </div>
+                                        <Modal id="resetPasswordModal">
+                                            <ModalHeader title="Reset Password"/>
+                                            <ModalBody>
+                                                <p>Are you sure you want to reset the password for {`${this.state.firstName} ${this.state.lastName}`}?</p>
+                                                <p>The password will be set to its default value.</p>
+                                            </ModalBody>
+                                            <ModalFooter>
+                                                <Button className="btn btn-secondary" onClick={this.resetPassword}>Reset</Button>
+                                            </ModalFooter>
+                                        </Modal>
                                         <div className="col-lg-6">
                                             <Button className="btn btn-block btn-danger mb-2">Delete Account</Button>
                                         </div>
