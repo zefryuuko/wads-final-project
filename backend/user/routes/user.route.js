@@ -370,6 +370,28 @@ router.post('/:id/staff', async (req, res) => {
     }
 });
 
+router.get('/:userId/:accountId', async (req, res) => {
+    try {
+        const user = await User.findOne(
+            { id: req.params.userId, 'accounts._id': req.params.accountId },
+            { 'accounts.$': 1 }
+        );
+        
+        if (!user) {
+            res.status(404).json({
+                "message": `User with id ${req.params.userId} does not have an account with id ${req.params.accountId}.`
+            });
+        }
+        else {
+            res.status(200).send(user.accounts[0]);
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
 router.delete('/:userId/:accountId', async (req, res) => {
     try {
         const removedUser = await User.updateOne(
