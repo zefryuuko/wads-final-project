@@ -103,6 +103,28 @@ class ClassService {
             throw err;
         }
     }
+
+    async getCourseByStudentId(studentId, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchStudentById/${studentId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
+    async getCourseByLecturerId(lecturerId, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchLecturerById/${lecturerId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
 }
 
 export default new ClassService();
