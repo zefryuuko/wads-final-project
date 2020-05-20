@@ -10,8 +10,8 @@ class Tab extends Component {
                         <ul className="nav nav-tabs nav-bordered mb-3">
                             {this.props.data.map((element, index) => {
                                 return (
-                                    <li className="nav-item" key={`tab-${element.name}-${index}`}>
-                                            <a href={`#tab-${element.name}-${index}`} data-toggle="tab" aria-expanded="false" className={`nav-link ${index > 0 ? "" : "active"}`}>
+                                    <li className="nav-item" key={`tab-${element.name.replace(/\s/g, '')}-${index}`}>
+                                            <a href={`#tab-${element.name.replace(/\s/g, '')}-${index}`} data-toggle="tab" aria-expanded="false" className={`nav-link ${index > 0 ? "" : "active"}`}>
                                             <i className="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
                                             <span className="d-lg-block">{element.name}</span>
                                         </a>
@@ -24,7 +24,7 @@ class Tab extends Component {
                         <div className="tab-content">
                             {this.props.data.map((element, index) => {
                                 return (
-                                    <div className={`tab-pane ${index > 0 ? "" : "show active"}`} id={`tab-${element.name}-${index}`} key={`tab-${element.name}-${index}`}>
+                                    <div className={`tab-pane ${index > 0 ? "" : "show active"}`} id={`tab-${element.name.replace(/\s/g, '')}-${index}`} key={`tab-${element.name}-${index}`}>
                                         {element.component ? element.component : null}
                                     </div>
                                 )
