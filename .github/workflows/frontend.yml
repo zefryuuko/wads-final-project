@@ -23,9 +23,9 @@ jobs:
       run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Get firebase.js
-      uses: wei/wget@v1
-      with:
-        args: -O ./frontend/firebase.js ${{ secrets.FIREBASE_JS }}
+      run: |
+        wget -O firebase.js ${{ secrets.FIREBASE_JS }}
+      working-directory: ./frontend/src
     - name: Build frontend
       run: |
         npm install
