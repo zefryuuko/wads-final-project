@@ -25,7 +25,7 @@ jobs:
     - name: Get firebase.js
       uses: wei/wget@v1
       with:
-        args: -O ./frontend/firebase.js {{ secrets.FIREBASE_JS }}
+        args: -O ./frontend/firebase.js ${{ secrets.FIREBASE_JS }}
     - name: Build frontend
       run: |
         npm install
