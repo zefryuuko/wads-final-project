@@ -3,7 +3,6 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../services/AuthService';
-import UserService from '../../services/UserService';
 
 // UI Elements
 import MainWrapper from '../ui-elements/MainWrapper';
@@ -17,16 +16,15 @@ import Footer from '../Footer';
 
 // Course Administration
 import Dashboard from './Dashboard';
+import Courses from './courses/Courses';
+import Course from './courses/Course';
 
 class Student extends Component {
     constructor() {
         super();
         this.state = {
             isLoading: true,
-            isLoggedIn: false,
-            userFirstName: "",
-            userFirstFullName: "",
-            userLastName: "",
+            isLoggedIn: false
         }
 
         // Set page display mode when loading
@@ -51,16 +49,6 @@ class Student extends Component {
                         isLoggedIn: true
                     })
             });
-        
-        // Load user info
-        UserService.getUserData()
-            .then(res => {
-                this.setState({
-                    userFirstName: res.firstName.split(' ')[0],
-                    userFirstFullName: res.firstName,
-                    userLastName: res.lastName
-                })
-            });
     }
 
     render() {
@@ -77,9 +65,9 @@ class Student extends Component {
                         <Route exact path={path}><Dashboard/></Route>
 
                         {/* Courses */}
-                        {/* <Route exact path={`${path}/courses`}><CourseGroups/></Route> */}
+                        <Route exact path={`${path}/courses`}><Courses/></Route>
                         {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
-                        {/* <Route exact path={`${path}/courses/:groupId/:courseId`}><Course/></Route> */}
+                        <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
 
                         {/* Classes */}
                         {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}

@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import firebase from '../../../firebase';
 
 // UI Elements
 import PageWrapper from '../../ui-elements/PageWrapper';
@@ -54,7 +55,8 @@ class CreateAccount extends React.Component {
         let {name, value} = event.target;
         if (name === 'firstName' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.firstName;
         if (name === 'lastName' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.lastName;
-        if (name === 'id' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.id;
+        if (name === 'id' && !/^[a-zA-Z0-9()]*$/.test(value)) value = this.state.id;
+        if (name === 'profilePicture') value = event.target.files
         this.setState({
             [name]: value
         });
@@ -63,7 +65,45 @@ class CreateAccount extends React.Component {
     onSubmitHandler(e) {
         e.preventDefault();
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
-        UserService.createUser(this.state)
+        if (this.state.profilePicture) {
+            const bucketName = "profile-picture";
+            const picture = this.state.profilePictureFile[0];
+            let pictureExtension = picture.name.split(".");
+            pictureExtension = pictureExtension[pictureExtension.length - 1];
+            const fileName = `${this.props.match.params.accountId}.${pictureExtension}`;
+            let storageRef = firebase.storage().ref(`${bucketName}/${fileName}`);
+            let uploadTask = storageRef.put(picture);
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+                firebase.storage().ref().child(`${bucketName}/${fileName}`).getDownloadURL().then(downloadURL => {
+                    console.log(downloadURL);
+                    UserService.createUser({...this.state, profilePictureURL: downloadURL})
+                    .then((res) => {
+                        this.updateSuccess();
+                        this.setState({
+                            isUpdating: false,
+                            id: "",
+                            firstName: "",
+                            lastName: "",
+                            primaryEmail: "",
+                            contactEmail: "",
+                            phone: "",
+                            profilePicture: undefined,
+                        });
+                    })
+                    .catch((err) =>{
+                        console.log(err)
+                        if (err.response && (err.response.status === 409)) { 
+                            this.showErrorAlert(err.response.data.message);
+                            this.setState({isUpdating: false});
+                        } else {
+                            this.showError();
+                            this.setState({isUpdating: false});
+                        }
+                    });
+                })
+            });
+        } else {
+            UserService.createUser(this.state)
             .then((res) => {
                 this.updateSuccess();
                 this.setState({
@@ -74,6 +114,7 @@ class CreateAccount extends React.Component {
                     primaryEmail: "",
                     contactEmail: "",
                     phone: "",
+                    profilePicture: undefined,
                 });
             })
             .catch((err) =>{
@@ -86,6 +127,7 @@ class CreateAccount extends React.Component {
                     this.setState({isUpdating: false});
                 }
             });
+        }
     }
     
     componentDidMount() {
@@ -119,6 +161,12 @@ class CreateAccount extends React.Component {
                                 <Card padding>
                                     <form onSubmit={this.onSubmitHandler}>
                                         <div className="form-row">
+                                            <div className="form-group col-lg-12">
+                                                <label htmlFor="phone">Account ID</label>
+                                                <input type="string" className="form-control" name="id" placeholder="Account ID" value={this.state.id} onChange={this.handleChange} disabled={this.state.isUpdating} minLength="10" maxLength="10" required/>
+                                            </div>
+                                        </div>
+                                        <div className="form-row">
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="firstName">First Name</label>
                                                 <input type="input" className="form-control" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
@@ -144,8 +192,16 @@ class CreateAccount extends React.Component {
                                                 <input type="telephone" className="form-control" name="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
                                             </div>
                                             <div className="form-group col-lg-6">
-                                                <label htmlFor="phone">Account ID</label>
-                                                <input type="string" className="form-control" name="id" placeholder="Account ID" value={this.state.id} onChange={this.handleChange} disabled={this.state.isUpdating} minLength="10" maxLength="10" required/>
+                                                <label htmlFor="phone">Profile Picture</label>
+                                                {/* <div className="input-group">
+                                                    <div className="input-group-prepend">
+                                                        <div className="input-group-text">Image</div>
+                                                    </div> */}
+                                                    {/* <div className="custom-file"> */}
+                                                        <input type="file" id="profilePicture" name="profilePicture" accept="image/x-png,image/jpeg" onChange={this.handleChange}/> {/*className="custom-file-input"*/}
+                                                        {/* <label className="custom-file-label" htmlFor="profilePicture">Choose file</label> */}
+                                                    {/* </div> */}
+                                                {/* </div> */}
                                             </div>
                                         </div>
                                         <div className="form-row">

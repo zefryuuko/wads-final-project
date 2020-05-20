@@ -20,7 +20,7 @@ function App() {
         <Route exact path="/logout" component={Logout}/>
 
         {/* Student Routes */}
-        <Route exact path="/student" component={StudentDashboardPage}/>
+        <Route path="/student" component={StudentDashboardPage}/>
 
         {/* Staff Routes */}
         <Route path="/staff" component={StaffDashboardPage}/>

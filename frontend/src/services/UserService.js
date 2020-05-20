@@ -148,6 +148,17 @@ class UserService {
             throw err;
         }
     }
+
+    async getUserAccountDetails(universalId, accountId, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}/${accountId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback({}, err);
+            throw err;
+        }
+    }
 }
 
 export default new UserService();

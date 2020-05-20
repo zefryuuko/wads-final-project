@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import firebase from '../../../firebase';
 
 // UI Elements
 import PageWrapper from '../../ui-elements/PageWrapper';
@@ -31,11 +32,15 @@ class Account extends React.Component {
             primaryEmail: "",
             contactEmail: "",
             phone: "",
+            id: undefined,
+            profilePictureURL: undefined,
+            profilePictureFile: undefined,
             studentAccount: undefined,
             lecturerAccount: undefined,
             staffAccount: undefined,
             showErrorMessage: false,
             showSuccessMessage: false,
+            isUpdating: false
         }
 
         // Set page display mode when loading
@@ -47,6 +52,7 @@ class Account extends React.Component {
         this.showError = this.showError.bind(this);
         this.updateSuccess = this.updateSuccess.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.onUpdatePictureHandler = this.onUpdatePictureHandler.bind(this);
         this.reloadData = this.reloadData.bind(this);
         this.createStudentAccount = this.createStudentAccount.bind(this);
         this.createLecturerAccount = this.createLecturerAccount.bind(this);
@@ -74,6 +80,7 @@ class Account extends React.Component {
                     primaryEmail: res ? res.primaryEmail: "",
                     contactEmail: res ? res.contactEmail: "",
                     phone: res ? res.phone: "",
+                    profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
                     studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                     lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
                     staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
@@ -247,6 +254,7 @@ class Account extends React.Component {
                     primaryEmail: res ? res.primaryEmail: "",
                     contactEmail: res ? res.contactEmail: "",
                     phone: res ? res.phone: "",
+                    profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
                     studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                     lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
                     staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
@@ -272,6 +280,7 @@ class Account extends React.Component {
         if (name === 'lastName' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.lastName;
         if (name === 'primaryEmail' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.primaryEmail;
         if (name === 'id' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.id;
+        if (name === 'profilePictureFile') value = event.target.files
         this.setState({
             [name]: value
         });
@@ -303,6 +312,38 @@ class Account extends React.Component {
             });
     }
 
+    onUpdatePictureHandler(e) {
+        e.preventDefault();
+        this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
+
+        const bucketName = "profile-picture";
+        const picture = this.state.profilePictureFile[0];
+        let pictureExtension = picture.name.split(".");
+        pictureExtension = pictureExtension[pictureExtension.length - 1];
+        const fileName = `${this.props.match.params.accountId}.${pictureExtension}`;
+        let storageRef = firebase.storage().ref(`${bucketName}/${fileName}`);
+        let uploadTask = storageRef.put(picture);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+            firebase.storage().ref().child(`${bucketName}/${fileName}`).getDownloadURL().then(downloadURL => {
+                UserService.updateUser(this.props.match.params.accountId, {
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    primaryEmail: this.state.primaryEmail,
+                    contactEmail: this.state.contactEmail,
+                    phone: this.state.phone,
+                    profilePictureURL: downloadURL
+                }).then(res => {
+                    this.updateSuccess();
+                    window.location.reload();
+                    this.setState({isUpdating: false});
+                }).catch(err => {
+                    this.showError();
+                    this.setState({isUpdating: false});
+                })
+            });
+        });
+    }
+
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
         return (
@@ -319,11 +360,11 @@ class Account extends React.Component {
                                         <div className="form-row">
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="firstName">First Name</label>
-                                                <input type="input" className="form-control" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} required/>
+                                                <input type="input" className="form-control" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
                                             </div>
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="lastName">Last Name</label>
-                                                <input type="input" className="form-control" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} required/>
+                                                <input type="input" className="form-control" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
                                             </div>
                                         </div>
                                         <div className="form-row">
@@ -333,27 +374,45 @@ class Account extends React.Component {
                                             </div>
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="contactEmail">Contact Email</label>
-                                                <input type="email" className="form-control" name="contactEmail" placeholder="Contact Email" value={this.state.contactEmail} onChange={this.handleChange} required/>
+                                                <input type="email" className="form-control" name="contactEmail" placeholder="Contact Email" value={this.state.contactEmail} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="form-group col-lg-6">
                                                 <label htmlFor="phone">Phone Number</label>
-                                                <input type="telephone" className="form-control" name="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange} required/>
+                                                <input type="telephone" className="form-control" name="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="col-lg-6"><small>All fields are required.</small></div>
                                             <div className="col-lg-6">
-                                                <Button type="submit" className="btn btn-primary float-right">Save Changes</Button>
+                                                <Button type="submit" className="btn btn-primary float-right" loading={this.state.isUpdating}>Save Changes</Button>
                                             </div>
                                         </div>
                                     </form>
                                 </Card>
                             </div>
                             <div className="col-lg-3 col-md-12">
-                                <Card title="Profile Picture" padding>
-                                    TODO: Add profile picture
+                                <Card title="Profile Picture" style={{overflow: "hidden"}} padding>
+                                    <div className="rounded-circle" style={{
+                                            marginRight: "auto",
+                                            marginLeft: "auto",
+                                            display: "block",
+                                            width: 160, 
+                                            overflow: "hidden", 
+                                            height: 160, 
+                                            textAlign: "center",
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundPosition: "center center",
+                                            backgroundSize: "cover",
+                                            backgroundImage: `url('${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}')`
+                                        }}>
+                                    </div>
+                                    <div className="card-title text-secondary mt-3">Update Picture</div>
+                                    <form onSubmit={this.onUpdatePictureHandler}>
+                                        <input type="file" name="profilePictureFile" accept="image/x-png,image/jpeg" onChange={this.handleChange}/>
+                                        <Button type="submit" className="btn btn-primary btn-block mt-2" loading={this.state.isUpdating && this.state.profilePictureFile} disabled={!this.state.profilePictureFile || this.state.isUpdating}>Save Changes</Button>
+                                    </form>
                                 </Card>
                             </div>
                         </div>
