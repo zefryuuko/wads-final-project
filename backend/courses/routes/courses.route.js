@@ -212,6 +212,7 @@ router.get('/:courseCode/:classCode', async (req, res) => {
                 name: 1,
                 description: 1,
                 learningOutcomes: 1,
+                scu: 1,
                 class: { $elemMatch: { code: req.params.classCode } }
             }
         );
