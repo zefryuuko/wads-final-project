@@ -7,7 +7,7 @@ const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
 const Student = require('../models/student.model');
 const Lecturer = require('../models/lecturer.model');
-const courssServiceEndpoint = process.env.COURSES_HOST;
+const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
     // TODO: Add pagination
