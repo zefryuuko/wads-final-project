@@ -9,6 +9,7 @@ class Navbar extends React.Component {
         this.state = {
             userFullName: "",
             userAccounts: undefined,
+            profilePictureURL: undefined,
             activeAccount: localStorage.getItem('activeAccount')
         }
 
@@ -19,6 +20,7 @@ class Navbar extends React.Component {
         UserService.getUserData()
         .then(res => this.setState({
             userFullName: `${res.firstName} ${res.lastName}`,
+            profilePictureURL: res.profilePictureURL,
             userAccounts: res.accounts
         }))
     }
@@ -97,7 +99,7 @@ class Navbar extends React.Component {
                             <li className="nav-item dropdown">
                                 <span className="nav-link dropdown-toggle" onClick={e => e.preventDefault()} data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <img src="/assets/images/users/profile-pic.jpg" alt="user" className="rounded-circle"
+                                    <img src={`${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}`} alt="user" className="rounded-circle"
                                         width="40"/>
                                     <span className="ml-2 d-none d-lg-inline-block"><span
                                             className="text-dark">{this.state.userFullName}</span> <i data-feather="chevron-down"
