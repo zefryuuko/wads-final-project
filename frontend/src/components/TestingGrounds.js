@@ -25,6 +25,12 @@ const TestingGrounds = () => (
         <button onClick={isAuthServiceActive}>IsServiceActive</button>
         <button onClick={isLoggedIn}>isLoggedIn</button>
         <button onClick={login}>Login</button>
+        <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
     </div>
 );
 
