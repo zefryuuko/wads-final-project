@@ -55,7 +55,7 @@ class Navbar extends React.Component {
                                 className="ti-menu ti-close"></i></span>
                         <div className="navbar-brand">
                             {/* <!-- Logo icon --> */}
-                            <a href="index.html">
+                            <div>
                                 <b className="logo-icon">
                                     {/* <img src="/assets/images/logo.png" alt="homepage" className="dark-logo" />
                                     <img src="/assets/images/logo-alt.png" alt="homepage" className="light-logo" /> */}
@@ -64,7 +64,7 @@ class Navbar extends React.Component {
                                     <img src="/assets/images/logo.png" alt="homepage" className="dark-logo" width="200px"/>
                                     <img src="/assets/images/logo-alt.png" className="light-logo" alt="homepage" width="200px"/>
                                 </span>
-                            </a>
+                            </div>
                         </div>
                         {/* <!-- Toggle which is visible on mobile only --> */}
                         <span className="topbartoggler d-block d-md-none waves-effect waves-light" onClick={e => e.preventDefault()}
