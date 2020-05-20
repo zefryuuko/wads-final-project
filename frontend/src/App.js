@@ -9,6 +9,7 @@ import Logout from './components/Logout';
 import StudentDashboardPage from './components/student/StudentDashboardPage';
 import StaffDashboardPage from './components/staff/StaffDashboardPage';
 import TestingGrounds from './components/TestingGrounds';
+import LecturerDashboardPage from './components/lecturer/LecturerDashboardPage';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
 
         {/* Student Routes */}
         <Route path="/student" component={StudentDashboardPage}/>
+
+        {/* Lecturer Routes */}
+        <Route path="/lecturer" component={LecturerDashboardPage}/>
 
         {/* Staff Routes */}
         <Route path="/staff" component={StaffDashboardPage}/>
