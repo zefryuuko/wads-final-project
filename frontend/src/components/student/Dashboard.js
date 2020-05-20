@@ -1,9 +1,10 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 
 // Services
 import AuthService from '../../services/AuthService';
 import UserService from '../../services/UserService';
+import ClassService from '../../services/ClassService';
 
 // UI Elements
 import PageWrapper from '../ui-elements/PageWrapper';
@@ -21,7 +22,8 @@ class StaffDashboard extends React.Component {
             userFirstName: "",
             userFirstFullName: "",
             userLastName: "",
-            accountDetails: undefined
+            accountDetails: undefined,
+            currentlEnrolledSemester: undefined
         }
 
         // Set page display mode when loading
@@ -62,8 +64,17 @@ class StaffDashboard extends React.Component {
                     accountDetails: res
                 })
             });
-    }
 
+
+        // Load classes data
+        ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
+        .then(res => {
+            this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
+        }).catch(err => {
+            this.setState({isLoading: false})
+        });
+    }
+    
     render() {
         if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
         return (
@@ -144,7 +155,18 @@ class StaffDashboard extends React.Component {
                             </div>
                         </div>
                         <Card title="This Semester" padding>
-
+                            <div className="list-group">
+                                {this.state.currentEnrolledSemester ?
+                                    this.state.currentEnrolledSemester.classes.map((element, index) => {
+                                        return <Link to={`/student/courses/${this.state.currentEnrolledSemester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
+                                            <span className="mr-2">{element.metadata.name}</span> 
+                                            <span className="badge badge-primary mr-1">{element.classType}</span>
+                                            <span className="badge badge-secondary mr-1">{element.classCode}</span>
+                                            <span className="badge badge-secondary mr-1">{element.courseCode}</span>
+                                        </Link>
+                                    })
+                                : <div style={{textAlign: "center"}}>No data</div>}
+                            </div>
                         </Card>
                     </ContentWrapper>
                 </PageWrapper>
