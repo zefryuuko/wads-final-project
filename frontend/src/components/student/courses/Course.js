@@ -3,7 +3,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
-import CourseService from '../../../services/CourseService';
+// import CourseService from '../../../services/CourseService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -12,14 +12,14 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Tab from '../../ui-elements/Tab';
 // import Table from '../../ui-elements/Table';
-import Button from '../../ui-elements/Button';
+// import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
-import Textbooks from '../../ui-elements/Textbooks';
+// import Textbooks from '../../ui-elements/Textbooks';
 import Evaluation from '../../ui-elements/Evaluation';
-import ErrorAlert from '../../ui-elements/ErrorAlert';
-import SuccessAlert from '../../ui-elements/SuccessAlert';
+// import ErrorAlert from '../../ui-elements/ErrorAlert';
+// import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
 
