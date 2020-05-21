@@ -100,7 +100,7 @@ class Course extends Component {
                                 component: <div>
                                     <div className="row">
                                         <div className="col-12">
-                                            <Card title="Shared Resources" padding>
+                                            <Card title="Shared Resources" right={<a href="#addMaterials">Add New Resource</a>} padding>
                                                 <table id="sharedMaterials" className="table table-striped no-wrap">
                                                     <thead className="bg-primary text-white">
                                                         <th style={{width: 200}}>Date Added</th>
@@ -111,7 +111,7 @@ class Course extends Component {
                                                     <tbody>
                                                         <tr>
                                                             <th scope="row">12 March 2020</th>
-                                                            <td>How to use React framework</td>
+                                                            <td>How to use React framework <span> - <a className="text-primary" href="#test">Edit</a></span></td>
                                                             <td>Muhammad Yesus</td>
                                                             <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="download"/></a></td>
                                                         </tr>
