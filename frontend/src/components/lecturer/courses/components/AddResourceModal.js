@@ -67,7 +67,7 @@ class AddResourceModal extends Component {
                     universalId: this.state.resourceAuthorUniversalId
                 },
                 name: this.state.resourceName,
-                url: this.state.resourceURL
+                url: (!this.state.resourceURL.match(/^[a-zA-Z]+:\/\//)) ? 'http://' + this.state.resourceURL : this.state.resourceURL
             });
         } else {
             const bucketName = `class-data/${this.props.semesterId}/${this.props.classCode}/${this.props.courseCode}/shared-resources`;
