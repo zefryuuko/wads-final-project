@@ -3,6 +3,7 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../services/AuthService';
+import AccessControlService from '../../services/AccessControlService';
 
 // UI Elements
 import MainWrapper from '../ui-elements/MainWrapper';
@@ -50,18 +51,22 @@ class StaffDashboardPage extends Component {
     componentDidMount() {
         // Perform session check
         AuthService.isLoggedIn()
-            .then(res => {
-                if (res.response && (res.response.status === 403))
-                    this.setState({
-                        isLoading: false,
-                        isLoggedIn: false
-                    });
-                else
-                    this.setState({
-                        isLoading: false,
-                        isLoggedIn: true
-                    })
-            });
+        .then(res => {
+            if (res.response && (res.response.status === 403))
+                this.setState({
+                    isLoading: false,
+                    isLoggedIn: false
+                });
+            else
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                .then(status => {
+                    if (status)
+                        this.setState({
+                            isLoading: false,
+                            isLoggedIn: true
+                        });
+                })
+        });
     }
 
     render() {

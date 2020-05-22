@@ -45,9 +45,13 @@ class Student extends Component {
                     isLoggedIn: false
                 });
             else
-                this.setState({
-                    isLoading: false,
-                    isLoggedIn: true
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                .then(status => {
+                    if (status)
+                        this.setState({
+                            isLoading: false,
+                            isLoggedIn: true
+                        });
                 })
         });
     }
