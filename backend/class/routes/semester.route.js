@@ -556,9 +556,9 @@ router.post('/:id/:classCode/:courseCode/assignments', async (req, res) => {
     try {
         // Create and validate request body
         const { dateAdded, submissionDeadline, name, resourceURL } = req.body;
-        if (!(dateAdded && name && url && addedBy)) {
+        if (!(dateAdded && name && resourceURL && submissionDeadline)) {
             res.status(400).json({
-                "message": "One or more request body is missing. Required: dateAdded, addedBy, name, url",
+                "message": "One or more request body is missing. Required: dateAdded, submissionDeadline, name, resourceURL",
                 "got": req.body
             })
             return;
