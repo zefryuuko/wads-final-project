@@ -24,6 +24,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
 import AddResourceModal from './components/AddResourceModal';
+import AddAssignmentModal from './components/AddAssignmentModal';
 
 class Course extends Component {
     constructor(props) {
@@ -73,6 +74,30 @@ class Course extends Component {
             } else {
                 this.loadClassData();
                 window.alert("Resource deleted successfully.")
+            }
+        })
+        .catch(err => {
+            window.alert("An error has occurred when trying to remove the data. Please try again.")
+        })
+    }
+
+    deleteAssignment(resourceId, fileUrl) {
+        // Delete data from DB
+        ClassService.deleteAssignment(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode,
+            resourceId
+        )
+        .then(res => {
+            // Remove data if data is on firebase
+            if (fileUrl.includes("z-gcp-wads.appspot.com")) {
+                FileService.deleteFile(fileUrl, () => {
+                    this.loadClassData();
+                })
+            } else {
+                this.loadClassData();
+                window.alert("Assignment deleted successfully.")
             }
         })
         .catch(err => {
@@ -208,8 +233,8 @@ class Course extends Component {
                                 component: <div>
                                     <div className="row">
                                         <div className="col-12">
-                                            <Card title="Assignments" right={<a href="#createAssignment">Create Assignment</a>} padding>
-                                                <div classNam="table-responsive">
+                                            <Card title="Assignments" right={<a href="#createAssignment" data-toggle="modal" data-target="#addAssignmentModal">Create Assignment</a>} padding>
+                                                <div className="table-responsive">
                                                     <table id="assignments" className="table table-striped no-wrap">
                                                         <thead className="bg-primary text-white">
                                                             <tr>
@@ -230,13 +255,13 @@ class Course extends Component {
                                                                                         style={{fontWeight: "initial"}}
                                                                                         onClick={() => {
                                                                                             let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
-                                                                                            if (isConfirmed) this.deleteResource(assignment._id, assignment.url);
+                                                                                            if (isConfirmed) this.deleteAssignment(assignment._id, assignment.resourceURL);
                                                                                         }}
                                                                                     >Delete</a></span> 
                                                                             </th>
                                                                             <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
-                                                                                <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open</a>
+                                                                                <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
                                                                                 <a href="#viewSubmissions" className="btn btn-sm text-white btn-success" target="_blank" rel="noopener noreferrer">Submissions</a>
                                                                             </td>
                                                                         </tr>
@@ -246,6 +271,17 @@ class Course extends Component {
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                { this.state.currentUserData ? 
+                                                    <AddAssignmentModal 
+                                                        authorUniversalId={this.state.currentUserData.id} 
+                                                        authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                        semesterId={this.props.match.params.semesterId}
+                                                        classCode={this.props.match.params.classCode}
+                                                        courseCode={this.props.match.params.courseCode}
+                                                        onSuccess={this.loadClassData}
+                                                        forceRefresh={new Date()}
+                                                    /> 
+                                                : null }
                                             </Card>
                                         </div>
                                     </div>
