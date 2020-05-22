@@ -67,7 +67,6 @@ class Course extends Component {
         .then(res => {
             // Remove data if data is on firebase
             if (fileUrl.includes("z-gcp-wads.appspot.com")) {
-                const bucketName = `class-data/${this.props.match.params.semesterId}/${this.props.match.params.classCode}/${this.props.match.params.courseCode}/shared-resources`;
                 FileService.deleteFile(fileUrl, () => {
                     this.loadClassData();
                 })
