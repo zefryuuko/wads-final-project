@@ -140,7 +140,43 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Assignments" padding>
-                                                TODO: Load assignments
+                                                <div classNam="table-responsive">
+                                                    <table id="assignments" className="table table-striped no-wrap">
+                                                        <thead className="bg-primary text-white">
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th style={{width: 170}}>Deadline</th>
+                                                                <th style={{width: 150}}>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            { this.state.classData && this.state.classData.assignments.length > 0 ?
+                                                                this.state.classData.assignments.map((assignment, index) => {
+                                                                    let submissionDeadline = new Date(assignment.submissionDeadline);
+                                                                    return (
+                                                                        <tr key={index}>
+                                                                            <th scope="row">
+                                                                                {assignment.name}
+                                                                                    <span> - <a href="#deleteMaterial" 
+                                                                                        style={{fontWeight: "initial"}}
+                                                                                        onClick={() => {
+                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
+                                                                                            if (isConfirmed) this.deleteResource(assignment._id, assignment.url);
+                                                                                        }}
+                                                                                    >Delete</a></span> 
+                                                                            </th>
+                                                                            <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
+                                                                            <td>
+                                                                                <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open</a>
+                                                                                <a href="#viewSubmissions" className="btn btn-sm text-white btn-success" target="_blank" rel="noopener noreferrer">Submit</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    );
+                                                                })
+                                                            : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </Card>
                                         </div>
                                     </div>
