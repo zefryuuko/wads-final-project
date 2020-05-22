@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import FileService from '../../../services/FileService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -38,6 +39,46 @@ class Course extends Component {
         // Set page display mode when loading
         this.loadingStyle = {visibility: "none"}
         this.loadedStyle = {visibility: "visible", opacity: 1}
+
+        // Bind functions
+        this.loadClassData = this.loadClassData.bind(this);
+    }
+
+    loadClassData() {
+        ClassService.getClass(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode
+        ).then(res => {
+            this.setState({classData: res, isLoading: false});
+        }).catch(err => {
+
+        });
+    }
+
+    deleteResource(resourceId, fileUrl) {
+        // Delete data from DB
+        ClassService.deleteSharedResources(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode,
+            resourceId
+        )
+        .then(res => {
+            // Remove data if data is on firebase
+            if (fileUrl.includes("z-gcp-wads.appspot.com")) {
+                const bucketName = `class-data/${this.props.match.params.semesterId}/${this.props.match.params.classCode}/${this.props.match.params.courseCode}/shared-resources`;
+                FileService.deleteFile(fileUrl, () => {
+                    this.loadClassData();
+                })
+            } else {
+                this.loadClassData();
+                window.alert("Resource deleted successfully.")
+            }
+        })
+        .catch(err => {
+            window.alert("An error has occurred when trying to remove the data. Please try again.")
+        })
     }
 
     componentDidMount() {
