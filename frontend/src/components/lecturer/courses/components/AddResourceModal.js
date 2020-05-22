@@ -117,7 +117,6 @@ class AddResourceModal extends Component {
     }
 
     render() { 
-        console.log("STATES\n", this.state)
         return (
             <Modal id="addResourceModal">
                 <ModalHeader title="Add new resource"/>
