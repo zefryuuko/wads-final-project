@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthService from '../services/AuthService';
+import UserService from '../services/UserService';
 
 class LandingLoginForm extends React.Component {
     constructor() {
@@ -57,8 +58,24 @@ class LandingLoginForm extends React.Component {
     render() {
         if(this.state.loggedIn) {
             AuthService.saveSession(this.state.sessionData);
-            return <script>{window.location.href = "/staff"}</script>
-            // return <Redirect to="/staff"/>
+            UserService.getUserById(this.state.sessionData.universalId)
+            .then((user) => {
+                // Check user's default account
+                if (user.accounts.length < 1) {
+                    // TODO: add no accounts page
+                    window.alert("There are no profile that is associated with this account. Please contact the administrator.");
+                    window.location.href = "https://google.com";
+                } else {
+                    const defaultAccountType = user.accounts[0].accountType;
+                    const defaultAccountId = user.accounts[0]._id;
+
+                    // Save current active account to localStorage
+                    localStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
+
+                    // Redirect to default account dash
+                    window.location.href = `/${defaultAccountType}`;
+                }
+            });
         }
         return (
             <div className="login-form" id="login-form">

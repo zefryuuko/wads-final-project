@@ -3,7 +3,8 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
-// import CourseService from '../../../services/CourseService';
+import UserService from '../../../services/UserService';
+import FileService from '../../../services/FileService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -22,6 +23,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 // import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
+import AddResourceModal from './components/AddResourceModal';
 
 class Course extends Component {
     constructor(props) {
@@ -31,11 +33,51 @@ class Course extends Component {
             isAuthenticating: true,
             isAuthenticated: false,
             classData: undefined,
+            currentUserData: undefined,
         }
 
         // Set page display mode when loading
         this.loadingStyle = {visibility: "none"}
         this.loadedStyle = {visibility: "visible", opacity: 1}
+
+        // Bind functions
+        this.loadClassData = this.loadClassData.bind(this);
+    }
+
+    loadClassData() {
+        ClassService.getClass(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode
+        ).then(res => {
+            this.setState({classData: res, isLoading: false});
+        }).catch(err => {
+
+        });
+    }
+
+    deleteResource(resourceId, fileUrl) {
+        // Delete data from DB
+        ClassService.deleteSharedResources(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode,
+            resourceId
+        )
+        .then(res => {
+            // Remove data if data is on firebase
+            if (fileUrl.includes("z-gcp-wads.appspot.com")) {
+                FileService.deleteFile(fileUrl, () => {
+                    this.loadClassData();
+                })
+            } else {
+                this.loadClassData();
+                window.alert("Resource deleted successfully.")
+            }
+        })
+        .catch(err => {
+            window.alert("An error has occurred when trying to remove the data. Please try again.")
+        })
     }
 
     componentDidMount() {
@@ -53,6 +95,16 @@ class Course extends Component {
                         isAuthenticated: true
                     })
             });
+
+        UserService.getUserData().then(res => {
+            UserService.getUserData()
+            .then(res => {
+                if (res.firstName)
+                    this.setState({
+                        currentUserData: res
+                    })
+            });
+        })
 
         ClassService.getClass(
             this.props.match.params.semesterId,
@@ -100,33 +152,50 @@ class Course extends Component {
                                 component: <div>
                                     <div className="row">
                                         <div className="col-12">
-                                            <Card title="Shared Resources" padding>
+                                            <Card title="Shared Resources" right={<a href="#addMaterials" data-toggle="modal" data-target="#addResourceModal">Add New Resource</a>} padding>
                                                 <table id="sharedMaterials" className="table table-striped no-wrap">
                                                     <thead className="bg-primary text-white">
                                                         <tr>
                                                             <th style={{width: 200}}>Date Added</th>
                                                             <th>Name</th>
                                                             <th>Added By</th>
-                                                            <th style={{width: 70}}><i className="feather-icon" data-feather="file"/></th>
+                                                            <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         { this.state.classData && this.state.classData.sharedResources.length > 0 ?
-                                                                this.state.classData.sharedResources.map((resource, index) => {
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
-                                                                            <td>
-                                                                                {resource.name}
-                                                                            </td>
-                                                                            <td>{resource.addedBy.name}</td>
-                                                                            <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
-                                                                        </tr>
-                                                                    );
-                                                                })
+                                                            this.state.classData.sharedResources.map((resource, index) => {
+                                                                return (
+                                                                    <tr key={index}>
+                                                                        <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
+                                                                        <td>
+                                                                            {resource.name}
+                                                                            {resource.addedBy.universalId === (this.state.currentUserData ? this.state.currentUserData.id : null) ? 
+                                                                                <span> - <a href="#deleteMaterial" onClick={() => {
+                                                                                    let isConfirmed = window.confirm(`Are you sure you want to delete '${resource.name}'? This action cannot be undone.`);
+                                                                                    if (isConfirmed) this.deleteResource(resource._id, resource.url);
+                                                                                }}>Delete</a></span> 
+                                                                            : null}
+                                                                        </td>
+                                                                        <td>{resource.addedBy.name}</td>
+                                                                        <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
+                                                                    </tr>
+                                                                );
+                                                            })
                                                         : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
                                                     </tbody>
                                                 </table>
+                                                { this.state.currentUserData ? 
+                                                    <AddResourceModal 
+                                                        authorUniversalId={this.state.currentUserData.id} 
+                                                        authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                        semesterId={this.props.match.params.semesterId}
+                                                        classCode={this.props.match.params.classCode}
+                                                        courseCode={this.props.match.params.courseCode}
+                                                        onSuccess={this.loadClassData}
+                                                        forceRefresh={new Date()}
+                                                    /> 
+                                                : null }
                                             </Card>
                                         </div>
                                     </div>
