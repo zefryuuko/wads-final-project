@@ -71,7 +71,7 @@ class Courses extends Component {
                                     <div className="list-group">
                                         {
                                             semester.classes.map((element, index) => {
-                                                return <Link to={`/student/courses/${semester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
+                                                return <Link to={`/lecturer/courses/${semester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
                                                     <span className="mr-2">{element.metadata.name}</span> 
                                                     <span className="badge badge-primary mr-1">{element.classType}</span>
                                                     <span className="badge badge-secondary mr-1">{element.classCode}</span>
