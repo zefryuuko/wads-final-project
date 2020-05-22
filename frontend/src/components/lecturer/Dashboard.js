@@ -36,44 +36,45 @@ class StaffDashboard extends React.Component {
         // Perform session check
         AuthService.isLoggedIn()
             .then(res => {
-                if (res.response && (res.response.status === 403))
+                if (res.response && (res.response.status === 403)) 
                     this.setState({
                         isAuthenticating: false,
                         isAuthenticated: false
                     });
-                else
+                else {
                     this.setState({
                         isAuthenticating: false,
                         isAuthenticated: true
                     })
+
+                    // Load user info
+                    UserService.getUserData()
+                        .then(res => {
+                            if (res.firstName)
+                            this.setState({
+                                userFirstName: res.firstName.split(' ')[0],
+                                userFirstFullName: res.firstName,
+                                userLastName: res.lastName
+                            })
+                        });
+            
+                    UserService.getUserAccountDetails(localStorage.getItem('universalId'), localStorage.getItem('activeAccount').split(",")[0])
+                        .then(res => {
+                            this.setState({
+                                accountDetails: res
+                            })
+                        });
+            
+                        // Load classes data
+                        ClassService.getCourseByLecturerId(localStorage.getItem('universalId'))
+                        .then(res => {
+                            this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
+                        }).catch(err => {
+                            this.setState({isLoading: false})
+                        });
+                }
             });
         
-        // Load user info
-        UserService.getUserData()
-            .then(res => {
-                if (res.firstName)
-                this.setState({
-                    userFirstName: res.firstName.split(' ')[0],
-                    userFirstFullName: res.firstName,
-                    userLastName: res.lastName
-                })
-            });
-
-        UserService.getUserAccountDetails(localStorage.getItem('universalId'), localStorage.getItem('activeAccount').split(",")[0])
-            .then(res => {
-                this.setState({
-                    accountDetails: res
-                })
-            });
-
-            // Load classes data
-            ClassService.getCourseByLecturerId(localStorage.getItem('universalId'))
-            .then(res => {
-                this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
-            }).catch(err => {
-                this.setState({isLoading: false})
-            });
-
     }
     
     render() {
