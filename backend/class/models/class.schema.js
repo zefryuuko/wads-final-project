@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var ScheduleSchema = require('./schedule.schema');
 var StudentSchema = require('./student.schema');
 var LecturerSchema = require('./lecturer.schema');
-var SharedResourceSchema = require('./lecturer.schema');
+var SharedResourceSchema = require('./sharedresource.schema');
 var AssignmentSchema = require('./assignment.schema');
 
 var ClassSchema = new mongoose.Schema({
