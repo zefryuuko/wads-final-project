@@ -193,6 +193,7 @@ class Course extends Component {
                                                         classCode={this.props.match.params.classCode}
                                                         courseCode={this.props.match.params.courseCode}
                                                         onSuccess={this.loadClassData}
+                                                        forceRefresh={new Date()}
                                                     /> 
                                                 : null }
                                             </Card>

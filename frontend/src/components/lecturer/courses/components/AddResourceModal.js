@@ -95,11 +95,7 @@ class AddResourceModal extends Component {
             data
         )
         .then(res => {
-            // Call parent refresh function
-            if (this.props.onSuccess) this.props.onSuccess();
-
             // Reset state
-            this.closeModal('#addResourceModal');
             this.setState({
                 resourceName: "",
                 resourceDateAdded: new Date(),
@@ -110,9 +106,27 @@ class AddResourceModal extends Component {
                 resourceURL: undefined,
                 isUpdating: false
             });
+
+            // Call parent refresh function
+            if (this.props.onSuccess) this.props.onSuccess();
+
+            this.closeModal('#addResourceModal');
         })
         .catch(err => {
 
+        });
+    }
+
+    UNSAFE_componentWillReceiveProps(props) {
+        this.setState({
+            resourceName: "",
+            resourceDateAdded: new Date(),
+            resourceAuthorName: this.props.authorName,
+            resourceAuthorUniversalId: this.props.authorUniversalId,
+            resourceType: "file",
+            resourceFile: undefined,
+            resourceURL: undefined,
+            isUpdating: false
         });
     }
 
