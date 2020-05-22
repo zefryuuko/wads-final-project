@@ -87,7 +87,7 @@ class Course extends Component {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div class="col-12">
+                                        <div className="col-12">
                                             <Card padding>
                                                 <Evaluation data={this.state.classData ? this.state.classData.metadata.class[0].evaluation : null} loData={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
                                             </Card>
@@ -103,30 +103,28 @@ class Course extends Component {
                                             <Card title="Shared Resources" padding>
                                                 <table id="sharedMaterials" className="table table-striped no-wrap">
                                                     <thead className="bg-primary text-white">
-                                                        <th style={{width: 200}}>Date Added</th>
-                                                        <th>Name</th>
-                                                        <th>Added By</th>
-                                                        <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
+                                                        <tr>
+                                                            <th style={{width: 200}}>Date Added</th>
+                                                            <th>Name</th>
+                                                            <th>Added By</th>
+                                                            <th style={{width: 70}}><i className="feather-icon" data-feather="file"/></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <th scope="row">12 March 2020</th>
-                                                            <td>How to use React framework</td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="download"/></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">7 March 2020</th>
-                                                            <td>Why Angular sucks</td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="download"/></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">1 March 2020</th>
-                                                            <td>SSH is good</td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="external-link"/></a></td>
-                                                        </tr>
+                                                        { this.state.classData && this.state.classData.sharedResources.length > 0 ?
+                                                                this.state.classData.sharedResources.map((resource, index) => {
+                                                                    return (
+                                                                        <tr key={index}>
+                                                                            <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
+                                                                            <td>
+                                                                                {resource.name}
+                                                                            </td>
+                                                                            <td>{resource.addedBy.name}</td>
+                                                                            <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
+                                                                        </tr>
+                                                                    );
+                                                                })
+                                                        : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
                                                     </tbody>
                                                 </table>
                                             </Card>

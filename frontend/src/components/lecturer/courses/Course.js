@@ -123,24 +123,26 @@ class Course extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <th scope="row">12 March 2020</th>
-                                                            <td>How to use React framework <span> - <a className="text-primary" href="#test">Edit</a></span></td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="download"/></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">7 March 2020</th>
-                                                            <td>Why Angular sucks</td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="download"/></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">1 March 2020</th>
-                                                            <td>SSH is good</td>
-                                                            <td>Muhammad Yesus</td>
-                                                            <td><a href="https://google.com" target="_blank" rel="noopener noreferrer"><i className="feather-icon" data-feather="external-link"/></a></td>
-                                                        </tr>
+                                                        { this.state.classData && this.state.classData.sharedResources.length > 0 ?
+                                                            this.state.classData.sharedResources.map((resource, index) => {
+                                                                return (
+                                                                    <tr key={index}>
+                                                                        <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
+                                                                        <td>
+                                                                            {resource.name}
+                                                                            {resource.addedBy.universalId === (this.state.currentUserData ? this.state.currentUserData.id : null) ? 
+                                                                                <span> - <a href="#deleteMaterial" onClick={() => {
+                                                                                    let isConfirmed = window.confirm(`Are you sure you want to delete '${resource.name}'? This action cannot be undone.`);
+                                                                                    if (isConfirmed) this.deleteResource(resource._id, resource.url);
+                                                                                }}>Delete</a></span> 
+                                                                            : null}
+                                                                        </td>
+                                                                        <td>{resource.addedBy.name}</td>
+                                                                        <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
+                                                                    </tr>
+                                                                );
+                                                            })
+                                                        : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
                                                     </tbody>
                                                 </table>
                                                 { this.state.currentUserData ? 
@@ -150,6 +152,7 @@ class Course extends Component {
                                                         semesterId={this.props.match.params.semesterId}
                                                         classCode={this.props.match.params.classCode}
                                                         courseCode={this.props.match.params.courseCode}
+                                                        onSuccess={this.loadClassData}
                                                     /> 
                                                 : null }
                                             </Card>
