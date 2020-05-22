@@ -77,7 +77,7 @@ class StaffDashboard extends React.Component {
     }
     
     render() {
-        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/"/>
+        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>

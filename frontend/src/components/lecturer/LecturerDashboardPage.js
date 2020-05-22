@@ -57,7 +57,7 @@ class LecturerDashboardPage extends Component {
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
         const { path } = this.props.match;
         return (
             <MainWrapper>

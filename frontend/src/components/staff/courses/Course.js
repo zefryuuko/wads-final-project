@@ -102,7 +102,7 @@ class Course extends React.Component {
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>;
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>;
         console.log(this.state.deleted)
         if (this.state.deleted) return <script>{window.location.href=`/staff/courses/${this.props.match.params.groupId}`}</script>;
         let courseActions = <div><button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-pencil"/></button><button className="btn btn-danger btn-circle" data-toggle="modal" data-target={`#deleteModal-${this.state.courseData ? this.state.courseData.code : ""}`} style={{lineHeight:0}}><i className="icon-trash"/></button></div>
