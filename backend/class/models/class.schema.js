@@ -13,9 +13,8 @@ var ClassSchema = new mongoose.Schema({
     lecturers: { type: [LecturerSchema] },
     students: { type: [StudentSchema] },
     sharedResources: { type: [SharedResourceSchema] },
-    sharedResources: { type: [] },
+    assignments: { type: [AssignmentSchema] },
     metadata: {},
-    // schedule: { type:  [ScheduleSchema] }
 });
 
 module.exports = ClassSchema;

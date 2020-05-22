@@ -8,6 +8,7 @@ const Class = require('../models/class.model')
 const Student = require('../models/student.model');
 const Lecturer = require('../models/lecturer.model');
 const SharedResource = require('../models/sharedresource.model');
+const Assignment = require('../models/assignment.model');
 const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
@@ -488,6 +489,111 @@ router.post('/:id/:classCode/:courseCode/shared-resources', async (req, res) => 
         else {
             res.status(200).json({
                 "message": "Resource added successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.delete('/:id/:classCode/:courseCode/assignments/:resourceId', async (req, res) => {
+    try {
+        // Pull the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $pull: {
+                    'classes.$.assignments': {
+                        _id: mongoose.Types.ObjectId(req.params.resourceId)
+                    }
+                }
+            },
+            // { new: true, upsert: false }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment removed successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.post('/:id/:classCode/:courseCode/assignments', async (req, res) => {
+    try {
+        // Create and validate request body
+        const { dateAdded, submissionDeadline, name, resourceURL } = req.body;
+        if (!(dateAdded && name && resourceURL && submissionDeadline)) {
+            res.status(400).json({
+                "message": "One or more request body is missing. Required: dateAdded, submissionDeadline, name, resourceURL",
+                "got": req.body
+            })
+            return;
+        }
+
+        req.body._id = mongoose.Types.ObjectId();
+        const newAssignment = new Assignment(req.body);
+
+        // Push the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $push: {
+                    'classes.$.assignments': newAssignment
+                }
+            },
+            { new: true }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment added successfully"
             });
         }
     } catch (err) {
