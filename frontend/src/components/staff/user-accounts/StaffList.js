@@ -52,7 +52,7 @@ class StaffList extends React.Component {
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>

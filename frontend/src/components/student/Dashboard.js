@@ -40,43 +40,45 @@ class StaffDashboard extends React.Component {
                         isLoading: false,
                         isLoggedIn: false
                     });
-                else
+                else {
                     this.setState({
                         isLoading: false,
                         isLoggedIn: true
                     })
+                    
+                    // Load user info
+                    UserService.getUserData()
+                        .then(res => {
+                            if (res.firstName)
+                            this.setState({
+                                userFirstName: res.firstName.split(' ')[0],
+                                userFirstFullName: res.firstName,
+                                userLastName: res.lastName
+                            })
+                        });
+            
+                    UserService.getUserAccountDetails(localStorage.getItem('universalId'), localStorage.getItem('activeAccount').split(",")[0])
+                        .then(res => {
+                            this.setState({
+                                accountDetails: res
+                            })
+                        });
+            
+            
+                    // Load classes data
+                    ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
+                    .then(res => {
+                        this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
+                    }).catch(err => {
+                        this.setState({isLoading: false})
+                    });
+                }
             });
         
-        // Load user info
-        UserService.getUserData()
-            .then(res => {
-                if (res.firstName)
-                this.setState({
-                    userFirstName: res.firstName.split(' ')[0],
-                    userFirstFullName: res.firstName,
-                    userLastName: res.lastName
-                })
-            });
-
-        UserService.getUserAccountDetails(localStorage.getItem('universalId'), localStorage.getItem('activeAccount').split(",")[0])
-            .then(res => {
-                this.setState({
-                    accountDetails: res
-                })
-            });
-
-
-        // Load classes data
-        ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
-        .then(res => {
-            this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
-        }).catch(err => {
-            this.setState({isLoading: false})
-        });
     }
     
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>

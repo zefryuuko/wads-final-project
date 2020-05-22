@@ -73,7 +73,7 @@ class CreateAccount extends React.Component {
             const fileName = `${this.props.match.params.accountId}.${pictureExtension}`;
             let storageRef = firebase.storage().ref(`${bucketName}/${fileName}`);
             let uploadTask = storageRef.put(picture);
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, () => {
+            uploadTask.on('state_changed', null, null, () => {
                 firebase.storage().ref().child(`${bucketName}/${fileName}`).getDownloadURL().then(downloadURL => {
                     console.log(downloadURL);
                     UserService.createUser({...this.state, profilePictureURL: downloadURL})
@@ -148,7 +148,7 @@ class CreateAccount extends React.Component {
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/"/>
+        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>

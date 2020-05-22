@@ -66,7 +66,7 @@ class Course extends Component {
     }
 
     render() { 
-        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/"/>
+        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return ( 
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
@@ -101,32 +101,34 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Shared Resources" padding>
-                                                <table id="sharedMaterials" className="table table-striped no-wrap">
-                                                    <thead className="bg-primary text-white">
-                                                        <tr>
-                                                            <th style={{width: 200}}>Date Added</th>
-                                                            <th>Name</th>
-                                                            <th>Added By</th>
-                                                            <th style={{width: 70}}><i className="feather-icon" data-feather="file"/></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        { this.state.classData && this.state.classData.sharedResources.length > 0 ?
-                                                                this.state.classData.sharedResources.map((resource, index) => {
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
-                                                                            <td>
-                                                                                {resource.name}
-                                                                            </td>
-                                                                            <td>{resource.addedBy.name}</td>
-                                                                            <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
-                                                                        </tr>
-                                                                    );
-                                                                })
-                                                        : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
-                                                    </tbody>
-                                                </table>
+                                                <div className="table-responsive">
+                                                    <table id="sharedMaterials" className="table table-striped no-wrap">
+                                                        <thead className="bg-primary text-white">
+                                                            <tr>
+                                                                <th style={{width: 200}}>Date Added</th>
+                                                                <th>Name</th>
+                                                                <th>Added By</th>
+                                                                <th style={{width: 70}}><i className="feather-icon" data-feather="file"/></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            { this.state.classData && this.state.classData.sharedResources.length > 0 ?
+                                                                    this.state.classData.sharedResources.map((resource, index) => {
+                                                                        return (
+                                                                            <tr key={index}>
+                                                                                <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
+                                                                                <td>
+                                                                                    {resource.name}
+                                                                                </td>
+                                                                                <td>{resource.addedBy.name}</td>
+                                                                                <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
+                                                                            </tr>
+                                                                        );
+                                                                    })
+                                                            : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </Card>
                                         </div>
                                     </div>
