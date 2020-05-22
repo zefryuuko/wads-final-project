@@ -104,6 +104,18 @@ class ClassService {
         }
     }
 
+    async createSharedResources(semesterId, classId, courseId, data, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources`, {...data});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            console.log(err.response)
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async getCourseByStudentId(studentId, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/semester/searchStudentById/${studentId}`);
