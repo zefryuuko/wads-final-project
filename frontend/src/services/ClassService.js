@@ -116,6 +116,18 @@ class ClassService {
         }
     }
 
+    async deleteSharedResources(semesterId, classId, courseId, resourceId, callback) {
+        try {
+            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources/${resourceId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            console.log(err.response)
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async getCourseByStudentId(studentId, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/semester/searchStudentById/${studentId}`);
