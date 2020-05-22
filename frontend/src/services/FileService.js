@@ -10,8 +10,8 @@ class FileService {
         })
     }
 
-    deleteFile(bucketName, fileName, callback) {
-        firebase.storage().ref(`${bucketName}/${fileName}`).child(fileName).delete();
+    deleteFile(url, callback) {
+        firebase.storage().refFromURL(url).delete();
         callback();
     }
 
