@@ -165,7 +165,7 @@ class Course extends Component {
                                                     </thead>
                                                     <tbody>
                                                         { this.state.classData && this.state.classData.sharedResources.length > 0 ?
-                                                            this.state.classData.sharedResources.map((resource, index) => {
+                                                            this.state.classData.sharedResources.reverse().map((resource, index) => {
                                                                 return (
                                                                     <tr key={index}>
                                                                         <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
