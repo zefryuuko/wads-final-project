@@ -3,7 +3,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
-// import CourseService from '../../../services/CourseService';
+import UserService from '../../../services/UserService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -22,6 +22,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 // import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
+import AddResourceModal from './components/AddResourceModal';
 
 class Course extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class Course extends Component {
             isAuthenticating: true,
             isAuthenticated: false,
             classData: undefined,
+            currentUserData: undefined,
         }
 
         // Set page display mode when loading
@@ -53,6 +55,16 @@ class Course extends Component {
                         isAuthenticated: true
                     })
             });
+
+        UserService.getUserData().then(res => {
+            UserService.getUserData()
+            .then(res => {
+                if (res.firstName)
+                    this.setState({
+                        currentUserData: res
+                    })
+            });
+        })
 
         ClassService.getClass(
             this.props.match.params.semesterId,
@@ -87,7 +99,7 @@ class Course extends Component {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div class="col-12">
+                                        <div className="col-12">
                                             <Card padding>
                                                 <Evaluation data={this.state.classData ? this.state.classData.metadata.class[0].evaluation : null} loData={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
                                             </Card>
@@ -100,13 +112,15 @@ class Course extends Component {
                                 component: <div>
                                     <div className="row">
                                         <div className="col-12">
-                                            <Card title="Shared Resources" right={<a href="#addMaterials">Add New Resource</a>} padding>
+                                            <Card title="Shared Resources" right={<a href="#addMaterials" data-toggle="modal" data-target="#addResourceModal">Add New Resource</a>} padding>
                                                 <table id="sharedMaterials" className="table table-striped no-wrap">
                                                     <thead className="bg-primary text-white">
-                                                        <th style={{width: 200}}>Date Added</th>
-                                                        <th>Name</th>
-                                                        <th>Added By</th>
-                                                        <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
+                                                        <tr>
+                                                            <th style={{width: 200}}>Date Added</th>
+                                                            <th>Name</th>
+                                                            <th>Added By</th>
+                                                            <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
@@ -129,6 +143,15 @@ class Course extends Component {
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                { this.state.currentUserData ? 
+                                                    <AddResourceModal 
+                                                        authorUniversalId={this.state.currentUserData.id} 
+                                                        authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                        semesterId={this.props.match.params.semesterId}
+                                                        classCode={this.props.match.params.classCode}
+                                                        courseCode={this.props.match.params.courseCode}
+                                                    /> 
+                                                : null }
                                             </Card>
                                         </div>
                                     </div>
