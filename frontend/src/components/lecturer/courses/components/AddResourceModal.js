@@ -61,7 +61,7 @@ class AddResourceModal extends Component {
         this.setState({isUpdating: true});
         if (this.state.resourceType === "URL") {
             this.submitData({
-                dateAdded: this.state.resourceDateAdded,
+                dateAdded: new Date(),
                 addedBy: {
                     name: this.state.resourceAuthorName,
                     universalId: this.state.resourceAuthorUniversalId
@@ -75,7 +75,7 @@ class AddResourceModal extends Component {
             const fileName = `${this.state.resourceDateAdded.toString()}-${this.state.resourceAuthorUniversalId}-${file.name}`;
             FileService.uploadFile(bucketName, fileName, file, (firebaseURL) => {
                 this.submitData({
-                    dateAdded: this.state.resourceDateAdded,
+                    dateAdded: new Date(),
                     addedBy: {
                         name: this.state.resourceAuthorName,
                         universalId: this.state.resourceAuthorUniversalId
