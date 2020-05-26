@@ -242,7 +242,17 @@ class Course extends Component {
                                                             <th scope="row" style={{width: 200}}>{lecturer.universalId}</th>
                                                             <td width="40">
                                                                 {this.state[`profile${lecturer.universalId}`] ?
-                                                                    <img alt="" src={this.state[`profile${lecturer.universalId}`]} className="rounded-circle" width="40"/>
+                                                                    <div className="rounded-circle" style={{
+                                                                        display: "block",
+                                                                        width: 40, 
+                                                                        overflow: "hidden", 
+                                                                        height: 40, 
+                                                                        textAlign: "center",
+                                                                        backgroundRepeat: "no-repeat",
+                                                                        backgroundPosition: "center center",
+                                                                        backgroundSize: "cover",
+                                                                        backgroundImage: `url('${this.state[`profile${lecturer.universalId}`]}')`
+                                                                    }}/>
                                                                 : <span style={{width: 30}}></span>}
                                                             </td>
                                                             <td>{lecturer.name}</td>
@@ -264,7 +274,17 @@ class Course extends Component {
                                                             <th scope="row" style={{width: 200}}>{student.universalId}</th>
                                                             <td width="40">
                                                                 {this.state[`profile${student.universalId}`] ?
-                                                                    <img alt="" src={this.state[`profile${student.universalId}`]} className="rounded-circle" width="40"/>
+                                                                    <div className="rounded-circle" style={{
+                                                                        display: "block",
+                                                                        width: 40, 
+                                                                        overflow: "hidden", 
+                                                                        height: 40, 
+                                                                        textAlign: "center",
+                                                                        backgroundRepeat: "no-repeat",
+                                                                        backgroundPosition: "center center",
+                                                                        backgroundSize: "cover",
+                                                                        backgroundImage: `url('${this.state[`profile${student.universalId}`]}')`
+                                                                    }}/>
                                                                 : <span style={{width: 30}}></span>}
                                                             </td>
                                                             <td>{student.name}</td>
