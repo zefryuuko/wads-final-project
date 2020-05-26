@@ -63,7 +63,7 @@ class Courses extends Component {
         return (
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                 <PageWrapper>
-                    <PageBreadcrumb title="Courses" root="Learning" rightComponent={<button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseGroupModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}/>
+                    <PageBreadcrumb title="Courses" root="Learning"/>
                     <ContentWrapper>
                         {this.state.currentPageContent ? this.state.currentPageContent.map((semester, index) => {
                             return (
