@@ -141,6 +141,18 @@ class ClassService {
         }
     }
 
+    async submitAssignment(semesterId, classId, courseId, assignmentId, data, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}/submit`, {...data});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            console.log(err.response)
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async deleteAssignment(semesterId, classId, courseId, assignmentId, callback) {
         try {
             const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}`);
