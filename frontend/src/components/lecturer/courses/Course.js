@@ -5,6 +5,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
 import FileService from '../../../services/FileService';
+import AccessControlService from '../../../services/AccessControlService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -47,14 +48,60 @@ class Course extends Component {
     }
 
     loadClassData() {
-        ClassService.getClass(
-            this.props.match.params.semesterId,
-            this.props.match.params.classCode,
-            this.props.match.params.courseCode
-        ).then(res => {
-            this.setState({classData: res, isLoading: false});
-        }).catch(err => {
-
+        // Perform session check
+        AuthService.isLoggedIn()
+        .then(res => {
+            if (res.response && (res.response.status === 403))
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: false
+                });
+            else {
+                // Set auth state
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: true
+                });
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                .then(status => {
+                    // Load current user data
+                    if (status)
+                    UserService.getUserData()
+                    .then(res => {
+                        this.setState({currentUserData: res});
+                        
+                        // Load class data
+                        ClassService.getClass(
+                            this.props.match.params.semesterId,
+                            this.props.match.params.classCode,
+                            this.props.match.params.courseCode
+                        ).then(res => {
+                            // Load profile picture URLs
+                            res.students.forEach(element => {
+                                UserService.getProfilePictureURL(element.universalId)
+                                .then(res => {
+                                    this.setState({
+                                        [`profile${element.universalId}`]: res
+                                    });
+                                })
+                            });
+    
+                            res.lecturers.forEach(element => {
+                                UserService.getProfilePictureURL(element.universalId)
+                                .then(res => {
+                                    this.setState({
+                                        [`profile${element.universalId}`]: res
+                                    });
+                                })
+                            });
+    
+                            this.setState({classData: res, isLoading: false});
+                        }).catch(err => {
+                
+                        });
+                    });
+                });
+            }
         });
     }
 
@@ -107,59 +154,7 @@ class Course extends Component {
     }
 
     componentDidMount() {
-        // Perform session check
-        AuthService.isLoggedIn()
-        .then(res => {
-            if (res.response && (res.response.status === 403))
-                this.setState({
-                    isAuthenticating: false,
-                    isAuthenticated: false
-                });
-            else {
-                // Set auth state
-                this.setState({
-                    isAuthenticating: false,
-                    isAuthenticated: true
-                })
-                
-                // Load user data
-                UserService.getUserData()
-                .then(res => {
-                    this.setState({currentUserData: res});
-                    
-                    // Load class data
-                    ClassService.getClass(
-                        this.props.match.params.semesterId,
-                        this.props.match.params.classCode,
-                        this.props.match.params.courseCode
-                    ).then(res => {
-                        // Load profile picture URLs
-                        res.students.forEach(element => {
-                            UserService.getProfilePictureURL(element.universalId)
-                            .then(res => {
-                                this.setState({
-                                    [`profile${element.universalId}`]: res
-                                });
-                            })
-                        });
-    
-                        res.lecturers.forEach(element => {
-                            UserService.getProfilePictureURL(element.universalId)
-                            .then(res => {
-                                this.setState({
-                                    [`profile${element.universalId}`]: res
-                                });
-                            })
-                        });
-    
-                        this.setState({classData: res, isLoading: false});
-                    }).catch(err => {
-            
-                    });
-                });
-            }
-        });
-
+        this.loadClassData();
     }
 
     render() { 
