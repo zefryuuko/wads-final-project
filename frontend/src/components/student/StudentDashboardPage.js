@@ -10,7 +10,6 @@ import MainWrapper from '../ui-elements/MainWrapper';
 import PageWrapper from '../ui-elements/PageWrapper';
 
 // Components
-import Preloader from '../Preloader';
 import Navbar from '../Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
@@ -62,7 +61,6 @@ class Student extends Component {
         const { path } = this.props.match;
         return (
             <MainWrapper>
-                <Preloader/>
                 <div style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <Navbar />
                     <Sidebar />
