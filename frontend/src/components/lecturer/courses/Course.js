@@ -108,41 +108,56 @@ class Course extends Component {
     componentDidMount() {
         // Perform session check
         AuthService.isLoggedIn()
-            .then(res => {
-                if (res.response && (res.response.status === 403))
-                    this.setState({
-                        isAuthenticating: false,
-                        isAuthenticated: false
+        .then(res => {
+            if (res.response && (res.response.status === 403))
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: false
+                });
+            else {
+                // Set auth state
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: true
+                })
+
+                // Load class data
+                ClassService.getClass(
+                    this.props.match.params.semesterId,
+                    this.props.match.params.classCode,
+                    this.props.match.params.courseCode
+                ).then(res => {
+                    // Load profile picture URLs
+                    res.students.forEach(element => {
+                        UserService.getProfilePictureURL(element.universalId)
+                        .then(res => {
+                            this.setState({
+                                [`profile${element.universalId}`]: res
+                            });
+                        })
                     });
-                else
-                    this.setState({
-                        isAuthenticating: false,
-                        isAuthenticated: true
-                    })
-            });
 
-        UserService.getUserData().then(res => {
-            UserService.getUserData()
-            .then(res => {
-                if (res.firstName)
-                    this.setState({
-                        currentUserData: res
-                    })
-            });
-        })
+                    res.lecturers.forEach(element => {
+                        UserService.getProfilePictureURL(element.universalId)
+                        .then(res => {
+                            this.setState({
+                                [`profile${element.universalId}`]: res
+                            });
+                        })
+                    });
 
-        ClassService.getClass(
-            this.props.match.params.semesterId,
-            this.props.match.params.classCode,
-            this.props.match.params.courseCode
-        ).then(res => {
-            this.setState({classData: res, isLoading: false});
-        }).catch(err => {
-
+                    this.setState({classData: res, isLoading: false});
+                }).catch(err => {
+        
+                });
+            }
         });
+
+
     }
 
     render() { 
+        console.log(this.state)
         if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return ( 
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
@@ -251,18 +266,18 @@ class Course extends Component {
                                                                         <tr key={index}>
                                                                             <th scope="row">
                                                                                 {assignment.name}
-                                                                                    <span> - <a href="#deleteMaterial" 
-                                                                                        style={{fontWeight: "initial"}}
-                                                                                        onClick={() => {
-                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
-                                                                                            if (isConfirmed) this.deleteAssignment(assignment._id, assignment.resourceURL);
-                                                                                        }}
-                                                                                    >Delete</a></span> 
                                                                             </th>
                                                                             <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
-                                                                                <a href="#viewSubmissions" className="btn btn-sm text-white btn-success" target="_blank" rel="noopener noreferrer">Submissions</a>
+                                                                                <a href="#viewSubmissions" className="btn btn-sm text-white btn-success mr-2" target="_blank" rel="noopener noreferrer">Submissions</a>
+                                                                                <a href="#deleteMaterial" 
+                                                                                        className="btn btn-danger btn-sm"
+                                                                                        onClick={() => {
+                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
+                                                                                            if (isConfirmed) this.deleteAssignment(assignment._id, assignment.resourceURL);
+                                                                                        }}
+                                                                                    >Delete</a>
                                                                             </td>
                                                                         </tr>
                                                                     );
@@ -293,12 +308,17 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Lecturers" padding>
-                                                <Table header={["ID", "Name"]}>
+                                                <Table header={["ID", "", "Name"]}>
                                                     {this.state.classData && this.state.classData.lecturers.length > 0 ? this.state.classData.lecturers
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(lecturer => {
                                                         return <tr key={lecturer.universalId}>
                                                             <th scope="row" style={{width: 200}}>{lecturer.universalId}</th>
+                                                            <td width="40">
+                                                                {this.state[`profile${lecturer.universalId}`] ?
+                                                                    <img alt="" src={this.state[`profile${lecturer.universalId}`]} className="rounded-circle" width="40"/>
+                                                                : <span style={{width: 30}}></span>}
+                                                            </td>
                                                             <td>{lecturer.name}</td>
                                                         </tr>
                                                     })
@@ -310,12 +330,17 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Students" padding>
-                                                <Table header={["ID", "Name"]}>
+                                                <Table header={["ID", "", "Name"]}>
                                                     {this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(student => {
                                                         return <tr key={student.universalId}>
                                                             <th scope="row" style={{width: 200}}>{student.universalId}</th>
+                                                            <td width="40">
+                                                                {this.state[`profile${student.universalId}`] ?
+                                                                    <img alt="" src={this.state[`profile${student.universalId}`]} className="rounded-circle" width="40"/>
+                                                                : <span style={{width: 30}}></span>}
+                                                            </td>
                                                             <td>{student.name}</td>
                                                         </tr>
                                                     })

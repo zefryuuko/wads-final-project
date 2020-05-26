@@ -3,7 +3,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
-// import CourseService from '../../../services/CourseService';
+import UserService from '../../../services/UserService';
 
 // UI Elements
 import ContentWrapper from '../../ui-elements/ContentWrapper';
@@ -47,22 +47,43 @@ class Course extends Component {
                         isAuthenticating: false,
                         isAuthenticated: false
                     });
-                else
+                else {
                     this.setState({
                         isAuthenticating: false,
                         isAuthenticated: true
-                    })
+                    });
+
+                    ClassService.getClass(
+                        this.props.match.params.semesterId,
+                        this.props.match.params.classCode,
+                        this.props.match.params.courseCode
+                    ).then(res => {
+                        // Load profile picture URLs
+                        res.students.forEach(element => {
+                            UserService.getProfilePictureURL(element.universalId)
+                            .then(res => {
+                                this.setState({
+                                    [`profile${element.universalId}`]: res
+                                });
+                            })
+                        });
+
+                        res.lecturers.forEach(element => {
+                            UserService.getProfilePictureURL(element.universalId)
+                            .then(res => {
+                                this.setState({
+                                    [`profile${element.universalId}`]: res
+                                });
+                            })
+                        });
+
+                        this.setState({classData: res, isLoading: false});
+                    }).catch(err => {
+            
+                    });
+                }
             });
 
-        ClassService.getClass(
-            this.props.match.params.semesterId,
-            this.props.match.params.classCode,
-            this.props.match.params.courseCode
-        ).then(res => {
-            this.setState({classData: res, isLoading: false});
-        }).catch(err => {
-
-        });
     }
 
     render() { 
@@ -188,12 +209,17 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Lecturers" padding>
-                                                <Table header={["ID", "Name"]}>
+                                                <Table header={["ID", "", "Name"]}>
                                                     {this.state.classData && this.state.classData.lecturers.length > 0 ? this.state.classData.lecturers
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(lecturer => {
                                                         return <tr key={lecturer.universalId}>
                                                             <th scope="row" style={{width: 200}}>{lecturer.universalId}</th>
+                                                            <td width="40">
+                                                                {this.state[`profile${lecturer.universalId}`] ?
+                                                                    <img alt="" src={this.state[`profile${lecturer.universalId}`]} className="rounded-circle" width="40"/>
+                                                                : <span style={{width: 30}}></span>}
+                                                            </td>
                                                             <td>{lecturer.name}</td>
                                                         </tr>
                                                     })
@@ -205,12 +231,17 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Students" padding>
-                                                <Table header={["ID", "Name"]}>
+                                                <Table header={["ID", "", "Name"]}>
                                                     {this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(student => {
                                                         return <tr key={student.universalId}>
                                                             <th scope="row" style={{width: 200}}>{student.universalId}</th>
+                                                            <td width="40">
+                                                                {this.state[`profile${student.universalId}`] ?
+                                                                    <img alt="" src={this.state[`profile${student.universalId}`]} className="rounded-circle" width="40"/>
+                                                                : <span style={{width: 30}}></span>}
+                                                            </td>
                                                             <td>{student.name}</td>
                                                         </tr>
                                                     })
