@@ -199,7 +199,7 @@ class Course extends Component {
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
                                                                                 <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
-                                                                                <a href="#submitAssignment" data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary">Submit</a>
+                                                                                <button data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary" disabled={new Date().getTime() > new Date(assignment.submissionDeadline).getTime()}>Submit</button>
                                                                             </td>
                                                                         </tr>
                                                                     );
@@ -209,18 +209,20 @@ class Course extends Component {
                                                     </table>
                                                     { this.state.classData && this.state.classData.assignments.length > 0 ?
                                                         this.state.classData.assignments.map((assignment) => {
-                                                            return <SubmitAssignmentModal 
-                                                                        key={assignment._id} 
-                                                                        id={assignment._id}
-                                                                        studentId={this.state.currentUserData.id}
-                                                                        studentName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
-                                                                        assignmentName={assignment.name}
-                                                                        semesterId={this.props.match.params.semesterId}
-                                                                        classCode={this.props.match.params.classCode}
-                                                                        courseCode={this.props.match.params.courseCode}
-                                                                        onSuccess={this.reloadData}
-                                                                        forceRefresh={new Date()}
-                                                                    />
+                                                            if (new Date().getTime() > new Date(assignment.submissionDeadline).getTime())
+                                                                return <SubmitAssignmentModal 
+                                                                            key={assignment._id} 
+                                                                            id={assignment._id}
+                                                                            studentId={this.state.currentUserData.id}
+                                                                            studentName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                                            assignmentName={assignment.name}
+                                                                            semesterId={this.props.match.params.semesterId}
+                                                                            classCode={this.props.match.params.classCode}
+                                                                            courseCode={this.props.match.params.courseCode}
+                                                                            onSuccess={this.reloadData}
+                                                                            forceRefresh={new Date()}
+                                                                        />
+                                                            else return null;
                                                         })
                                                     : null}
 
