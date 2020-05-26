@@ -22,6 +22,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 // import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
+import SubmitAssignmentModal from './components/SubmitAssignmentModal';
 
 class Course extends Component {
     constructor(props) {
@@ -31,28 +32,38 @@ class Course extends Component {
             isAuthenticating: true,
             isAuthenticated: false,
             classData: undefined,
+            currentUserData: undefined,
         }
 
         // Set page display mode when loading
         this.loadingStyle = {visibility: "none"}
         this.loadedStyle = {visibility: "visible", opacity: 1}
+
+        // Bind functions
+        this.reloadData = this.reloadData.bind(this);
     }
 
-    componentDidMount() {
+    reloadData() {
         // Perform session check
         AuthService.isLoggedIn()
-            .then(res => {
-                if (res.response && (res.response.status === 403))
-                    this.setState({
-                        isAuthenticating: false,
-                        isAuthenticated: false
-                    });
-                else {
-                    this.setState({
-                        isAuthenticating: false,
-                        isAuthenticated: true
-                    });
+        .then(res => {
+            if (res.response && (res.response.status === 403))
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: false
+                });
+            else {
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: true
+                });
+                
+                // Load current user data
+                UserService.getUserData()
+                .then(res => {
+                    this.setState({currentUserData: res})
 
+                    // Load class data
                     ClassService.getClass(
                         this.props.match.params.semesterId,
                         this.props.match.params.classCode,
@@ -81,9 +92,13 @@ class Course extends Component {
                     }).catch(err => {
             
                     });
-                }
-            });
+                });
+            }
+        });
+    }
 
+    componentDidMount() {
+        this.reloadData()
     }
 
     render() { 
@@ -178,18 +193,11 @@ class Course extends Component {
                                                                         <tr key={index}>
                                                                             <th scope="row">
                                                                                 {assignment.name}
-                                                                                    <span> - <a href="#deleteMaterial" 
-                                                                                        style={{fontWeight: "initial"}}
-                                                                                        onClick={() => {
-                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
-                                                                                            if (isConfirmed) this.deleteResource(assignment._id, assignment.url);
-                                                                                        }}
-                                                                                    >Delete</a></span> 
                                                                             </th>
                                                                             <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open</a>
-                                                                                <a href="#viewSubmissions" className="btn btn-sm text-white btn-success" target="_blank" rel="noopener noreferrer">Submit</a>
+                                                                                <a href="#submitAssignment" data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary">Submit</a>
                                                                             </td>
                                                                         </tr>
                                                                     );
@@ -197,6 +205,22 @@ class Course extends Component {
                                                             : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
                                                         </tbody>
                                                     </table>
+                                                    { this.state.classData && this.state.classData.assignments.length > 0 ?
+                                                        this.state.classData.assignments.map((assignment) => {
+                                                            return <SubmitAssignmentModal 
+                                                                        key={assignment._id} 
+                                                                        id={assignment._id}
+                                                                        studentId={this.state.currentUserData.id}
+                                                                        studentName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                                        assignmentName={assignment.name}
+                                                                        semesterId={this.props.match.params.semesterId}
+                                                                        classCode={this.props.match.params.classCode}
+                                                                        courseCode={this.props.match.params.courseCode}
+                                                                        onSuccess={this.reloadData}
+                                                                        forceRefresh={new Date()}
+                                                                    />
+                                                        })
+                                                    : null}
                                                 </div>
                                             </Card>
                                         </div>
