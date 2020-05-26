@@ -22,8 +22,6 @@ class AccessControlService {
             window.location.href = "https://google.com";
         } else {
             for (let i = 0; i < user.accounts.length; i++) {
-                console.log("CMP ID", user.accounts[i]._id, accountId);
-                console.log("CMP TYPE", user.accounts[i].accountType, accountType);
                 if (user.accounts[i]._id === accountId && user.accounts[i].accountType === accountType) {
                     return true;
                 }
