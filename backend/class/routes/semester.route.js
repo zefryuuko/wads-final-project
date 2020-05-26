@@ -595,17 +595,16 @@ router.post('/:id/:classCode/:courseCode/assignments/:assignmentId/submit', asyn
             }
         );
 
-        res.json(semester);
-        // if (!semester) {
-        //     res.status(404).json({
-        //         "message": 'One or more parameters are not found'
-        //     });
-        // }
-        // else {
-        //     res.status(200).json({
-        //         "message": "Assignment removed successfully"
-        //     });
-        // }
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment removed successfully"
+            });
+        }
     } catch (err) {
         if (err.name == "CastError") {
             res.status(404).json({
