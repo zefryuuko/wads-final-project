@@ -15,7 +15,7 @@ import ContentWrapper from '../ui-elements/ContentWrapper';
 import Breadcrumb from '../ui-elements/Breadcrumb';
 import Card from '../ui-elements/Card';
 
-class StaffDashboard extends React.Component {
+class StudentDashboard extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -224,4 +224,4 @@ class StaffDashboard extends React.Component {
     }
 }
 
-export default StaffDashboard;
+export default StudentDashboard;
