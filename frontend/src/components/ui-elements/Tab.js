@@ -11,7 +11,7 @@ class Tab extends Component {
                             {this.props.data.map((element, index) => {
                                 return (
                                     <li className="nav-item" key={`tab-${element.name.replace(/\s/g, '')}-${index}`}>
-                                            <a href={`#tab-${element.name.replace(/\s/g, '')}-${index}`} data-toggle="tab" aria-expanded="false" className={`nav-link ${index > 0 ? "" : "active"}`}>
+                                            <a href={`#tab-${element.name.replace(/\s/g, '')}-${index}`} data-toggle="tab" aria-expanded="false" className={`nav-link ${index > 0 ? "" : "active"}`} style={{backgroundColor: "transparent"}}>
                                             <i className="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
                                             <span className="d-lg-block">{element.name}</span>
                                         </a>
