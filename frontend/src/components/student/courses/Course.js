@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import AccessControlService from '../../../services/AccessControlService';
 
 // UI Elements
 import Preloader from '../../ui-elements/Preloader';
@@ -58,42 +59,47 @@ class Course extends Component {
                     isAuthenticating: false,
                     isAuthenticated: true
                 });
+
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                .then(status => {
+                    // Load current user data
+                    if (status)
+                    UserService.getUserData()
+                    .then(res => {
+                        this.setState({currentUserData: res})
+    
+                        // Load class data
+                        ClassService.getClass(
+                            this.props.match.params.semesterId,
+                            this.props.match.params.classCode,
+                            this.props.match.params.courseCode
+                        ).then(res => {
+                            // Load profile picture URLs
+                            res.students.forEach(element => {
+                                UserService.getProfilePictureURL(element.universalId)
+                                .then(res => {
+                                    this.setState({
+                                        [`profile${element.universalId}`]: res
+                                    });
+                                })
+                            });
+    
+                            res.lecturers.forEach(element => {
+                                UserService.getProfilePictureURL(element.universalId)
+                                .then(res => {
+                                    this.setState({
+                                        [`profile${element.universalId}`]: res
+                                    });
+                                })
+                            });
+    
+                            this.setState({classData: res, isLoading: false});
+                        }).catch(err => {
                 
-                // Load current user data
-                UserService.getUserData()
-                .then(res => {
-                    this.setState({currentUserData: res})
-
-                    // Load class data
-                    ClassService.getClass(
-                        this.props.match.params.semesterId,
-                        this.props.match.params.classCode,
-                        this.props.match.params.courseCode
-                    ).then(res => {
-                        // Load profile picture URLs
-                        res.students.forEach(element => {
-                            UserService.getProfilePictureURL(element.universalId)
-                            .then(res => {
-                                this.setState({
-                                    [`profile${element.universalId}`]: res
-                                });
-                            })
                         });
-
-                        res.lecturers.forEach(element => {
-                            UserService.getProfilePictureURL(element.universalId)
-                            .then(res => {
-                                this.setState({
-                                    [`profile${element.universalId}`]: res
-                                });
-                            })
-                        });
-
-                        this.setState({classData: res, isLoading: false});
-                    }).catch(err => {
-            
                     });
-                });
+                })
+                
             }
         });
     }

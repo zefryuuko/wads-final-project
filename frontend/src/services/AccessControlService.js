@@ -1,5 +1,6 @@
 // Services
 import UserService from "./UserService";
+import ClassService from "./ClassService";
 
 class AccessControlService {
     async checkActiveAccount() {
@@ -71,6 +72,33 @@ class AccessControlService {
                     return;
                 }
 
+                // Check access for course
+                if (domain[2] === "courses" && domain[4] && domain[5]) {
+                    const classCode = domain[4];
+                    const courseCode = domain[5];
+                    try {
+                        const result = await ClassService.getCourseByStudentId(universalId);
+
+                        let isEnrolled = false;
+                        result.forEach(semester => {
+                            const isOnCurrentSemester = semester.classes.find(
+                                element => element.classCode === classCode && element.courseCode === courseCode
+                            );
+                            if (isOnCurrentSemester) isEnrolled = true;
+                        })
+                        
+                        if (callback && !isEnrolled) callback(false);
+                        if (!isEnrolled) {
+                            window.location.href = `/${domain[1]}`
+                            return false;
+                        }
+                    } catch (err) {
+                        console.log(err)
+                        if (callback) callback(false);
+                        return false;
+                    }
+                }
+                
                 if (callback) callback(true);
                 return true;
             }
@@ -80,7 +108,34 @@ class AccessControlService {
                     this.redirectToDefaultProfile();
                     return;
                 }
-                
+
+                // Check access for course
+                if (domain[2] === "courses" && domain[4] && domain[5]) {
+                    const classCode = domain[4];
+                    const courseCode = domain[5];
+                    try {
+                        const result = await ClassService.getCourseByLecturerId(universalId);
+
+                        let isEnrolled = false;
+                        result.forEach(semester => {
+                            const isOnCurrentSemester = semester.classes.find(
+                                element => element.classCode === classCode && element.courseCode === courseCode
+                            );
+                            if (isOnCurrentSemester) isEnrolled = true;
+                        })
+                        
+                        if (callback && !isEnrolled) callback(false);
+                        if (!isEnrolled) {
+                            window.location.href = `/${domain[1]}`
+                            return false;
+                        }
+                    } catch (err) {
+                        console.log(err)
+                        if (callback) callback(false);
+                        return false;
+                    }
+                }
+
                 if (callback) callback(true);
                 return true;
             }

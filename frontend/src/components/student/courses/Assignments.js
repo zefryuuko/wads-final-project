@@ -80,35 +80,37 @@ class Assignments extends Component {
                                         </span>} 
                                         padding
                                     >
-                                        <table id="assignments" className="table table-striped no-wrap">
-                                            <thead className="bg-primary text-white">
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th style={{width: 170}}>Deadline</th>
-                                                    <th style={{width: 150}}>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                { cls.assignments.length > 0 ?
-                                                    cls.assignments.map((assignment, index) => {
-                                                        let submissionDeadline = new Date(assignment.submissionDeadline);
-                                                        return (
-                                                            <tr key={index}>
-                                                                <th scope="row" style={{verticalAlign: "middle"}}>
-                                                                    {assignment.name}
-                                                                </th>
-                                                                <td style={{verticalAlign: "middle"}}>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
-                                                                <td>
-                                                                    <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
-                                                                    <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
-                                                                    <button data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary" disabled={new Date().getTime() > new Date(assignment.submissionDeadline).getTime()}>Submit</button>
-                                                                </td>
-                                                            </tr>
-                                                        );
-                                                    })
-                                                : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no assignments available for this class.</td></tr> }
-                                            </tbody>
-                                        </table>
+                                        <div className="table-responsive">
+                                            <table id="assignments" className="table table-striped no-wrap">
+                                                <thead className="bg-primary text-white">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th style={{width: 170}}>Deadline</th>
+                                                        <th style={{width: 150}}>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    { cls.assignments.length > 0 ?
+                                                        cls.assignments.map((assignment, index) => {
+                                                            let submissionDeadline = new Date(assignment.submissionDeadline);
+                                                            return (
+                                                                <tr key={index}>
+                                                                    <th scope="row" style={{verticalAlign: "middle"}}>
+                                                                        {assignment.name}
+                                                                    </th>
+                                                                    <td style={{verticalAlign: "middle"}}>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
+                                                                    <td>
+                                                                        <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
+                                                                        <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
+                                                                        <button data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary" disabled={new Date().getTime() > new Date(assignment.submissionDeadline).getTime()}>Submit</button>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        })
+                                                    : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no assignments available for this class.</td></tr> }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </Card>
                                 );
                             }) :
