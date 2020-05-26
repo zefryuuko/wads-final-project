@@ -120,44 +120,48 @@ class Course extends Component {
                     isAuthenticating: false,
                     isAuthenticated: true
                 })
-
-                // Load class data
-                ClassService.getClass(
-                    this.props.match.params.semesterId,
-                    this.props.match.params.classCode,
-                    this.props.match.params.courseCode
-                ).then(res => {
-                    // Load profile picture URLs
-                    res.students.forEach(element => {
-                        UserService.getProfilePictureURL(element.universalId)
-                        .then(res => {
-                            this.setState({
-                                [`profile${element.universalId}`]: res
-                            });
-                        })
+                
+                // Load user data
+                UserService.getUserData()
+                .then(res => {
+                    this.setState({currentUserData: res});
+                    
+                    // Load class data
+                    ClassService.getClass(
+                        this.props.match.params.semesterId,
+                        this.props.match.params.classCode,
+                        this.props.match.params.courseCode
+                    ).then(res => {
+                        // Load profile picture URLs
+                        res.students.forEach(element => {
+                            UserService.getProfilePictureURL(element.universalId)
+                            .then(res => {
+                                this.setState({
+                                    [`profile${element.universalId}`]: res
+                                });
+                            })
+                        });
+    
+                        res.lecturers.forEach(element => {
+                            UserService.getProfilePictureURL(element.universalId)
+                            .then(res => {
+                                this.setState({
+                                    [`profile${element.universalId}`]: res
+                                });
+                            })
+                        });
+    
+                        this.setState({classData: res, isLoading: false});
+                    }).catch(err => {
+            
                     });
-
-                    res.lecturers.forEach(element => {
-                        UserService.getProfilePictureURL(element.universalId)
-                        .then(res => {
-                            this.setState({
-                                [`profile${element.universalId}`]: res
-                            });
-                        })
-                    });
-
-                    this.setState({classData: res, isLoading: false});
-                }).catch(err => {
-        
                 });
             }
         });
 
-
     }
 
     render() { 
-        console.log(this.state)
         if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return ( 
             <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
