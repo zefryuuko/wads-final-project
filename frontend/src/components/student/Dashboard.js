@@ -5,6 +5,7 @@ import {Redirect, Link} from 'react-router-dom';
 import AuthService from '../../services/AuthService';
 import UserService from '../../services/UserService';
 import ClassService from '../../services/ClassService';
+import AccessControlService from '../../services/AccessControlService';
 
 // UI Elements
 import PageWrapper from '../ui-elements/PageWrapper';
@@ -23,7 +24,9 @@ class StaffDashboard extends React.Component {
             userFirstFullName: "",
             userLastName: "",
             accountDetails: undefined,
-            currentlEnrolledSemester: undefined
+            currentEnrolledSemester: undefined,
+            currentAssignmentCount: 0,
+            assignmentDueToday: 0
         }
 
         // Set page display mode when loading
@@ -46,31 +49,56 @@ class StaffDashboard extends React.Component {
                         isLoggedIn: true
                     })
                     
-                    // Load user info
-                    UserService.getUserData()
+                    AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                    .then(status => {
+                        // Load user info
+                        if(status) UserService.getUserData()
                         .then(res => {
                             if (res.firstName)
-                            this.setState({
-                                userFirstName: res.firstName.split(' ')[0],
-                                userFirstFullName: res.firstName,
-                                userLastName: res.lastName
-                            })
+                                this.setState({
+                                    userFirstName: res.firstName.split(' ')[0],
+                                    userFirstFullName: res.firstName,
+                                    userLastName: res.lastName
+                                })
+
+                            UserService.getUserAccountDetails(localStorage.getItem('universalId'), sessionStorage.getItem('activeAccount').split(",")[0])
+                            .then(res => {
+                                this.setState({
+                                    accountDetails: res
+                                })
+
+                                // Load classes data
+                                ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
+                                .then(res => {
+                                    this.setState({currentEnrolledSemester: res[res.length - 1]});
+                                    // Get due assignments count
+                                    let assignmentsDue = 0;
+                                    let dueToday = 0;
+                                    res[res.length - 1].classes.forEach((cls) => {
+                                        assignmentsDue += cls.assignments.filter(
+                                            assignment => (
+                                                new Date(assignment.submissionDeadline).getTime() > new Date().getTime()
+                                            )
+                                        ).length;
+
+                                        dueToday += cls.assignments.filter(
+                                            assignment => {
+                                                const submissionDeadline = new Date(assignment.submissionDeadline);
+                                                const currentTime = new Date();
+                                                const sameYear = submissionDeadline.getFullYear() === currentTime.getFullYear();
+                                                const sameMonth = submissionDeadline.getMonth() === currentTime.getMonth();
+                                                const sameDate = submissionDeadline.getDate() === currentTime.getDate();
+                                                return (sameYear && sameMonth && sameDate)
+                                            }
+                                        ).length
+                                    });
+
+                                    this.setState({currentAssignmentCount: assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
+                                }).catch(err => {
+                                    this.setState({isLoading: false})
+                                });
+                            });
                         });
-            
-                    UserService.getUserAccountDetails(localStorage.getItem('universalId'), sessionStorage.getItem('activeAccount').split(",")[0])
-                        .then(res => {
-                            this.setState({
-                                accountDetails: res
-                            })
-                        });
-            
-            
-                    // Load classes data
-                    ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
-                    .then(res => {
-                        this.setState({currentEnrolledSemester: res[res.length - 1], isLoading: false});
-                    }).catch(err => {
-                        this.setState({isLoading: false})
                     });
                 }
             });
@@ -90,10 +118,10 @@ class StaffDashboard extends React.Component {
                                     <div className="d-flex d-lg-flex d-md-block align-items-center">
                                         <div>
                                             <div className="d-inline-flex align-items-center">
-                                                <h2 className="text-dark mb-1 font-weight-medium">2</h2>
-                                                <span className="badge bg-danger font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none">Due today</span>
+                                                <h2 className="text-dark mb-1 font-weight-medium">{this.state.currentAssignmentCount}</h2>
+                                                {this.state.assignmentDueToday ? <span className="badge bg-danger font-12 text-white font-weight-medium badge-pill ml-2 d-lg-block d-md-none">{this.state.assignmentDueToday} Due today</span> : null}
                                             </div>
-                                            <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">New Assignments</h6>
+                                            <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Assignments Due</h6>
                                         </div>
                                         <div className="ml-auto mt-md-3 mt-lg-0">
                                             <span className="opacity-7 text-muted"><i data-feather="edit-2" className="feather-icon"></i></span>
