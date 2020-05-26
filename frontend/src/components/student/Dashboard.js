@@ -218,6 +218,7 @@ class StudentDashboard extends React.Component {
                             </Card>
                         </ContentWrapper>
                     </PageWrapper>
+                    <script>{window.feather.replace()}</script>
                 </div>
             </div>
         );
