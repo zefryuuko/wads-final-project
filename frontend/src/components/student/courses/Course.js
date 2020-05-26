@@ -23,6 +23,7 @@ import Evaluation from '../../ui-elements/Evaluation';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
 import SubmitAssignmentModal from './components/SubmitAssignmentModal';
+import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
 
 class Course extends Component {
     constructor(props) {
@@ -197,7 +198,7 @@ class Course extends Component {
                                                                             <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
-                                                                                <a href="#viewSubmissions" data-toggle="modal" data-target={`#submissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
+                                                                                <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
                                                                                 <a href="#submitAssignment" data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary">Submit</a>
                                                                             </td>
                                                                         </tr>
@@ -222,6 +223,17 @@ class Course extends Component {
                                                                     />
                                                         })
                                                     : null}
+
+                                                    { this.state.classData && this.state.classData.assignments.length > 0 ?
+                                                        this.state.classData.assignments.map((assignment) => {
+                                                            return <AssignmentSubmissionsModal
+                                                                        key={assignment._id}
+                                                                        assignmentId={assignment._id}
+                                                                        assignmentName={assignment.name}
+                                                                        submissions = {assignment.submissions.filter(element => element.universalId === this.state.currentUserData.id)}
+                                                                    />
+                                                        })
+                                                    : null }
                                                 </div>
                                             </Card>
                                         </div>
