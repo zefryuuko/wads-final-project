@@ -602,7 +602,7 @@ router.post('/:id/:classCode/:courseCode/assignments/:assignmentId/submit', asyn
         }
         else {
             res.status(200).json({
-                "message": "Assignment removed successfully"
+                "message": "Assignment submitted successfully"
             });
         }
     } catch (err) {
