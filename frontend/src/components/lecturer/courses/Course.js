@@ -269,10 +269,10 @@ class Course extends Component {
                                                                     let submissionDeadline = new Date(assignment.submissionDeadline);
                                                                     return (
                                                                         <tr key={index}>
-                                                                            <th scope="row">
+                                                                            <th scope="row" style={{verticalAlign: "middle"}}>
                                                                                 {assignment.name}
                                                                             </th>
-                                                                            <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
+                                                                            <td style={{verticalAlign: "middle"}}>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
                                                                                 <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
@@ -328,7 +328,7 @@ class Course extends Component {
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(lecturer => {
                                                         return <tr key={lecturer.universalId}>
-                                                            <th scope="row" style={{width: 200}}>{lecturer.universalId}</th>
+                                                            <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{lecturer.universalId}</th>
                                                             <td width="40">
                                                                 {this.state[`profile${lecturer.universalId}`] ?
                                                                     <div className="rounded-circle" style={{
@@ -344,7 +344,7 @@ class Course extends Component {
                                                                     }}/>
                                                                 : <span style={{width: 30}}></span>}
                                                             </td>
-                                                            <td>{lecturer.name}</td>
+                                                            <td style={{verticalAlign: "middle"}}>{lecturer.name}</td>
                                                         </tr>
                                                     })
                                                     : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no lecturer assigned to this class.</td></tr>}
@@ -360,7 +360,7 @@ class Course extends Component {
                                                         .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
                                                         .map(student => {
                                                         return <tr key={student.universalId}>
-                                                            <th scope="row" style={{width: 200}}>{student.universalId}</th>
+                                                            <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{student.universalId}</th>
                                                             <td width="40">
                                                                 {this.state[`profile${student.universalId}`] ?
                                                                     <div className="rounded-circle" style={{
@@ -376,7 +376,7 @@ class Course extends Component {
                                                                     }}/>
                                                                 : <span style={{width: 30}}></span>}
                                                             </td>
-                                                            <td>{student.name}</td>
+                                                            <td style={{verticalAlign: "middle"}}>{student.name}</td>
                                                         </tr>
                                                     })
                                                     : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no student assigned to this class.</td></tr>}
