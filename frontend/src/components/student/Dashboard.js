@@ -8,6 +8,7 @@ import ClassService from '../../services/ClassService';
 import AccessControlService from '../../services/AccessControlService';
 
 // UI Elements
+import Preloader from '../ui-elements/Preloader';
 import PageWrapper from '../ui-elements/PageWrapper';
 import PageBreadcrumb from '../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../ui-elements/ContentWrapper';
@@ -110,12 +111,7 @@ class StaffDashboard extends React.Component {
         if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return (
             <div>
-                <div className="ease-on-load" style={!this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
-                    <div className="lds-ripple">
-                        <div className="lds-pos"></div>
-                        <div className="lds-pos"></div>
-                    </div>
-                </div>
+                <Preloader isLoading={this.state.isLoading}/>
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb title={`Welcome Back, ${this.state.userFirstName}!`} breadcrumb={<Breadcrumb current="Dashboard"/>}/>
