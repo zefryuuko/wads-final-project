@@ -159,6 +159,17 @@ class UserService {
             throw err;
         }
     }
+
+    async getProfilePictureURL(universalId, callback) {
+        try {
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`);
+            if (callback) callback(res.data.profilePictureURL ? res.data.profilePictureURL : "/img/user.png");
+            return res.data.profilePictureURL ? res.data.profilePictureURL : "/img/user.png";
+        } catch (err) {
+            if (callback) callback({}, err);
+            throw err;
+        }   
+    }
 }
 
 export default new UserService();

@@ -2,6 +2,36 @@
 import UserService from "./UserService";
 
 class AccessControlService {
+    async checkActiveAccount() {
+        const currentActiveAccount = sessionStorage.getItem('activeAccount');
+
+        // Set activeAccount to the user's default account
+        if (!currentActiveAccount) {
+            this.redirectToDefaultProfile();
+            return false;
+        }
+
+        // Check if current active account is valid
+        const accountId = currentActiveAccount.split(",")[0];
+        const accountType = currentActiveAccount.split(",")[1];
+        const user = await UserService.getUserById(localStorage.getItem('universalId'))
+        
+        if (user.accounts.length < 1) {
+            // TODO: add no accounts page
+            window.alert("There are no profile that is associated with this account. Please contact the administrator.");
+            window.location.href = "https://google.com";
+        } else {
+            for (let i = 0; i < user.accounts.length; i++) {
+                if (user.accounts[i]._id === accountId && user.accounts[i].accountType === accountType) {
+                    return true;
+                }
+            }
+
+            this.redirectToDefaultProfile();
+            return false;
+        }
+    }
+
     redirectToDefaultProfile() {
         UserService.getUserById(localStorage.getItem('universalId'))
         .then((user) => {
@@ -15,7 +45,7 @@ class AccessControlService {
                 const defaultAccountId = user.accounts[0]._id;
 
                 // Save current active account to localStorage
-                localStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
+                sessionStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
 
                 // Redirect to default account dash
                 window.location.href = `/${defaultAccountType}`;
@@ -26,6 +56,13 @@ class AccessControlService {
     async hasAccessToPage(universalId, domain, callback) {
         domain = domain.split("/");
         const user = await UserService.getUserById(universalId)
+
+        const activeAccountValid = await this.checkActiveAccount();
+
+        if (!activeAccountValid) {
+            this.redirectToDefaultProfile();
+        }
+
         switch(domain[1]) {
             case 'student': {
                 // Check access for student dashboard

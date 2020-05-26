@@ -58,7 +58,7 @@ class StaffDashboard extends React.Component {
                             })
                         });
             
-                    UserService.getUserAccountDetails(localStorage.getItem('universalId'), localStorage.getItem('activeAccount').split(",")[0])
+                    UserService.getUserAccountDetails(localStorage.getItem('universalId'), sessionStorage.getItem('activeAccount').split(",")[0])
                         .then(res => {
                             this.setState({
                                 accountDetails: res

@@ -76,11 +76,11 @@ class AuthService {
     isSessionTampered() {
         const sessionId = localStorage.getItem('sessionId');
         const universalId = localStorage.getItem('universalId');
-        const activeAccount = localStorage.getItem('activeAccount');
-        if (!(sessionId && universalId && activeAccount)) return true;
+        // const activeAccount = localStorage.getItem('activeAccount');
+        if (!(sessionId && universalId)) return true;
 
         // Validate activeAccount field
-        if (activeAccount.split(",").length !== 2) return true;
+        // if (activeAccount.split(",").length !== 2) return true;
         
         return false;
     }

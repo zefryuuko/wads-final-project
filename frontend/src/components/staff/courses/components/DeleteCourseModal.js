@@ -47,7 +47,7 @@ class DeleteCourseModal extends Component {
         let {name, value} = event.target;
 
         // Convert prefix to uppercase
-        if (name === 'confirmationTextBox' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.confirmationTextBox;
+        if (name === 'confirmationTextBox' && !/^[a-zA-Z0-9()]*$/.test(value)) value = this.state.confirmationTextBox;
         else if (name === 'confirmationTextBox') value = value.toUpperCase();
         this.setState({
             [name]: value

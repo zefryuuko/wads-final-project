@@ -10,7 +10,7 @@ class Navbar extends React.Component {
             userFullName: "",
             userAccounts: undefined,
             profilePictureURL: undefined,
-            activeAccount: localStorage.getItem('activeAccount')
+            activeAccount: sessionStorage.getItem('activeAccount')
         }
 
         this.switchAccount = this.switchAccount.bind(this);
@@ -27,7 +27,7 @@ class Navbar extends React.Component {
 
     switchAccount(e) {
         const value = e.target.value.split(',');
-        localStorage.setItem('activeAccount', value);
+        sessionStorage.setItem('activeAccount', value);
         this.setState({ activeAccount: value })
 
         switch (value[1]) {
@@ -99,8 +99,18 @@ class Navbar extends React.Component {
                             <li className="nav-item dropdown">
                                 <span className="nav-link dropdown-toggle" onClick={e => e.preventDefault()} data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <img src={`${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}`} alt="user" className="rounded-circle"
-                                        width="40"/>
+                                    <div className="rounded-circle" style={{
+                                        display: "inline-block",
+                                        verticalAlign: "middle",
+                                        width: 40, 
+                                        overflow: "hidden", 
+                                        height: 40, 
+                                        textAlign: "center",
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundPosition: "center center",
+                                        backgroundSize: "cover",
+                                        backgroundImage: `url('${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}')`
+                                    }}/>
                                     <span className="ml-2 d-none d-lg-inline-block"><span
                                             className="text-dark">{this.state.userFullName}</span> <i data-feather="chevron-down"
                                             className="svg-icon"></i></span>
