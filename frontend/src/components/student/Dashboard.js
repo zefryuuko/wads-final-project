@@ -27,7 +27,8 @@ class StaffDashboard extends React.Component {
             accountDetails: undefined,
             currentEnrolledSemester: undefined,
             currentAssignmentCount: 0,
-            assignmentDueToday: 0
+            assignmentDueToday: 0,
+            assignmentsDue: [],
         }
 
         // Set page display mode when loading
@@ -73,14 +74,14 @@ class StaffDashboard extends React.Component {
                                 .then(res => {
                                     this.setState({currentEnrolledSemester: res[res.length - 1]});
                                     // Get due assignments count
-                                    let assignmentsDue = 0;
+                                    let assignmentsDue = [];
                                     let dueToday = 0;
                                     res[res.length - 1].classes.forEach((cls) => {
-                                        assignmentsDue += cls.assignments.filter(
+                                        assignmentsDue = assignmentsDue.concat(cls.assignments.filter(
                                             assignment => (
                                                 new Date(assignment.submissionDeadline).getTime() > new Date().getTime()
                                             )
-                                        ).length;
+                                        ));
 
                                         dueToday += cls.assignments.filter(
                                             assignment => {
@@ -94,7 +95,7 @@ class StaffDashboard extends React.Component {
                                         ).length
                                     });
 
-                                    this.setState({currentAssignmentCount: assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
+                                    this.setState({currentAssignmentCount: assignmentsDue.length, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
                                 }).catch(err => {
                                     this.setState({isLoading: false})
                                 });
@@ -182,13 +183,27 @@ class StaffDashboard extends React.Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-6 col-lg-6">
-                                    <Card title="Classes" padding>
-
+                                    <Card title="Classes" right={<Link to="/student/schedule">Schedule</Link>} padding>
+                                        <div className="list-group">
+                                            <span>There are no classes today.</span>
+                                        </div>
                                     </Card>
                                 </div>
                                 <div className="col-md-6 col-lg-6">
-                                    <Card title="Assignments" padding>
-
+                                    <Card title="Assignments" right={<Link to="/student/assignments">All assignments</Link>} padding>
+                                        <div className="list-group">
+                                            {this.state.assignmentsDue.length > 0 ?
+                                                this.state.assignmentsDue.map(assignment => {
+                                                    const submissionDeadline = new Date(assignment.submissionDeadline);
+                                                    return (
+                                                        <div className="list-group-item">
+                                                            <h5 style={{fontWeight: 450, marginBottom: 0}}>{assignment.name}</h5>
+                                                            <small>{submissionDeadline.toDateString().substr(4)} - {submissionDeadline.toTimeString().substr(0, 5)}</small>
+                                                        </div>
+                                                    )
+                                                })
+                                            : <span>There are no assignments due.</span>}
+                                        </div>
                                     </Card>
                                 </div>
                             </div>
