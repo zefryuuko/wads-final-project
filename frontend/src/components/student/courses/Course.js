@@ -197,7 +197,7 @@ class Course extends Component {
                                                                             <td>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
                                                                             <td>
                                                                                 <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
-                                                                                <a href="#viewSubmissions" data-toggle="modal" data-target={`#submissions-${assignment._id}`} className="btn btn-sm text-white btn-secondary mr-2">Submissions</a>
+                                                                                <a href="#viewSubmissions" data-toggle="modal" data-target={`#submissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
                                                                                 <a href="#submitAssignment" data-toggle="modal" data-target={`#submitAssignment-${assignment._id}`} className="btn btn-sm text-white btn-primary">Submit</a>
                                                                             </td>
                                                                         </tr>
