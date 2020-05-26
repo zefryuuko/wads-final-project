@@ -75,25 +75,24 @@ class StaffDashboard extends React.Component {
                                     this.setState({currentEnrolledSemester: res[res.length - 1]});
                                     // Get due assignments count
                                     let assignmentsDue = [];
-                                    let dueToday = 0;
                                     res[res.length - 1].classes.forEach((cls) => {
                                         assignmentsDue = assignmentsDue.concat(cls.assignments.filter(
                                             assignment => (
                                                 new Date(assignment.submissionDeadline).getTime() > new Date().getTime()
                                             )
                                         ));
-
-                                        dueToday += cls.assignments.filter(
-                                            assignment => {
-                                                const submissionDeadline = new Date(assignment.submissionDeadline);
-                                                const currentTime = new Date();
-                                                const sameYear = submissionDeadline.getFullYear() === currentTime.getFullYear();
-                                                const sameMonth = submissionDeadline.getMonth() === currentTime.getMonth();
-                                                const sameDate = submissionDeadline.getDate() === currentTime.getDate();
-                                                return (sameYear && sameMonth && sameDate)
-                                            }
-                                        ).length
                                     });
+
+                                    let dueToday = assignmentsDue.filter(
+                                        assignment => {
+                                            const submissionDeadline = new Date(assignment.submissionDeadline);
+                                            const currentTime = new Date();
+                                            const sameYear = submissionDeadline.getFullYear() === currentTime.getFullYear();
+                                            const sameMonth = submissionDeadline.getMonth() === currentTime.getMonth();
+                                            const sameDate = submissionDeadline.getDate() === currentTime.getDate();
+                                            return (sameYear && sameMonth && sameDate)
+                                        }
+                                    ).length
 
                                     this.setState({currentAssignmentCount: assignmentsDue.length, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
                                 }).catch(err => {
