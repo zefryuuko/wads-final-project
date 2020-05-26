@@ -191,7 +191,7 @@ class StudentDashboard extends React.Component {
                                                 this.state.assignmentsDue.map(assignment => {
                                                     const submissionDeadline = new Date(assignment.submissionDeadline);
                                                     return (
-                                                        <div className="list-group-item">
+                                                        <div key={assignment._id} className="list-group-item">
                                                             <h5 style={{fontWeight: 450, marginBottom: 0}}>{assignment.name}</h5>
                                                             <small>{submissionDeadline.toDateString().substr(4)} - {submissionDeadline.toTimeString().substr(0, 5)}</small>
                                                         </div>
