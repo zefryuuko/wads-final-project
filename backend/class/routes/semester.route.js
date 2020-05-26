@@ -552,6 +552,73 @@ router.delete('/:id/:classCode/:courseCode/assignments/:resourceId', async (req,
     }
 });
 
+router.post('/:id/:classCode/:courseCode/assignments/:assignmentId/submit', async (req, res) => {
+    try {
+        // Validate request body
+        const { universalId, name, submittedAt, fileURL } = req.body;
+        if (!(universalId && name && submittedAt && fileURL)) {
+            res.status(400).json({
+                "message": "Missing required fields. Required: universalId, name, submittedAt, fileURL",
+                "got": req.body
+            })
+            return;
+        }
+
+        req.body._id = mongoose.Types.ObjectId();
+
+        // Push the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode },
+                        assignments: {
+                            $elemMatch: {
+                                _id: req.params.assignmentId
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $push: {
+                    'classes.$.assignments.$[outer].submissions': req.body
+                }
+            },
+            { 
+                new: true, 
+                arrayFilters: [{
+                    "outer._id": mongoose.Types.ObjectId(req.params.assignmentId)
+                }] 
+            }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment removed successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
 router.post('/:id/:classCode/:courseCode/assignments', async (req, res) => {
     try {
         // Create and validate request body
