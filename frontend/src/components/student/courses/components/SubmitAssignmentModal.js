@@ -25,6 +25,12 @@ class SubmitAssignmentModal extends Component {
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
+    closeModal(modalId) {
+        window.$(() => {
+            window.$(modalId).modal('toggle');
+         });
+    }
+
     handleChange(e) {
         this.setState({
             submissionFile: e.target.files
@@ -55,6 +61,7 @@ class SubmitAssignmentModal extends Component {
                 }
             ).then(res => {
                 if (this.props.onSuccess) this.props.onSuccess();
+                this.closeModal(`#submitAssignment-${this.props.id}`)
             }).catch(err => {
                 window.alert("An unexpected error happened during submission. Please try again.");
             })
