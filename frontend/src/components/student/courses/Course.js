@@ -140,7 +140,7 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Assignments" padding>
-                                                <div classNam="table-responsive">
+                                                <div className="table-responsive">
                                                     <table id="assignments" className="table table-striped no-wrap">
                                                         <thead className="bg-primary text-white">
                                                             <tr>
