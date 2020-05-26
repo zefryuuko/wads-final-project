@@ -10,15 +10,15 @@ import MainWrapper from '../ui-elements/MainWrapper';
 import PageWrapper from '../ui-elements/PageWrapper';
 
 // Components
-import Preloader from '../Preloader';
 import Navbar from '../Navbar';
 import Sidebar from './Sidebar'
 import Footer from '../Footer';
 
-// Course Administration
+// Pages
 import Dashboard from './Dashboard';
 import Courses from './courses/Courses';
 import Course from './courses/Course';
+import Assignments from './courses/Assignments';
 
 class Student extends Component {
     constructor() {
@@ -61,7 +61,6 @@ class Student extends Component {
         const { path } = this.props.match;
         return (
             <MainWrapper>
-                <Preloader/>
                 <div style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <Navbar />
                     <Sidebar />
@@ -73,6 +72,9 @@ class Student extends Component {
                         <Route exact path={`${path}/courses`}><Courses/></Route>
                         {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
+
+                        {/* Assignments */}
+                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
 
                         {/* Classes */}
                         {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}
