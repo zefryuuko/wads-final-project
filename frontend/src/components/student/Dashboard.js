@@ -15,7 +15,7 @@ import ContentWrapper from '../ui-elements/ContentWrapper';
 import Breadcrumb from '../ui-elements/Breadcrumb';
 import Card from '../ui-elements/Card';
 
-class StaffDashboard extends React.Component {
+class StudentDashboard extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -191,7 +191,7 @@ class StaffDashboard extends React.Component {
                                                 this.state.assignmentsDue.map(assignment => {
                                                     const submissionDeadline = new Date(assignment.submissionDeadline);
                                                     return (
-                                                        <div className="list-group-item">
+                                                        <div key={assignment._id} className="list-group-item">
                                                             <h5 style={{fontWeight: 450, marginBottom: 0}}>{assignment.name}</h5>
                                                             <small>{submissionDeadline.toDateString().substr(4)} - {submissionDeadline.toTimeString().substr(0, 5)}</small>
                                                         </div>
@@ -224,4 +224,4 @@ class StaffDashboard extends React.Component {
     }
 }
 
-export default StaffDashboard;
+export default StudentDashboard;
