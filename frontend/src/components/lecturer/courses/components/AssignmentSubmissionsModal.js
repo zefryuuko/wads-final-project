@@ -47,7 +47,7 @@ class AssignmentSubmissionsModal extends Component {
                         : null}
                     </div>
                 </ModalBody>
-                <ModalFooter/>
+                <ModalFooter buttonText="Close"/>
             </Modal>
          );
     }
