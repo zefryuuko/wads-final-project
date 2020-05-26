@@ -47,7 +47,7 @@ class AccessControlService {
                 const defaultAccountId = user.accounts[0]._id;
 
                 // Save current active account to localStorage
-                localStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
+                sessionStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
 
                 // Redirect to default account dash
                 window.location.href = `/${defaultAccountType}`;
@@ -58,6 +58,13 @@ class AccessControlService {
     async hasAccessToPage(universalId, domain, callback) {
         domain = domain.split("/");
         const user = await UserService.getUserById(universalId)
+
+        const activeAccountValid = await this.checkActiveAccount();
+
+        if (!activeAccountValid) {
+            this.redirectToDefaultProfile();
+        }
+
         switch(domain[1]) {
             case 'student': {
                 // Check access for student dashboard

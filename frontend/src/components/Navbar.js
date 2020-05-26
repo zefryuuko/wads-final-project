@@ -10,7 +10,7 @@ class Navbar extends React.Component {
             userFullName: "",
             userAccounts: undefined,
             profilePictureURL: undefined,
-            activeAccount: localStorage.getItem('activeAccount')
+            activeAccount: sessionStorage.getItem('activeAccount')
         }
 
         this.switchAccount = this.switchAccount.bind(this);
@@ -27,7 +27,7 @@ class Navbar extends React.Component {
 
     switchAccount(e) {
         const value = e.target.value.split(',');
-        localStorage.setItem('activeAccount', value);
+        sessionStorage.setItem('activeAccount', value);
         this.setState({ activeAccount: value })
 
         switch (value[1]) {

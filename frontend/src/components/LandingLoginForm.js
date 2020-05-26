@@ -70,7 +70,7 @@ class LandingLoginForm extends React.Component {
                     const defaultAccountId = user.accounts[0]._id;
 
                     // Save current active account to localStorage
-                    localStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
+                    sessionStorage.setItem('activeAccount', `${defaultAccountId},${defaultAccountType}`)
 
                     // Redirect to default account dash
                     window.location.href = `/${defaultAccountType}`;
