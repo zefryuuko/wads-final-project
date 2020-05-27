@@ -116,7 +116,8 @@ class Course extends Component {
                                             evaluations:  this.state.classData.metadata.class[0].evaluation.map(evaluation => {
                                                     return {
                                                         evaluationName: evaluation.name,
-                                                        score: ""
+                                                        score: "",
+                                                        weight: `${evaluation.weight}`
                                                     }
                                                 })
                                         }
