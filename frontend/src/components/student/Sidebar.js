@@ -34,24 +34,24 @@ class Sidebar extends React.Component {
 
                             {/* Account Administration */}
                             <li className="nav-small-cap"><span className="hide-menu">Student Information</span></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link" to="/staff/accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link" to="/student/grades"
                                     aria-expanded="false"><i data-feather="users" className="feather-icon"></i><span
                                         className="hide-menu">Grades
                                     </span></Link>
                             </li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/staff-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/student/sat"
                                     aria-expanded="false"><i data-feather="smile" className="feather-icon"></i><span
                                         className="hide-menu">Activity Points</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/staff-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/student/social-hours"
                                     aria-expanded="false"><i data-feather="smile" className="feather-icon"></i><span
                                         className="hide-menu">Social Hours</span></Link></li>
                             <li className="list-divider"></li>
 
                             <li className="nav-small-cap"><span className="hide-menu">Account</span></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/student-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/student/profile"
                                     aria-expanded="false"><i data-feather="user" className="feather-icon"></i><span
                                         className="hide-menu">Profile</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="authentication-login1.html"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/logout"
                                     aria-expanded="false"><i data-feather="log-out" className="feather-icon"></i><span
                                         className="hide-menu">Logout</span></Link></li>
                         </ul>
