@@ -8,14 +8,12 @@ var StudentSchema = new mongoose.Schema({
     major: String,
     satDetails: { 
         type: [{
-            _id:{ type: mongoose.Schema.Types.ObjectId, required: true},
             name: { type: String, required: true },
             points: { type: Number, required: true }
         }] 
     },
     socDetails: { 
         type: [{
-            _id:{ type: mongoose.Schema.Types.ObjectId, required: true},
             name: { type: String, required: true },
             hours: { type: Number, required: true }
         }] 
