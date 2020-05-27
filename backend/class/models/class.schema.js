@@ -4,6 +4,7 @@ var StudentSchema = require('./student.schema');
 var LecturerSchema = require('./lecturer.schema');
 var SharedResourceSchema = require('./sharedresource.schema');
 var AssignmentSchema = require('./assignment.schema');
+var ScoreSchema = require('./score.schema');
 
 var ClassSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -12,6 +13,7 @@ var ClassSchema = new mongoose.Schema({
     courseCode: { type: String, required: true },
     lecturers: { type: [LecturerSchema] },
     students: { type: [StudentSchema] },
+    scores: { type: [ScoreSchema] },
     sharedResources: { type: [SharedResourceSchema] },
     assignments: { type: [AssignmentSchema] },
     metadata: {},
