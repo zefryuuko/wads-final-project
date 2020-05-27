@@ -27,6 +27,7 @@ import Table from '../../ui-elements/Table';
 import AddResourceModal from './components/AddResourceModal';
 import AddAssignmentModal from './components/AddAssignmentModal';
 import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
+import Button from '../../ui-elements/Button';
 
 class Course extends Component {
     constructor(props) {
@@ -330,7 +331,39 @@ class Course extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <Card title="Student's Grades" padding>
-                                                
+                                                <div className="table-responsive">
+                                                    <table className="table table-striped">
+                                                        <thead className="bg-primary text-white">
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Name</th>
+                                                                <th>Grades</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            { this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students.map(student => {
+                                                                return <tr key={student.universalId}>
+                                                                    <th scope="row">{student.universalId}</th>
+                                                                    <td>{student.name}</td>
+                                                                    <td style={{minWidth: 280}}>
+                                                                        { this.state.classData.metadata.class[0].evaluation.length > 0 ? this.state.classData.metadata.class[0].evaluation.map(evaluation => {
+                                                                            return <div key={evaluation._id} className="input-group">
+                                                                                <div className="form-control">{evaluation.name} - {evaluation.weight}%</div>
+                                                                                <div className="input-group-append">
+                                                                                    <input type="number" min="0" max="100" className="form-control"/>
+                                                                                </div>
+                                                                            </div>
+                                                                        })
+                                                                        : "No evaluation"}
+                                                                    </td>
+                                                                    
+                                                                </tr>
+                                                            })
+                                                            : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students enrolled to this class.</td></tr>}
+                                                        </tbody>
+                                                    </table>
+                                                    <Button className="btn btn-primary float-right" loading={this.state.isUpdating}>Save Changes</Button>
+                                                </div>
                                             </Card>
                                         </div>
                                     </div>
