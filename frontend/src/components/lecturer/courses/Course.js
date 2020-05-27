@@ -46,6 +46,9 @@ class Course extends Component {
 
         // Bind functions
         this.loadClassData = this.loadClassData.bind(this);
+        this.handleGradeUpdate = this.handleGradeUpdate.bind(this);
+        this.pushNewScoreElement = this.pushNewScoreElement.bind(this);
+        this.updateGrades = this.updateGrades.bind(this);
     }
 
     loadClassData() {
@@ -95,8 +98,32 @@ class Course extends Component {
                                     });
                                 })
                             });
-    
-                            this.setState({classData: res, isLoading: false});
+
+                            this.setState({classData: res});
+
+                            // Do precalculations
+                            if (this.state.classData && this.state.classData.students.length > 0)
+                                this.state.classData.students.forEach(student => {
+                                    // Get evaluation reference
+                                    let currentStudentIndex = this.state.classData.scores.findIndex(element => {
+                                        return element.universalId === this.state.currentUserData.id;
+                                    });
+                                    
+                                    // Add element if data does not exist
+                                    if (currentStudentIndex === -1) {
+                                        const newDocument = {
+                                            universalId: student.universalId,
+                                            evaluations:  this.state.classData.metadata.class[0].evaluation.map(evaluation => {
+                                                    return {
+                                                        evaluationName: evaluation.name,
+                                                        score: ""
+                                                    }
+                                                })
+                                        }
+                                        this.pushNewScoreElement(newDocument)
+                                    }
+                                });
+                            this.setState({isLoading: false});
                         }).catch(err => {
                 
                         });
@@ -156,6 +183,47 @@ class Course extends Component {
 
     componentDidMount() {
         this.loadClassData();
+    }
+
+    pushNewScoreElement(newDocument) {
+        this.setState(prevState => ({
+            classData: {...prevState.classData, scores: prevState.classData.scores.concat(newDocument)}
+        }));
+    }
+
+    handleGradeUpdate(e) {
+        let { name, value } = e.target;
+        name = name.split("-");
+        const studentIndex = name[1];
+        const evalIndex = name[2];
+        // this.state.classData.scores[currentStudentIndex].evaluations[evalId].evaluationName
+        this.setState(prevState => {
+            let currentScore = JSON.parse(JSON.stringify(prevState.classData.scores));
+            currentScore[studentIndex].evaluations[evalIndex].score = value;
+            return {
+                classData: { 
+                    ...prevState.classData,
+                    scores: currentScore
+                }
+            }
+        })
+        console.log(this.state)
+    }
+
+    updateGrades() {
+        this.setState({isUpdating: true});
+        ClassService.updateClassScores(
+            this.props.match.params.semesterId,
+            this.props.match.params.classCode,
+            this.props.match.params.courseCode,
+            this.state.classData.scores
+        ).then(res => {
+            this.setState({isUpdating: false});
+            this.loadClassData();
+        }).catch(err => {
+            this.setState({isUpdating: false});
+            window.alert("An error ocurred while updating grades data. Please try again later or contact the system administrator.");
+        });
     }
 
     render() { 
@@ -342,15 +410,21 @@ class Course extends Component {
                                                         </thead>
                                                         <tbody>
                                                             { this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students.map(student => {
+                                                                // Get evaluation reference
+                                                                let currentStudentIndex = this.state.classData.scores.findIndex(element => {
+                                                                    return element.universalId === student.universalId;
+                                                                });
                                                                 return <tr key={student.universalId}>
                                                                     <th scope="row">{student.universalId}</th>
                                                                     <td>{student.name}</td>
                                                                     <td style={{minWidth: 280}}>
-                                                                        { this.state.classData.metadata.class[0].evaluation.length > 0 ? this.state.classData.metadata.class[0].evaluation.map(evaluation => {
+                                                                        { this.state.classData.metadata.class[0].evaluation.length > 0 ? this.state.classData.metadata.class[0].evaluation.map((evaluation, evalId) => {
                                                                             return <div key={evaluation._id} className="input-group">
                                                                                 <div className="form-control">{evaluation.name} - {evaluation.weight}%</div>
                                                                                 <div className="input-group-append">
-                                                                                    <input type="number" min="0" max="100" className="form-control"/>
+                                                                                    <input type="number" name={`eval-${currentStudentIndex}-${evalId}`}
+                                                                                        value={currentStudentIndex !== -1 ? this.state.classData.scores[currentStudentIndex].evaluations[evalId].score : ""} 
+                                                                                        min="0" max="100" onChange={this.handleGradeUpdate} className="form-control" disabled={this.state.isUpdating}/>
                                                                                 </div>
                                                                             </div>
                                                                         })
@@ -362,7 +436,7 @@ class Course extends Component {
                                                             : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students enrolled to this class.</td></tr>}
                                                         </tbody>
                                                     </table>
-                                                    <Button className="btn btn-primary float-right" loading={this.state.isUpdating}>Save Changes</Button>
+                                                    <Button className="btn btn-primary float-right" onClick={this.updateGrades} loading={this.state.isUpdating}>Save Changes</Button>
                                                 </div>
                                             </Card>
                                         </div>
