@@ -217,7 +217,7 @@ class Course extends Component {
                                                         </table>
                                                         { this.state.classData && this.state.classData.assignments.length > 0 ?
                                                             this.state.classData.assignments.map((assignment) => {
-                                                                if (new Date().getTime() > new Date(assignment.submissionDeadline).getTime())
+                                                                if (new Date().getTime() < new Date(assignment.submissionDeadline).getTime())
                                                                     return <SubmitAssignmentModal 
                                                                                 key={assignment._id} 
                                                                                 id={assignment._id}
