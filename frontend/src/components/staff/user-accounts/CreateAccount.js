@@ -67,15 +67,14 @@ class CreateAccount extends React.Component {
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
         if (this.state.profilePicture) {
             const bucketName = "profile-picture";
-            const picture = this.state.profilePictureFile[0];
+            const picture = this.state.profilePicture[0];
             let pictureExtension = picture.name.split(".");
             pictureExtension = pictureExtension[pictureExtension.length - 1];
-            const fileName = `${this.props.match.params.accountId}.${pictureExtension}`;
+            const fileName = `${this.state.id}.${pictureExtension}`;
             let storageRef = firebase.storage().ref(`${bucketName}/${fileName}`);
             let uploadTask = storageRef.put(picture);
             uploadTask.on('state_changed', null, null, () => {
                 firebase.storage().ref().child(`${bucketName}/${fileName}`).getDownloadURL().then(downloadURL => {
-                    console.log(downloadURL);
                     UserService.createUser({...this.state, profilePictureURL: downloadURL})
                     .then((res) => {
                         this.updateSuccess();
