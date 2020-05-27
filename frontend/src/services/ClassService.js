@@ -197,6 +197,17 @@ class ClassService {
             throw err;
         }
     }
+
+    getGrade(finalScore) {
+        if (finalScore >= 90) return "A";
+        else if (finalScore >=85  && finalScore < 90) return "A-";
+        else if (finalScore >=80  && finalScore < 85) return "B+";
+        else if (finalScore >=75  && finalScore < 80) return "B";
+        else if (finalScore >=70  && finalScore < 75) return "B-";
+        else if (finalScore >=65  && finalScore < 70) return "C";
+        else if (finalScore >=60  && finalScore < 65) return "C-";
+        else return "F"
+    }
 }
 
 export default new ClassService();
