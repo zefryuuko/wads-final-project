@@ -9,6 +9,7 @@ const Student = require('../models/student.model');
 const Lecturer = require('../models/lecturer.model');
 const SharedResource = require('../models/sharedresource.model');
 const Assignment = require('../models/assignment.model');
+const Score = require('../models/score.model');
 const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
@@ -754,6 +755,28 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
                     }
                 }, 
                 { $set: { 'classes.$.lecturers': newLecturerBody } },
+                { new: true, upsert: true }
+            );
+        }
+
+        // Update scores
+        if (req.body.scores) {
+            const newScoresBody = req.body.scores.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Score(element);
+                return element;
+            });
+            await Semester.updateOne(
+                { 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
+                }, 
+                { $set: { 'classes.$.scores': newScoresBody } },
                 { new: true, upsert: true }
             );
         }
