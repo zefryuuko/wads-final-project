@@ -6,6 +6,7 @@ var ScoreSchema = new mongoose.Schema({
     evaluations: [
         {
             evaluationName: { type: String, required: true },
+            weight: { type: String, required: true },
             score: { type: String, required: true }
         }
     ]
