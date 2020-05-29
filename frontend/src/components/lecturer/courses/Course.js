@@ -28,6 +28,7 @@ import AddResourceModal from './components/AddResourceModal';
 import AddAssignmentModal from './components/AddAssignmentModal';
 import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
 import Button from '../../ui-elements/Button';
+import Preloader from '../../ui-elements/Preloader';
 
 class Course extends Component {
     constructor(props) {
@@ -230,280 +231,283 @@ class Course extends Component {
     render() { 
         if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return ( 
-            <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
-                <PageWrapper>
-                    <PageBreadcrumb title={this.state.classData ? <span>{this.state.classData.metadata.name}<span className="badge badge-primary ml-2">{this.state.classData.classType}</span></span> : "Loading..."} breadcrumb={<Breadcrumb current={this.props.match.params.courseCode} contents={[{name: "Learning", url: ""}, {name: "Courses", url: "/lecturer/courses"}, {name: this.props.match.params.classCode, url: ""}]}/>}/>
-                    <ContentWrapper>
-                        <Tab data ={[
-                            {
-                                name: "Course Info",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <CourseDescription data={this.state.classData ? this.state.classData.metadata.description : null} scu={this.state.classData ? this.state.classData.metadata.scu : undefined}/>
+            <div>
+                <Preloader isLoading={this.state.isLoading}/>
+                <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
+                    <PageWrapper>
+                        <PageBreadcrumb title={this.state.classData ? <span>{this.state.classData.metadata.name}<span className="badge badge-primary ml-2">{this.state.classData.classType}</span></span> : "Loading..."} breadcrumb={<Breadcrumb current={this.props.match.params.courseCode} contents={[{name: "Learning", url: ""}, {name: "Courses", url: "/lecturer/courses"}, {name: this.props.match.params.classCode, url: ""}]}/>}/>
+                        <ContentWrapper>
+                            <Tab data ={[
+                                {
+                                    name: "Course Info",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <CourseDescription data={this.state.classData ? this.state.classData.metadata.description : null} scu={this.state.classData ? this.state.classData.metadata.scu : undefined}/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <LearningOutcomes data={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card padding>
+                                                    <Evaluation data={this.state.classData ? this.state.classData.metadata.class[0].evaluation : null} loData={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
+                                                </Card>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <LearningOutcomes data={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card padding>
-                                                <Evaluation data={this.state.classData ? this.state.classData.metadata.class[0].evaluation : null} loData={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
-                                            </Card>
-                                        </div>
-                                    </div>
-                                </div>
-                            },
-                            {
-                                name: "Shared Resources",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Shared Resources" right={<a href="#addMaterials" data-toggle="modal" data-target="#addResourceModal">Add New Resource</a>} padding>
-                                                <div className="table-responsive">
-                                                    <table id="sharedMaterials" className="table table-striped no-wrap">
-                                                        <thead className="bg-primary text-white">
-                                                            <tr>
-                                                                <th style={{width: 200}}>Date Added</th>
-                                                                <th>Name</th>
-                                                                <th>Added By</th>
-                                                                <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            { this.state.classData && this.state.classData.sharedResources.length > 0 ?
-                                                                this.state.classData.sharedResources.map((resource, index) => {
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
-                                                                            <td>
-                                                                                {resource.name}
-                                                                                {resource.addedBy.universalId === (this.state.currentUserData ? this.state.currentUserData.id : null) ? 
-                                                                                    <span> - <a href="#deleteMaterial" onClick={() => {
-                                                                                        let isConfirmed = window.confirm(`Are you sure you want to delete '${resource.name}'? This action cannot be undone.`);
-                                                                                        if (isConfirmed) this.deleteResource(resource._id, resource.url);
-                                                                                    }}>Delete</a></span> 
-                                                                                : null}
-                                                                            </td>
-                                                                            <td>{resource.addedBy.name}</td>
-                                                                            <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
-                                                                        </tr>
-                                                                    );
-                                                                })
-                                                            : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                { this.state.currentUserData ? 
-                                                    <AddResourceModal 
-                                                        authorUniversalId={this.state.currentUserData.id} 
-                                                        authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
-                                                        semesterId={this.props.match.params.semesterId}
-                                                        classCode={this.props.match.params.classCode}
-                                                        courseCode={this.props.match.params.courseCode}
-                                                        onSuccess={this.loadClassData}
-                                                        forceRefresh={new Date()}
-                                                    /> 
-                                                : null }
-                                            </Card>
-                                        </div>
-                                    </div>
-                                </div>
-                            },
-                            {
-                                name: "Assignments",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Assignments" right={<a href="#createAssignment" data-toggle="modal" data-target="#addAssignmentModal">Create Assignment</a>} padding>
-                                                <div className="table-responsive">
-                                                    <table id="assignments" className="table table-striped no-wrap">
-                                                        <thead className="bg-primary text-white">
-                                                            <tr>
-                                                                <th>Name</th>
-                                                                <th style={{width: 170}}>Deadline</th>
-                                                                <th style={{width: 170}}>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            { this.state.classData && this.state.classData.assignments.length > 0 ?
-                                                                this.state.classData.assignments.map((assignment, index) => {
-                                                                    let submissionDeadline = new Date(assignment.submissionDeadline);
-                                                                    return (
-                                                                        <tr key={index}>
-                                                                            <th scope="row" style={{verticalAlign: "middle"}}>
-                                                                                {assignment.name}
-                                                                            </th>
-                                                                            <td style={{verticalAlign: "middle"}}>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
-                                                                            <td>
-                                                                                <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
-                                                                                <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
-                                                                                <a href="#deleteMaterial" 
-                                                                                        className="btn btn-danger btn-sm"
-                                                                                        onClick={() => {
-                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
-                                                                                            if (isConfirmed) this.deleteAssignment(assignment._id, assignment.resourceURL);
-                                                                                        }}
-                                                                                    >Delete</a>
-                                                                            </td>
-                                                                        </tr>
-                                                                    );
-                                                                })
-                                                            : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                { this.state.currentUserData ? 
-                                                    <AddAssignmentModal 
-                                                        authorUniversalId={this.state.currentUserData.id} 
-                                                        authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
-                                                        semesterId={this.props.match.params.semesterId}
-                                                        classCode={this.props.match.params.classCode}
-                                                        courseCode={this.props.match.params.courseCode}
-                                                        onSuccess={this.loadClassData}
-                                                        forceRefresh={new Date()}
-                                                    /> 
-                                                : null }
-                                                { this.state.classData && this.state.classData.assignments.length > 0 ?
-                                                    this.state.classData.assignments.map((assignment) => {
-                                                        return <AssignmentSubmissionsModal
-                                                                    key={assignment._id}
-                                                                    assignmentId={assignment._id}
-                                                                    assignmentName={assignment.name}
-                                                                    submissions={assignment.submissions}
-                                                                />
-                                                    })
-                                                : null }
-                                            </Card>
-                                        </div>
-                                    </div>
-                                </div>
-                            },
-                            {
-                                name: "Grading",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Student's Grades" padding>
-                                                <div className="table-responsive">
-                                                    <table className="table table-striped">
-                                                        <thead className="bg-primary text-white">
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Name</th>
-                                                                <th>Grades</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            { this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students.map(student => {
-                                                                // Get evaluation reference
-                                                                let currentStudentIndex = this.state.classData.scores.findIndex(element => {
-                                                                    return element.universalId === student.universalId;
-                                                                });
-                                                                return <tr key={student.universalId}>
-                                                                    <th scope="row">{student.universalId}</th>
-                                                                    <td>{student.name}</td>
-                                                                    <td style={{minWidth: 280}}>
-                                                                        { this.state.classData.metadata.class[0].evaluation.length > 0 ? this.state.classData.metadata.class[0].evaluation.map((evaluation, evalId) => {
-                                                                            return <div key={evaluation._id} className="input-group">
-                                                                                <div className="form-control">{evaluation.name} - {evaluation.weight}%</div>
-                                                                                <div className="input-group-append">
-                                                                                    <input type="number" name={`eval-${currentStudentIndex}-${evalId}`}
-                                                                                        value={currentStudentIndex !== -1 ? this.state.classData.scores[currentStudentIndex].evaluations[evalId].score : ""} 
-                                                                                        min="0" max="100" onChange={this.handleGradeUpdate} className="form-control" disabled={this.state.isUpdating}/>
-                                                                                </div>
-                                                                            </div>
-                                                                        })
-                                                                        : "No evaluation"}
-                                                                    </td>
-                                                                    
+                                },
+                                {
+                                    name: "Shared Resources",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card title="Shared Resources" right={<a href="#addMaterials" data-toggle="modal" data-target="#addResourceModal">Add New Resource</a>} padding>
+                                                    <div className="table-responsive">
+                                                        <table id="sharedMaterials" className="table table-striped no-wrap">
+                                                            <thead className="bg-primary text-white">
+                                                                <tr>
+                                                                    <th style={{width: 200}}>Date Added</th>
+                                                                    <th>Name</th>
+                                                                    <th>Added By</th>
+                                                                    <th style={{width: 40}}><i className="feather-icon" data-feather="file"/></th>
                                                                 </tr>
-                                                            })
-                                                            : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students enrolled to this class.</td></tr>}
-                                                        </tbody>
-                                                    </table>
-                                                    <Button className="btn btn-primary float-right" onClick={this.updateGrades} loading={this.state.isUpdating}>Save Changes</Button>
-                                                </div>
-                                            </Card>
+                                                            </thead>
+                                                            <tbody>
+                                                                { this.state.classData && this.state.classData.sharedResources.length > 0 ?
+                                                                    this.state.classData.sharedResources.map((resource, index) => {
+                                                                        return (
+                                                                            <tr key={index}>
+                                                                                <th scope="row">{new Date(resource.dateAdded).toDateString()}</th>
+                                                                                <td>
+                                                                                    {resource.name}
+                                                                                    {resource.addedBy.universalId === (this.state.currentUserData ? this.state.currentUserData.id : null) ? 
+                                                                                        <span> - <a href="#deleteMaterial" onClick={() => {
+                                                                                            let isConfirmed = window.confirm(`Are you sure you want to delete '${resource.name}'? This action cannot be undone.`);
+                                                                                            if (isConfirmed) this.deleteResource(resource._id, resource.url);
+                                                                                        }}>Delete</a></span> 
+                                                                                    : null}
+                                                                                </td>
+                                                                                <td>{resource.addedBy.name}</td>
+                                                                                <td><a href={resource.url} target="_blank" rel="noopener noreferrer"><i className=" fas fa-external-link-alt"/></a></td>
+                                                                            </tr>
+                                                                        );
+                                                                    })
+                                                                : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    { this.state.currentUserData ? 
+                                                        <AddResourceModal 
+                                                            authorUniversalId={this.state.currentUserData.id} 
+                                                            authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                            semesterId={this.props.match.params.semesterId}
+                                                            classCode={this.props.match.params.classCode}
+                                                            courseCode={this.props.match.params.courseCode}
+                                                            onSuccess={this.loadClassData}
+                                                            forceRefresh={new Date()}
+                                                        /> 
+                                                    : null }
+                                                </Card>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            },
-                            {
-                                name: "People",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Lecturers" padding>
-                                                <Table header={["ID", "", "Name"]}>
-                                                    {this.state.classData && this.state.classData.lecturers.length > 0 ? this.state.classData.lecturers
-                                                        .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
-                                                        .map(lecturer => {
-                                                        return <tr key={lecturer.universalId}>
-                                                            <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{lecturer.universalId}</th>
-                                                            <td width="40">
-                                                                {this.state[`profile${lecturer.universalId}`] ?
-                                                                    <div className="rounded-circle" style={{
-                                                                        display: "block",
-                                                                        width: 40, 
-                                                                        overflow: "hidden", 
-                                                                        height: 40, 
-                                                                        textAlign: "center",
-                                                                        backgroundRepeat: "no-repeat",
-                                                                        backgroundPosition: "center center",
-                                                                        backgroundSize: "cover",
-                                                                        backgroundImage: `url('${this.state[`profile${lecturer.universalId}`]}')`
-                                                                    }}/>
-                                                                : <span style={{width: 30}}></span>}
-                                                            </td>
-                                                            <td style={{verticalAlign: "middle"}}>{lecturer.name}</td>
-                                                        </tr>
-                                                    })
-                                                    : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no lecturer assigned to this class.</td></tr>}
-                                                </Table>
-                                            </Card>
+                                },
+                                {
+                                    name: "Assignments",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card title="Assignments" right={<a href="#createAssignment" data-toggle="modal" data-target="#addAssignmentModal">Create Assignment</a>} padding>
+                                                    <div className="table-responsive">
+                                                        <table id="assignments" className="table table-striped no-wrap">
+                                                            <thead className="bg-primary text-white">
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th style={{width: 170}}>Deadline</th>
+                                                                    <th style={{width: 170}}>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                { this.state.classData && this.state.classData.assignments.length > 0 ?
+                                                                    this.state.classData.assignments.map((assignment, index) => {
+                                                                        let submissionDeadline = new Date(assignment.submissionDeadline);
+                                                                        return (
+                                                                            <tr key={index}>
+                                                                                <th scope="row" style={{verticalAlign: "middle"}}>
+                                                                                    {assignment.name}
+                                                                                </th>
+                                                                                <td style={{verticalAlign: "middle"}}>{submissionDeadline.toDateString()} - {`${submissionDeadline.toTimeString().split(" ")[0].substr(0, 5)}`}</td>
+                                                                                <td>
+                                                                                    <a href={assignment.resourceURL} className="btn btn-sm text-white btn-secondary mr-2" target="_blank" rel="noopener noreferrer">Open Task</a>
+                                                                                    <a href="#viewSubmissions" data-toggle="modal" data-target={`#assignmentSubmissions-${assignment._id}`} className="btn btn-sm text-white btn-success mr-2">Submissions</a>
+                                                                                    <a href="#deleteMaterial" 
+                                                                                            className="btn btn-danger btn-sm"
+                                                                                            onClick={() => {
+                                                                                                let isConfirmed = window.confirm(`Are you sure you want to delete '${assignment.name}'? This action cannot be undone.`);
+                                                                                                if (isConfirmed) this.deleteAssignment(assignment._id, assignment.resourceURL);
+                                                                                            }}
+                                                                                        >Delete</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        );
+                                                                    })
+                                                                : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no shared resources available for this class.</td></tr> }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    { this.state.currentUserData ? 
+                                                        <AddAssignmentModal 
+                                                            authorUniversalId={this.state.currentUserData.id} 
+                                                            authorName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                            semesterId={this.props.match.params.semesterId}
+                                                            classCode={this.props.match.params.classCode}
+                                                            courseCode={this.props.match.params.courseCode}
+                                                            onSuccess={this.loadClassData}
+                                                            forceRefresh={new Date()}
+                                                        /> 
+                                                    : null }
+                                                    { this.state.classData && this.state.classData.assignments.length > 0 ?
+                                                        this.state.classData.assignments.map((assignment) => {
+                                                            return <AssignmentSubmissionsModal
+                                                                        key={assignment._id}
+                                                                        assignmentId={assignment._id}
+                                                                        assignmentName={assignment.name}
+                                                                        submissions={assignment.submissions}
+                                                                    />
+                                                        })
+                                                    : null }
+                                                </Card>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Students" padding>
-                                                <Table header={["ID", "", "Name"]}>
-                                                    {this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students
-                                                        .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
-                                                        .map(student => {
-                                                        return <tr key={student.universalId}>
-                                                            <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{student.universalId}</th>
-                                                            <td width="40">
-                                                                {this.state[`profile${student.universalId}`] ?
-                                                                    <div className="rounded-circle" style={{
-                                                                        display: "block",
-                                                                        width: 40, 
-                                                                        overflow: "hidden", 
-                                                                        height: 40, 
-                                                                        textAlign: "center",
-                                                                        backgroundRepeat: "no-repeat",
-                                                                        backgroundPosition: "center center",
-                                                                        backgroundSize: "cover",
-                                                                        backgroundImage: `url('${this.state[`profile${student.universalId}`]}')`
-                                                                    }}/>
-                                                                : <span style={{width: 30}}></span>}
-                                                            </td>
-                                                            <td style={{verticalAlign: "middle"}}>{student.name}</td>
-                                                        </tr>
-                                                    })
-                                                    : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no student assigned to this class.</td></tr>}
-                                                </Table>
-                                            </Card>
+                                },
+                                {
+                                    name: "Grading",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card title="Student's Grades" padding>
+                                                    <div className="table-responsive">
+                                                        <table className="table table-striped">
+                                                            <thead className="bg-primary text-white">
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Name</th>
+                                                                    <th>Grades</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                { this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students.map(student => {
+                                                                    // Get evaluation reference
+                                                                    let currentStudentIndex = this.state.classData.scores.findIndex(element => {
+                                                                        return element.universalId === student.universalId;
+                                                                    });
+                                                                    return <tr key={student.universalId}>
+                                                                        <th scope="row">{student.universalId}</th>
+                                                                        <td>{student.name}</td>
+                                                                        <td style={{minWidth: 280}}>
+                                                                            { this.state.classData.metadata.class[0].evaluation.length > 0 ? this.state.classData.metadata.class[0].evaluation.map((evaluation, evalId) => {
+                                                                                return <div key={evaluation._id} className="input-group">
+                                                                                    <div className="form-control">{evaluation.name} - {evaluation.weight}%</div>
+                                                                                    <div className="input-group-append">
+                                                                                        <input type="number" name={`eval-${currentStudentIndex}-${evalId}`}
+                                                                                            value={currentStudentIndex !== -1 ? this.state.classData.scores[currentStudentIndex].evaluations[evalId].score : ""} 
+                                                                                            min="0" max="100" onChange={this.handleGradeUpdate} className="form-control" disabled={this.state.isUpdating}/>
+                                                                                    </div>
+                                                                                </div>
+                                                                            })
+                                                                            : "No evaluation"}
+                                                                        </td>
+                                                                        
+                                                                    </tr>
+                                                                })
+                                                                : <tr><td colSpan="3" style={{textAlign: "center"}}>There are no students enrolled to this class.</td></tr>}
+                                                            </tbody>
+                                                        </table>
+                                                        <Button className="btn btn-primary float-right" onClick={this.updateGrades} loading={this.state.isUpdating}>Save Changes</Button>
+                                                    </div>
+                                                </Card>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                        ]}/>
-                    </ContentWrapper>
-                </PageWrapper>
+                                },
+                                {
+                                    name: "People",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card title="Lecturers" padding>
+                                                    <Table header={["ID", "", "Name"]}>
+                                                        {this.state.classData && this.state.classData.lecturers.length > 0 ? this.state.classData.lecturers
+                                                            .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
+                                                            .map(lecturer => {
+                                                            return <tr key={lecturer.universalId}>
+                                                                <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{lecturer.universalId}</th>
+                                                                <td width="40">
+                                                                    {this.state[`profile${lecturer.universalId}`] ?
+                                                                        <div className="rounded-circle" style={{
+                                                                            display: "block",
+                                                                            width: 40, 
+                                                                            overflow: "hidden", 
+                                                                            height: 40, 
+                                                                            textAlign: "center",
+                                                                            backgroundRepeat: "no-repeat",
+                                                                            backgroundPosition: "center center",
+                                                                            backgroundSize: "cover",
+                                                                            backgroundImage: `url('${this.state[`profile${lecturer.universalId}`]}')`
+                                                                        }}/>
+                                                                    : <span style={{width: 30}}></span>}
+                                                                </td>
+                                                                <td style={{verticalAlign: "middle"}}>{lecturer.name}</td>
+                                                            </tr>
+                                                        })
+                                                        : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no lecturer assigned to this class.</td></tr>}
+                                                    </Table>
+                                                </Card>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card title="Students" padding>
+                                                    <Table header={["ID", "", "Name"]}>
+                                                        {this.state.classData && this.state.classData.students.length > 0 ? this.state.classData.students
+                                                            .sort((a, b) => a.name[0] > b.name[0] ? 1 : -1)
+                                                            .map(student => {
+                                                            return <tr key={student.universalId}>
+                                                                <th scope="row" style={{width: 200, verticalAlign: "middle"}}>{student.universalId}</th>
+                                                                <td width="40">
+                                                                    {this.state[`profile${student.universalId}`] ?
+                                                                        <div className="rounded-circle" style={{
+                                                                            display: "block",
+                                                                            width: 40, 
+                                                                            overflow: "hidden", 
+                                                                            height: 40, 
+                                                                            textAlign: "center",
+                                                                            backgroundRepeat: "no-repeat",
+                                                                            backgroundPosition: "center center",
+                                                                            backgroundSize: "cover",
+                                                                            backgroundImage: `url('${this.state[`profile${student.universalId}`]}')`
+                                                                        }}/>
+                                                                    : <span style={{width: 30}}></span>}
+                                                                </td>
+                                                                <td style={{verticalAlign: "middle"}}>{student.name}</td>
+                                                            </tr>
+                                                        })
+                                                        : <tr><td colSpan="2" style={{textAlign: "center"}}>There are no student assigned to this class.</td></tr>}
+                                                    </Table>
+                                                </Card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            ]}/>
+                        </ContentWrapper>
+                    </PageWrapper>
+                </div>
             </div>
          );
     }
