@@ -93,6 +93,18 @@ class ClassService {
         }
     }
 
+    async createClass(semesterId, classCode, courseCode, classType, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}`, {classCode, courseCode, classType});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            console.log(err.response)
+            if (callback) callback(err);
+            return err;
+        }
+    }
+
     async deleteClass(semesterId, classId, courseId, callback) {
         try {
             const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`);
