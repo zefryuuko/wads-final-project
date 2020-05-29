@@ -238,10 +238,19 @@ router.delete('/:id', async (req, res) => {
         );
         
         // Remove reference to the semester from major
-        const mResult = await Major.updateOne(
-            { _id: semester[0].majorId }, 
-            { $pull: { linkedSemesters: req.params.id } }
-            );
+        const mResult = await Major.findOneAndUpdate(
+            { 
+                _id: semester[0].majorId
+            }, 
+            { 
+                $pull: { 
+                    linkedSemesters: {
+                        semesterId: req.params.id
+                    } 
+                }
+            },
+            { new: true }
+        );
         
         // Remove semester data
         const removedSemester = await Semester.deleteOne({ _id: req.params.id });
@@ -265,7 +274,7 @@ router.delete('/:id', async (req, res) => {
         }
 
         res.status(500).json({
-            "message": err
+            "message": `${err}`
         });
     }
 });
