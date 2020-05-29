@@ -13,6 +13,7 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
+import DeleteClassModal from './components/DeleteClassModal';
 
 // Components
 
@@ -39,7 +40,23 @@ class ClassList extends React.Component {
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        this.setState({isLoading: true});
+        
+        ClassService.getSemesters(this.props.match.params.majorId, this.state.currentTablePage).then(res => {
+            this.setState({
+                currentSemester: res.name
+            });
+
+            ClassService.getClasses(this.props.match.params.semesterId, this.state.currentTablePage).then(res => {
+                // TODO: add error validation
+                this.setState({
+                    pageTitle: `${res.period} ${res.name}`,
+                    semesterId: res._id,
+                    currentTableContent: res.classes,
+                    isLoading: false
+                });
+            })
+        })
     }
     
     componentDidMount() {
@@ -89,7 +106,9 @@ class ClassList extends React.Component {
                             breadcrumb={<Breadcrumb 
                                 current={this.state.pageTitle} 
                                 contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}, {name: this.state.currentSemester, url: `/staff/classes/${this.props.match.params.majorId}`}]}/>
-                            }/>
+                            }
+                            rightComponent={<button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createClassModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}
+                            />
                         <ContentWrapper>
                             <div className="row">
                                 <div className="col-12">
@@ -109,15 +128,26 @@ class ClassList extends React.Component {
                                                             <th scope="row">{row.classCode}</th>
                                                             <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${this.state.semesterId}/${row.classCode}/${row.courseCode}`}>{row.metadata ? `${row.metadata.name}` : "NO NAME"}</Link>{row.metadata ?  <span className="badge badge-info ml-1">{row.metadata.class[0].code}</span> : ""}</td>
                                                             <td style={{width: "150px", minWidth: "150px"}}>
-                                                                <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                                <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                                <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteClassModal-${row._id}`}>Delete</Button>
                                                             </td>
                                                         </tr>
                                                     )
-                                                }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
+                                                }): <tr><td colSpan="3" align="center">No Data</td></tr>}
                                             </tbody>
                                         </table>
                                         {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#classesTable') }</script> : null}
+                                        {(this.state.currentTableContent.length > 0) ? this.state.currentTableContent.map(row => {
+                                            return <DeleteClassModal 
+                                                key={row._id} 
+                                                semesterId={this.state.semesterId}
+                                                classId={row._id}
+                                                classCode={row.classCode} 
+                                                courseCode={row.courseCode}
+                                                courseName={row.metadata.name}
+                                                success={this.reloadTable}
+                                            />
+                                        })
+                                        : null }
                                     </Card>
                                 </div>
                             </div>
