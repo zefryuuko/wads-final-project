@@ -14,6 +14,7 @@ import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
 import CreateSemesterModal from './components/CreateSemesterModal';
+import DeleteSemesterModal from './components/DeleteSemesterModal';
 
 // Components
 
@@ -110,8 +111,7 @@ class SemesterList extends React.Component {
                                                             <th scope="row">{row.period}</th>
                                                             <td className="col"><Link to={`/staff/classes/${this.props.match.params.majorId}/${row.semesterId}`}>{row.name}</Link></td>
                                                             <td style={{width: "150px", minWidth: "150px"}}>
-                                                                <Button className="btn btn-sm btn-secondary btn-sm mr-2">Edit</Button>
-                                                                <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                                <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteSemesterModal-${row.semesterId}`}>Delete</Button>
                                                             </td>
                                                         </tr>
                                                     )
@@ -119,6 +119,10 @@ class SemesterList extends React.Component {
                                             </tbody>
                                         </table>
                                         {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#semestersTable') }</script> : null}
+                                        {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
+                                            return <DeleteSemesterModal key={row._id} semesterId={row.semesterId} name={row.name} period={row.period} success={this.reloadTable}/>
+                                        })
+                                        : null}
                                     </Card>
                                 </div>
                             </div>
