@@ -11,7 +11,6 @@ import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Tab from '../../ui-elements/Tab';
-// import Table from '../../ui-elements/Table';
 import Button from '../../ui-elements/Button';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';

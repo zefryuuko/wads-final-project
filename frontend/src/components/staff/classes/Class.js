@@ -12,8 +12,6 @@ import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Preloader from '../../ui-elements/Preloader';
-// import Table from '../../ui-elements/Table';
-// import Button from '../../ui-elements/Button';
 import CourseDescription from '../../ui-elements/CourseDescription';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import Evaluation from '../../ui-elements/Evaluation';

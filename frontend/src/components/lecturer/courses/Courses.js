@@ -9,11 +9,7 @@ import ClassService from '../../../services/ClassService';
 import PageWrapper from '../../ui-elements/PageWrapper';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
-// import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
-// import Button from '../../ui-elements/Button';
-// import ErrorAlert from '../../ui-elements/ErrorAlert';
-// import SuccessAlert from '../../ui-elements/SuccessAlert';
 import Preloader from '../../ui-elements/Preloader';
 
 class Courses extends Component {
