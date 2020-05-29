@@ -78,7 +78,7 @@ class DeleteSemesterModal extends Component {
                         This semester is bound to {this.state.classes.length} {this.state.classes.length > 1 ? "classes" : "class"}.
                     </p>
                     <ul>
-                        {this.state.classes.length > 0 ? this.state.classes.splice(0, this.state.classes.length > 5 ? 4 : this.state.classes.length).map(cls => {
+                        {this.state.classes.length > 0 ? Array.from(this.state.classes).splice(0, this.state.classes.length > 5 ? 5 : this.state.classes.length).map(cls => {
                             return <li key={cls._id}>{cls.classCode} ({cls.metadata.class[0].code}) - {cls.metadata.name}</li>
                         })
                         : null}
