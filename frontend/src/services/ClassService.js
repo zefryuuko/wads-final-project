@@ -264,6 +264,52 @@ class ClassService {
         else if (finalScore >= 1  && finalScore < 50) return "E";
         else return "F"
     }
+
+    calculateSemesterGPA(semesterData, universalId) {
+        if (!semesterData || !universalId) return "-";
+        if (semesterData.classes.length < 1) return "-";
+
+        let total = 0;
+        let courseCount = 0;
+        let allCoursesHasScores = true;
+
+        semesterData.classes.forEach(cls => {
+            if (cls.scores.length < 1) { allCoursesHasScores = false; return;}
+
+            let scoreData = cls.scores.find(item => item.universalId === universalId);
+            if (!scoreData) { allCoursesHasScores = false; return; };
+
+            let currentScoreTotal = 0;
+            let allEvaluationsHasScore = true;
+            
+            scoreData.evaluations.forEach(evaluation => {
+                if (evaluation.score === "") { allEvaluationsHasScore = false; allCoursesHasScores = false; }
+                else currentScoreTotal += Number.parseInt(evaluation.score) * (Number.parseInt(evaluation.weight)/100);
+            });
+
+            if (allEvaluationsHasScore) {
+                if (currentScoreTotal >= 90) total += 4.00;
+                else if (currentScoreTotal >= 85 && currentScoreTotal < 90) total += 3.67;
+                else if (currentScoreTotal >= 80 && currentScoreTotal < 85) total += 3.33;
+                else if (currentScoreTotal >= 75 && currentScoreTotal < 80) total += 3.00; 
+                else if (currentScoreTotal >= 70 && currentScoreTotal < 75) total += 2.50;
+                else if (currentScoreTotal >= 65 && currentScoreTotal < 70) total += 2.00; 
+                else if (currentScoreTotal >= 50 && currentScoreTotal < 65) total += 1.00; 
+                else if (currentScoreTotal >= 1  && currentScoreTotal < 50) total += 0.00; 
+                else return 0.00
+                courseCount++;
+            }
+        });
+
+        if ((total === 0 && courseCount === 0) || !allCoursesHasScores) return "-";
+        return (Math.round(total / courseCount * 100) / 100).toFixed(2);
+    }
+
+    calculateGPA(allSemesterGPA) {
+        if (!allSemesterGPA || allSemesterGPA.length < 1) return "-";
+        let average = allSemesterGPA.reduce((a, b) => a + b , 0) / allSemesterGPA.length;
+        return average;
+    }
 }
 
 export default new ClassService();
