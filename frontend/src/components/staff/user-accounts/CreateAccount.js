@@ -202,7 +202,7 @@ class CreateAccount extends React.Component {
                                                             <div className="input-group-text">Image</div>
                                                         </div> */}
                                                         {/* <div className="custom-file"> */}
-                                                            <input type="file" id="profilePicture" name="profilePicture" accept="image/x-png,image/jpeg" onChange={this.handleChange}/> {/*className="custom-file-input"*/}
+                                                            <input type="file" id="profilePicture" name="profilePicture" accept="image/x-png,image/jpeg" onChange={this.handleChange} className="form-control-file"/> {/*className="custom-file-input"*/}
                                                             {/* <label className="custom-file-label" htmlFor="profilePicture">Choose file</label> */}
                                                         {/* </div> */}
                                                     {/* </div> */}
