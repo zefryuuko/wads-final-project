@@ -333,7 +333,7 @@ class Account extends React.Component {
                     profilePictureURL: downloadURL
                 }).then(res => {
                     this.updateSuccess();
-                    window.location.reload();
+                    if (this.props.match.params.accountId === localStorage.getItem('universalId')) window.location.reload();
                     this.setState({isUpdating: false});
                 }).catch(err => {
                     this.showError();
