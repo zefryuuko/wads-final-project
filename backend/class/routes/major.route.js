@@ -122,8 +122,17 @@ router.delete('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const removedMajor = await Major.remove({ _id: req.params.id });
+        // Check if major has linked semesters
+        const major = await Major.findOne({ _id: req.params.id });
 
+        if (!major) res.status(404).json({ "message": `Major with id ${req.params.id} is not found.` });
+        if (major.linkedSemesters && major.linkedSemesters.length > 0) {
+            res.status(400).json({ "message": `Cannot remove major with semester data.` });
+            return;
+        }
+
+        const removedMajor = await Major.remove({ _id: req.params.id });
+        
         if (removedMajor.deletedCount < 1) {
             res.status(404).json({
                 "message": `Major with id ${req.params.id} is not found.`
