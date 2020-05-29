@@ -143,7 +143,18 @@ router.post('/', async (req, res) => {
         const sResult = await semester.save();
 
         // Add semester reference to majors
-        const mResult = await Major.updateOne({ _id: req.body.majorId }, { $push: { linkedSemesters: req.body._id } });
+        const mResult = await Major.updateOne(
+            { _id: req.body.majorId }, 
+            { 
+                $push: { 
+                    linkedSemesters: {
+                        _id: mongoose.Types.ObjectId(),
+                        name: req.body.name,
+                        period: req.body.period,
+                        semesterId: req.body._id
+                    } 
+                }
+            });
 
         res.status(200).json({
             "message": "Semester added successfully."
