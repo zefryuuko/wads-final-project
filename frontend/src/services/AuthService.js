@@ -25,10 +25,10 @@ class AuthService {
         }
     }
 
-    async login(emailAddress, password, callback) {
+    async login(emailAddress, password, rememberMe = false, callback) {
         try {
             const url = `${this.API_ENDPOINT}auth/session`;
-            const res = await axios.post(url, {emailAddress, password});
+            const res = await axios.post(url, {emailAddress, password, rememberMe});
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
