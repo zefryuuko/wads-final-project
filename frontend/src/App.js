@@ -8,7 +8,6 @@ import Landing from './components/Landing';
 import Logout from './components/Logout';
 import StudentDashboardPage from './components/student/StudentDashboardPage';
 import StaffDashboardPage from './components/staff/StaffDashboardPage';
-import TestingGrounds from './components/TestingGrounds';
 import LecturerDashboardPage from './components/lecturer/LecturerDashboardPage';
 
 function App() {
@@ -30,8 +29,6 @@ function App() {
         <Route path="/staff" component={StaffDashboardPage}/>
         {/* <Route exact path="/staff/courses" component={StaffCoursesList}/> */}
 
-        {/* Testing Grounds */}
-        <Route path="/testing-grounds" component={TestingGrounds}/>
       </BrowserRouter>
   );
 }
