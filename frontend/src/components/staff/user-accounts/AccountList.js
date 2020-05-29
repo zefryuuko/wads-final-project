@@ -11,7 +11,6 @@ import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import Card from '../../ui-elements/Card';
 import Preloader from '../../ui-elements/Preloader';
-import CreateAccountModal from './components/CreateAccountModal';
 
 class AccountList extends React.Component {
     constructor() {
@@ -97,7 +96,6 @@ class AccountList extends React.Component {
                             </div>
                         </ContentWrapper>
                     </PageWrapper>
-                    <CreateAccountModal/>
                 </div>
             </div>
         );

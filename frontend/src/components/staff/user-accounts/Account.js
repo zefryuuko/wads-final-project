@@ -11,7 +11,6 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import Card from '../../ui-elements/Card';
-import CreateAccountModal from './components/CreateAccountModal';
 import Button from '../../ui-elements/Button';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
@@ -579,7 +578,6 @@ class Account extends React.Component {
                             </div>
                         </ContentWrapper>
                     </PageWrapper>
-                    <CreateAccountModal/>
                 </div>
             </div>
         );
