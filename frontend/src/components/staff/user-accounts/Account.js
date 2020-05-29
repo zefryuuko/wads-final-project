@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import FileService from '../../../services/FileService';
 import firebase from '../../../firebase';
 
 // UI Elements
@@ -62,6 +63,7 @@ class Account extends React.Component {
         this.deleteLecturerAccount = this.deleteLecturerAccount.bind(this);
         this.deleteStaffAccount = this.deleteStaffAccount.bind(this);
         this.resetPassword = this.resetPassword.bind(this);
+        this.deleteAccount = this.deleteAccount.bind(this);
     }
 
     closeModal(modalId) {
@@ -82,6 +84,7 @@ class Account extends React.Component {
                     primaryEmail: res ? res.primaryEmail: "",
                     contactEmail: res ? res.contactEmail: "",
                     phone: res ? res.phone: "",
+                    id: res.id,
                     profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
                     studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                     lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
@@ -253,6 +256,7 @@ class Account extends React.Component {
                         primaryEmail: res ? res.primaryEmail: "",
                         contactEmail: res ? res.contactEmail: "",
                         phone: res ? res.phone: "",
+                        id: res.id,
                         profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
                         studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                         lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
@@ -339,6 +343,25 @@ class Account extends React.Component {
                     this.showError();
                     this.setState({isUpdating: false});
                 })
+            });
+        });
+    }
+
+    deleteAccount() {
+        const isConfirmed = window.confirm("FINAL CONFIRMATION. Are you sure you want to delete this account?");
+        if (!isConfirmed) return;
+
+        this.setState({isUpdating: true});
+
+        // Delete file from firebase
+        FileService.deleteFile(this.state.profilePictureURL, () => {
+            UserService.deleteUserById(this.state.id)
+            .then((res) => {
+                window.location.href = "/staff/accounts/"
+            })
+            .catch(err => {
+                this.setState({showErrorAlert: true, isUpdating: false});
+                this.closeModal('#deleteAccountModal');
             });
         });
     }
@@ -570,8 +593,19 @@ class Account extends React.Component {
                                                 </ModalFooter>
                                             </Modal>
                                             <div className="col-lg-6">
-                                                <Button className="btn btn-block btn-danger mb-2">Delete Account</Button>
+                                                <Button className="btn btn-block btn-danger mb-2" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</Button>
                                             </div>
+                                            <Modal id="deleteAccountModal">
+                                                <ModalHeader title="Delete Account"/>
+                                                <ModalBody>
+                                                    <p>Are you sure you want to delete the account <b>{`${this.state.id} - ${this.state.firstName} ${this.state.lastName}`}</b>?</p>
+                                                    <p>This action is destructive and cannot be undone.</p>
+                                                    <p>Account data that is assigned to a class will not be deleted, but the information related to this account will be removed.</p>
+                                                </ModalBody>
+                                                <ModalFooter disableClose={this.state.isUpdating}>
+                                                    <Button className="btn btn-danger" onClick={this.deleteAccount} disabled={this.state.isUpdating}>Delete</Button>
+                                                </ModalFooter>
+                                            </Modal>
                                         </div>
                                     </Card>
                                 </div>
