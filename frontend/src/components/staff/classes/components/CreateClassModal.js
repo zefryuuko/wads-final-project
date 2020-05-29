@@ -37,7 +37,10 @@ class CreateClassModal extends Component {
     handleChange(event) {
         let {name, value} = event.target;
 
-        if (name === "courseGroup") {
+        if (name === "classCode") {
+            if (!/^[a-zA-Z0-9()]*$/.test(value)) value = this.state.classCode;
+            else value = value.toUpperCase()
+        } else if (name === "courseGroup") {
             if (value === "") {
                 this.setState({ courses: undefined, courseClasses: undefined, courseCode: "", courseClass: "" });
                 return;
