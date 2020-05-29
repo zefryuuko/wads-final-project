@@ -110,9 +110,8 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
-            return err;
+            throw err;
         }
     }
 

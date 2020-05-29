@@ -101,12 +101,12 @@ class CreateClassModal extends Component {
                 this.closeModal(`#createClassModal`);
                 this.setState({isUpdating: false, prefix: "", name: ""});
             })
-            .catch((res, err) =>{
+            .catch((err) =>{
                 if (err.response.status === 409) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
                 } else {
-                    this.props.error();
+                    if (this.props.error) this.props.error();
                     this.closeModal('#createClassModal');
                     this.setState({isUpdating: false});
                 }
