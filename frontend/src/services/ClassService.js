@@ -49,6 +49,17 @@ class ClassService {
         }
     }
 
+    async createSemester(majorId, name, period, callback) {
+        try {
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/`, {majorId, name, period});
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async getClasses(semesterId, page, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}?page=${page}`);
