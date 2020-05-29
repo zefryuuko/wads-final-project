@@ -26,6 +26,7 @@ class Grades extends React.Component {
             userFirstFullName: "",
             userLastName: "",
             accountDetails: undefined,
+            GPA: "-"
         }
 
         // Set page display mode when loading
@@ -69,7 +70,13 @@ class Grades extends React.Component {
                                 // Load classes data
                                 ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
                                 .then(res => {
-                                    this.setState({enrolledSemesters: res, isLoading: false});
+                                    // Calculate GPA
+                                    let GPA = "";
+                                    res.forEach(semester => {
+                                        GPA += ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))
+                                    });
+
+                                    this.setState({enrolledSemesters: res, GPA, isLoading: false});
                                 }).catch(err => {
                                     this.setState({isLoading: false})
                                 });
@@ -113,7 +120,8 @@ class Grades extends React.Component {
                                                                 return;
                                                             }
                                                             finalGrade += Number.parseInt(evaluation.score) * (Number.parseInt(evaluation.weight)/100) // TODO: CALCULATE WEIGHT
-                                                    });
+                                                        });
+                                                    else allScoresExists = false;
                                                     let grade = allScoresExists ? ClassService.getGrade(finalGrade) : ""
 
                                                     return <tr key={cls._id}>
@@ -145,7 +153,7 @@ class Grades extends React.Component {
                                             </tbody>
                                         </table>
                                         <div className="mt-2">
-                                            Grade Point Semester: CALCULATE DADDY PLS
+                                            Grade Point Semester: {ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))}
                                         </div>
                                     </div>
                                 </Card>
@@ -159,7 +167,16 @@ class Grades extends React.Component {
                             <div className="row">
                                 <div className="col-md-6">
                                     <Card title="Your Grade" padding>
-
+                                        <div className="table-responsive">
+                                            <table className="table table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Cumulative GPA</th>
+                                                        <td>{this.state.GPA}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </Card>
                                 </div>
                                 <div className="col-md-6">
