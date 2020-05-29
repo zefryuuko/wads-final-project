@@ -93,7 +93,7 @@ class StaffDashboard extends React.Component {
                                         <div className="d-flex d-lg-flex d-md-block align-items-center">
                                             <div>
                                                 <div className="d-inline-flex align-items-center">
-                                                    <h2 className="text-dark mb-1 font-weight-medium">2</h2>
+                                                    <h2 className="text-dark mb-1 font-weight-medium">{this.state.currentEnrolledSemester ? this.state.currentEnrolledSemester.classes.length : "N/A"}</h2>
                                                 </div>
                                                 <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Courses this semester</h6>
                                             </div>
