@@ -14,6 +14,7 @@ import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
+import Preloader from '../../ui-elements/Preloader';
 import EditCourseGroupModal from './components/EditCourseGroupModal';
 import CreateCourseModal from './components/CreateCourseModal';
 import DeleteCourseModal from './components/DeleteCourseModal';
@@ -26,7 +27,8 @@ class CourseList extends React.Component {
         super();
         this.state = {
             isLoading: true,
-            isLoggedIn: false,
+            isAuthenticating: true,
+            isAuthenticated: false,
             currentTablePage: 1,
             currentTableContent: [],
             courseName: "",
@@ -46,13 +48,15 @@ class CourseList extends React.Component {
     }
 
     reloadTable() {
+        this.setState({isLoading: true});
         // Load table content
         CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
             // TODO: add error validation
             this.setState({
                 currentTableContent: res[0].courses,
                 courseName: res[0].name,
-                coursePrefix: res[0].prefix
+                coursePrefix: res[0].prefix,
+                isLoading: false
             });
         });
     }
@@ -69,96 +73,100 @@ class CourseList extends React.Component {
     componentDidMount() {
         // Perform session check
         AuthService.isLoggedIn()
-            .then(res => {
-                if (res.response && (res.response.status === 403))
+        .then(res => {
+            if (res.response && (res.response.status === 403))
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: false
+                });
+            else {
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: true
+                });
+
+                CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
                     this.setState({
-                        isLoading: false,
-                        isLoggedIn: false
+                        currentTableContent: res[0].courses,
+                        courseName: res[0].name,
+                        coursePrefix: res[0].prefix,
+                        isLoading: false
                     });
-                else
-                    this.setState({
-                        isLoading: false,
-                        isLoggedIn: true
-                    })
-            });
-        
-        CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
-            // TODO: add error validation
-            this.setState({
-                currentTableContent: res[0].courses,
-                courseName: res[0].name,
-                coursePrefix: res[0].prefix
-            });
+                });
+            }
         });
+        
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
+        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return (
-            <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
-                <PageWrapper>
-                    <PageBreadcrumb 
-                        title={`${this.state.courseName} Courses`} 
-                        breadcrumb={<Breadcrumb current={this.state.coursePrefix} 
-                        contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}]}/>}
-                        rightComponent={<div>
-                            <button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>
-                            <button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.coursePrefix}`} style={{lineHeight:0}}><i className="icon-pencil"/></button>
-                        </div>}
-                    />
-                    <ContentWrapper>
-                        {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
-                        {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
-                        <div className="row">
-                            <div className="col-12">
-                                <Card padding>
-                                    <table className="table table-striped no-wrap" id="coursesTable">
-                                        <thead className="bg-primary text-white">
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>Name</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
-                                                return (
-                                                    <tr key={row.code}>
-                                                        <th scope="row">{row.code}</th>
-                                                        <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
-                                                        <td style={{width: "150px", minWidth: "150px"}}>
-                                                            <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editModal-${row.code}`}>Edit</Button>
-                                                            <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            }): <tr><td colSpan="3" align="center">No data</td></tr>}
-                                        </tbody>
-                                    </table>
-                                    {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#coursesTable') }</script> : null}
-                                </Card>
+            <div>
+                <Preloader isLoading={this.state.isLoading}/>
+                <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
+                    <PageWrapper>
+                        <PageBreadcrumb 
+                            title={`${this.state.courseName} Courses`} 
+                            breadcrumb={<Breadcrumb current={this.state.coursePrefix} 
+                            contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}]}/>}
+                            rightComponent={<div>
+                                <button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createCourseModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>
+                                <button className="btn btn-secondary btn-circle mr-2" data-toggle="modal" data-target={`#editModal-${this.state.coursePrefix}`} style={{lineHeight:0}}><i className="icon-pencil"/></button>
+                            </div>}
+                        />
+                        <ContentWrapper>
+                            {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
+                            {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
+                            <div className="row">
+                                <div className="col-12">
+                                    <Card padding>
+                                        <table className="table table-striped no-wrap" id="coursesTable">
+                                            <thead className="bg-primary text-white">
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>Name</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => {
+                                                    return (
+                                                        <tr key={row.code}>
+                                                            <th scope="row">{row.code}</th>
+                                                            <td><Link to={`/staff/courses/${this.state.coursePrefix}/${row.code}`}>{row.name}</Link></td>
+                                                            <td style={{width: "150px", minWidth: "150px"}}>
+                                                                <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editModal-${row.code}`}>Edit</Button>
+                                                                <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteModal-${row.code}`}>Delete</Button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }): <tr><td colSpan="3" align="center">No data</td></tr>}
+                                            </tbody>
+                                        </table>
+                                        {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#coursesTable') }</script> : null}
+                                    </Card>
+                                </div>
                             </div>
-                        </div>
-                    </ContentWrapper>
-                </PageWrapper>
-                
-                {/* Edit course group modal */}
-                <EditCourseGroupModal key={this.state.coursePrefix} prefix={this.state.coursePrefix} redirectOnSuccess={'/staff/courses'} name={this.state.courseName} success={this.updateSuccess} error={this.showError}/>
-                
-                {/* Create course modal */}
-                <CreateCourseModal prefix={this.state.coursePrefix} success={this.updateSuccess} error={this.showError}/>
-                
-                {/* Generate edit modals */}
-                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
-                    return <EditCourseModal key={row.code} code={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
-                }): null}
+                        </ContentWrapper>
+                    </PageWrapper>
+                    
+                    {/* Edit course group modal */}
+                    <EditCourseGroupModal key={this.state.coursePrefix} prefix={this.state.coursePrefix} redirectOnSuccess={'/staff/courses'} name={this.state.courseName} success={this.updateSuccess} error={this.showError}/>
+                    
+                    {/* Create course modal */}
+                    <CreateCourseModal prefix={this.state.coursePrefix} success={this.updateSuccess} error={this.showError}/>
+                    
+                    {/* Generate edit modals */}
+                    {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                        return <EditCourseModal key={row.code} code={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                    }): null}
 
-                {/* Generate delete course modal */}
-                {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
-                    return <DeleteCourseModal key={row.code} prefix={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
-                }): null}
+                    {/* Generate delete course modal */}
+                    {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row=> {
+                        return <DeleteCourseModal key={row.code} prefix={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
+                    }): null}
+                </div>
             </div>
-
         );
     }
 }
