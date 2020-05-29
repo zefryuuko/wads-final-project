@@ -27,9 +27,6 @@ class Sidebar extends React.Component {
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/lecturer/assignments/"
                                     aria-expanded="false"><i data-feather="grid" className="feather-icon"></i><span
                                         className="hide-menu">Assignments</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/lecturer/schedule"
-                                    aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                                        className="hide-menu">Schedule</span></Link></li>
                             <li className="list-divider"></li>
 
                             <li className="nav-small-cap"><span className="hide-menu">Account</span></li>

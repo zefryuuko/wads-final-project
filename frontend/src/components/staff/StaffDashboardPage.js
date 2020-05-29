@@ -31,7 +31,6 @@ import LecturerList from './user-accounts/LecturerList';
 import StudentList from './user-accounts/StudentList';
 import Account from './user-accounts/Account';
 import CreateAccount from './user-accounts/CreateAccount';
-import Schedule from './Schedule';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -85,7 +84,6 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/courses`}><CourseGroups/></Route>
                         <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route>
                         <Route exact path={`${path}/courses/:groupId/:courseId`}><Course/></Route>
-                        <Route exact path={`${path}/schedule`}><Schedule/></Route>
 
                         {/* Classes */}
                         <Route exact path={`${path}/classes`}><MajorList/></Route>

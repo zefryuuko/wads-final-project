@@ -237,28 +237,30 @@ class Account extends React.Component {
                     isLoading: false,
                     isLoggedIn: false
                 });
-            else
+            else {
                 this.setState({
                     isLoading: false,
                     isLoggedIn: true
-                })
-        });
+                });
+
+                // Load user info
+                UserService.getUserById(this.props.match.params.accountId)
+                .then(res => {
+                    this.setState({
+                        tableData: res,
+                        firstName: res ? res.firstName : "",
+                        lastName: res ? res.lastName: "",
+                        primaryEmail: res ? res.primaryEmail: "",
+                        contactEmail: res ? res.contactEmail: "",
+                        phone: res ? res.phone: "",
+                        profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
+                        studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
+                        lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
+                        staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
+                    });
+                });
+            }
         
-        // Load user info
-        UserService.getUserById(this.props.match.params.accountId)
-            .then(res => {
-                this.setState({
-                    tableData: res,
-                    firstName: res ? res.firstName : "",
-                    lastName: res ? res.lastName: "",
-                    primaryEmail: res ? res.primaryEmail: "",
-                    contactEmail: res ? res.contactEmail: "",
-                    phone: res ? res.phone: "",
-                    profilePictureURL: res.profilePictureURL ? res.profilePictureURL: undefined,
-                    studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
-                    lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
-                    staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
-            })
             // .catch((err) => {
             //     console.log(err);
             // });
@@ -436,11 +438,14 @@ class Account extends React.Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>TODO</td>
-                                                            <td>:</td>
-                                                            <td>Render class data here</td>
-                                                        </tr>
+                                                        {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? this.state.studentAccountSemesters.map(semester => {
+                                                            return semester.classes.map(cls => {
+                                                                return <tr>
+                                                                    <th scope="row">{cls.name}</th>
+                                                                </tr>
+                                                            })
+                                                        })
+                                                        : null}
                                                     </tbody>
                                                 </table>
                                             </div>

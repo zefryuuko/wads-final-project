@@ -27,9 +27,6 @@ class Sidebar extends React.Component {
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/classes/"
                                     aria-expanded="false"><i data-feather="grid" className="feather-icon"></i><span
                                         className="hide-menu">Classes</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/schedule"
-                                    aria-expanded="false"><i data-feather="calendar" className="feather-icon"></i><span
-                                        className="hide-menu">Scheduling</span></Link></li>
                             <li className="list-divider"></li>
 
                             {/* Account Administration */}
@@ -66,9 +63,6 @@ class Sidebar extends React.Component {
 
                             <li className="list-divider"></li>
                             <li className="nav-small-cap"><span className="hide-menu">Extra</span></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="../../docs/docs.html"
-                                    aria-expanded="false"><i data-feather="edit-3" className="feather-icon"></i><span
-                                        className="hide-menu">Documentation</span></Link></li>
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="authentication-login1.html"
                                     aria-expanded="false"><i data-feather="log-out" className="feather-icon"></i><span
                                         className="hide-menu">Logout</span></Link></li>
