@@ -383,18 +383,6 @@ class Course extends Component {
                                 </div>
                             },
                             {
-                                name: "Attendance",
-                                component: <div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <Card title="Attendance" padding>
-
-                                            </Card>
-                                        </div>
-                                    </div>
-                                </div>
-                            },
-                            {
                                 name: "Grading",
                                 component: <div>
                                     <div className="row">
