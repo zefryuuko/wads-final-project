@@ -168,42 +168,57 @@ class Grades extends React.Component {
                                             <table className="table table-striped no-wrap">
                                                 <thead className="bg-primary text-white">
                                                     <tr>
-                                                        <th>Score</th>
                                                         <th>Grade</th>
+                                                        <th>Score</th>
+                                                        <th>Weight</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>90-100</td>
                                                         <th scope="row">A</th>
+                                                        <td>90-100</td>
+                                                        <td>4.00</td>
+                                                        
                                                     </tr>
                                                     <tr>
-                                                        <td>85-89</td>
                                                         <th scope="row">A-</th>
+                                                        <td>85-89</td>
+                                                        <td>3.67</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>80-84</td>
                                                         <th scope="row">B+</th>
+                                                        <td>80-84</td>
+                                                        <td>3.33</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>75-79</td>
                                                         <th scope="row">B</th>
+                                                        <td>75-79</td>
+                                                        <td>3.00</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>70-74</td>
                                                         <th scope="row">B-</th>
+                                                        <td>70-74</td>
+                                                        <td>2.50</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>65-69</td>
                                                         <th scope="row">C</th>
+                                                        <td>65-69</td>
+                                                        <td>2.00</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>60-64</td>
-                                                        <th scope="row">C-</th>
+                                                        <th scope="row">D</th>
+                                                        <td>50-64</td>
+                                                        <td>1.00</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>&lt; 60</td>
+                                                        <th scope="row">E</th>
+                                                        <td>1-49</td>
+                                                        <td>0.00</td>
+                                                    </tr>
+                                                    <tr>
                                                         <th scope="row">F</th>
+                                                        <td>0</td>
+                                                        <td>0.00</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

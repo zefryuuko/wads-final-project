@@ -255,12 +255,13 @@ class ClassService {
 
     getGrade(finalScore) {
         if (finalScore >= 90) return "A";
-        else if (finalScore >=85  && finalScore < 90) return "A-";
-        else if (finalScore >=80  && finalScore < 85) return "B+";
-        else if (finalScore >=75  && finalScore < 80) return "B";
-        else if (finalScore >=70  && finalScore < 75) return "B-";
-        else if (finalScore >=65  && finalScore < 70) return "C";
-        else if (finalScore >=60  && finalScore < 65) return "C-";
+        else if (finalScore >= 85 && finalScore < 90) return "A-";
+        else if (finalScore >= 80 && finalScore < 85) return "B+";
+        else if (finalScore >= 75 && finalScore < 80) return "B";
+        else if (finalScore >= 70 && finalScore < 75) return "B-";
+        else if (finalScore >= 65 && finalScore < 70) return "C";
+        else if (finalScore >= 50 && finalScore < 65) return "D";
+        else if (finalScore >= 1  && finalScore < 50) return "E";
         else return "F"
     }
 }
