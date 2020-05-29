@@ -38,6 +38,17 @@ class ClassService {
         }
     }
 
+    async deleteMajor(majorId, callback) {
+        try {
+            const res = await axios.delete(`${this.API_ENDPOINT}/major/${majorId}`);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+
     async getSemesters(majorId, page, callback) {
         try {
             const res = await axios.get(`${this.API_ENDPOINT}/major/${majorId}?page=${page}`);
