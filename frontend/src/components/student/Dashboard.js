@@ -30,6 +30,7 @@ class StudentDashboard extends React.Component {
             currentAssignmentCount: 0,
             assignmentDueToday: 0,
             assignmentsDue: [],
+            GPA: "N/A"
         }
 
         // Set page display mode when loading
@@ -84,6 +85,11 @@ class StudentDashboard extends React.Component {
                                         ));
                                     });
 
+                                    let GPA = "";
+                                    res.forEach(semester => {
+                                        GPA += ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))
+                                    });
+
                                     let dueToday = assignmentsDue.filter(
                                         assignment => {
                                             const submissionDeadline = new Date(assignment.submissionDeadline);
@@ -95,7 +101,7 @@ class StudentDashboard extends React.Component {
                                         }
                                     ).length
 
-                                    this.setState({currentAssignmentCount: assignmentsDue.length, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
+                                    this.setState({currentAssignmentCount: assignmentsDue.length, GPA, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
                                 }).catch(err => {
                                     this.setState({isLoading: false})
                                 });
@@ -137,7 +143,7 @@ class StudentDashboard extends React.Component {
                                     <div className="card-body">
                                         <div className="d-flex d-lg-flex d-md-block align-items-center">
                                             <div>
-                                                <h2 className="text-dark mb-1 w-100 text-truncate font-weight-medium">{this.state.accountDetails && this.state.accountDetails.metadata.currentGPA ? this.state.accountDetails.metadata.currentGPA : "N/A"}</h2>
+                                                <h2 className="text-dark mb-1 w-100 text-truncate font-weight-medium">{this.state.GPA}</h2>
                                                 <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Grade Point Average
                                                 </h6>
                                             </div>
