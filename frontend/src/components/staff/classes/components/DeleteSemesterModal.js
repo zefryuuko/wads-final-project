@@ -41,6 +41,19 @@ class DeleteSemesterModal extends Component {
         });
     }
 
+    UNSAFE_componentWillReceiveProps(props) {
+        if (!this.props.semesterId) return;
+
+        ClassService.getClasses(this.props.semesterId, 1)
+        .then(res => {
+            if (!res.classes) return;
+
+            this.setState({
+                classes: res.classes
+            })
+        })
+    }
+
     componentDidMount() {
         if (!this.props.semesterId) return;
 
