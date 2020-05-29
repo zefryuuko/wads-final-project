@@ -115,13 +115,6 @@ class StaffDashboard extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-md-12 col-lg-12">
-                                <Card title="Today's Schedule" padding>
-
-                                </Card>
-                            </div>
-                        </div>
                         <Card title="This Semester" padding>
                             <div className="list-group">
                                 {this.state.currentEnrolledSemester ?
@@ -136,6 +129,13 @@ class StaffDashboard extends React.Component {
                                 : <div style={{textAlign: "center"}}>No data</div>}
                             </div>
                         </Card>
+                        <div className="row">
+                            <div className="col-md-12 col-lg-12">
+                                <Card title="Active Assignments" padding>
+
+                                </Card>
+                            </div>
+                        </div>
                     </ContentWrapper>
                 </PageWrapper>
             </div>

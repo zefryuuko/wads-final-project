@@ -178,9 +178,18 @@ class StudentDashboard extends React.Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-6 col-lg-6">
-                                    <Card title="Classes" right={<Link to="/student/schedule">Schedule</Link>} padding>
+                                    <Card title="This Semester" padding>
                                         <div className="list-group">
-                                            <span>There are no classes today.</span>
+                                            {this.state.currentEnrolledSemester ?
+                                                this.state.currentEnrolledSemester.classes.map((element, index) => {
+                                                    return <Link to={`/student/courses/${this.state.currentEnrolledSemester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
+                                                        <span className="mr-2">{element.metadata.name}</span> 
+                                                        <span className="badge badge-primary mr-1">{element.classType}</span>
+                                                        <span className="badge badge-secondary mr-1">{element.classCode}</span>
+                                                        <span className="badge badge-secondary mr-1">{element.courseCode}</span>
+                                                    </Link>
+                                                })
+                                            : <div style={{textAlign: "center"}}>No data</div>}
                                         </div>
                                     </Card>
                                 </div>
@@ -202,20 +211,6 @@ class StudentDashboard extends React.Component {
                                     </Card>
                                 </div>
                             </div>
-                            <Card title="This Semester" padding>
-                                <div className="list-group">
-                                    {this.state.currentEnrolledSemester ?
-                                        this.state.currentEnrolledSemester.classes.map((element, index) => {
-                                            return <Link to={`/student/courses/${this.state.currentEnrolledSemester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
-                                                <span className="mr-2">{element.metadata.name}</span> 
-                                                <span className="badge badge-primary mr-1">{element.classType}</span>
-                                                <span className="badge badge-secondary mr-1">{element.classCode}</span>
-                                                <span className="badge badge-secondary mr-1">{element.courseCode}</span>
-                                            </Link>
-                                        })
-                                    : <div style={{textAlign: "center"}}>No data</div>}
-                                </div>
-                            </Card>
                         </ContentWrapper>
                     </PageWrapper>
                     <script>{window.feather.replace()}</script>
