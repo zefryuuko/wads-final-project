@@ -62,7 +62,7 @@ class DeleteCourseGroupModal extends Component {
                 this.closeModal(`#deleteModal-${this.state.prefix}`);
                 this.setState({isUpdating: false});
             })
-            .catch((res, err) =>{
+            .catch((err) =>{
                 if (err.response.status === 409) {
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});

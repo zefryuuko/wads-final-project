@@ -60,7 +60,7 @@ class CreateSemesterModal extends Component {
                 this.closeModal(`#createSemesterModal`);
                 this.setState({isUpdating: false, prefix: "", name: ""});
             })
-            .catch((res, err) =>{
+            .catch((err) =>{
                 if (err.response.status === 409) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
