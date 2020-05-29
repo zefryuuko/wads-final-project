@@ -13,6 +13,7 @@ import Breadcrumb from '../../ui-elements/Breadcrumb';
 import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
+import CreateSemesterModal from './components/CreateSemesterModal';
 
 // Components
 
@@ -37,7 +38,16 @@ class SemesterList extends React.Component {
     }
 
     reloadTable() {
-        this.setState({currentTableContent: []});
+        this.setState({isLoading: true});
+
+        ClassService.getSemesters(this.props.match.params.majorId, this.state.currentTablePage).then(res => {
+            // TODO: add error validation
+            this.setState({
+                pageTitle: res.name,
+                currentTableContent: res.linkedSemesters,
+                isLoading: false
+            });
+        });
     }
     
     componentDidMount() {
@@ -75,7 +85,12 @@ class SemesterList extends React.Component {
                 <Preloader isLoading={this.state.isLoading}/>
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
-                        <PageBreadcrumb title={this.state.pageTitle} root="Course Administration" breadcrumb={<Breadcrumb current={this.state.pageTitle} contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}]}/>}/>
+                        <PageBreadcrumb 
+                            title={this.state.pageTitle} 
+                            root="Course Administration"
+                            breadcrumb={<Breadcrumb current={this.state.pageTitle} contents={[{name: "Course Administration", url: ""}, {name: "Classes", url: "/staff/classes"}]}/>}
+                            rightComponent={<button className="btn btn-primary btn-circle mr-2" data-toggle="modal" data-target={`#createSemesterModal`} style={{lineHeight:0}} ><i className="icon-plus"/></button>}
+                        />
                         <ContentWrapper>
                             <div className="row">
                                 <div className="col-12">
@@ -109,6 +124,7 @@ class SemesterList extends React.Component {
                             </div>
                         </ContentWrapper>
                     </PageWrapper>
+                    <CreateSemesterModal majorId={this.props.match.params.majorId} success={this.reloadTable}/>
                 </div>
             </div>
         );
