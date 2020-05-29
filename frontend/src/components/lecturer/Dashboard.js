@@ -103,20 +103,6 @@ class StaffDashboard extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card border-right">
-                                    <div className="card-body">
-                                        <div className="d-flex d-lg-flex d-md-block align-items-center">
-                                            <div>
-                                                <h2 className="text-dark mb-1 w-100 text-truncate font-weight-medium">{this.state.accountDetails && this.state.accountDetails.metadata.currentGPA ? this.state.accountDetails.metadata.currentGPA : "N/A"}</h2>
-                                                <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Classes today
-                                                </h6>
-                                            </div>
-                                            <div className="ml-auto mt-md-3 mt-lg-0">
-                                                <span className="opacity-7 text-muted"><i data-feather="frown" className="feather-icon"></i></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <Card title="This Semester" padding>
                                 <div className="list-group">
@@ -132,13 +118,6 @@ class StaffDashboard extends React.Component {
                                     : <div style={{textAlign: "center"}}>No data</div>}
                                 </div>
                             </Card>
-                            <div className="row">
-                                <div className="col-md-12 col-lg-12">
-                                    <Card title="Active Assignments" padding>
-
-                                    </Card>
-                                </div>
-                            </div>
                         </ContentWrapper>
                     </PageWrapper>
                 </div>
