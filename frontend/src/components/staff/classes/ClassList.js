@@ -14,6 +14,7 @@ import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
 import DeleteClassModal from './components/DeleteClassModal';
+import CreateClassModal from './components/CreateClassModal';
 
 // Components
 
@@ -153,6 +154,7 @@ class ClassList extends React.Component {
                             </div>
                         </ContentWrapper>
                     </PageWrapper>
+                    <CreateClassModal semesterId={this.state.semesterId} success={this.reloadTable}/>
                 </div>
             </div>
         );
