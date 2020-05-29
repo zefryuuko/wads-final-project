@@ -16,6 +16,7 @@ import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import CreateMajorModal from './components/CreateMajorModal';
 import EditMajorModal from './components/EditMajorModal';
+import DeleteMajorModal from './components/DeleteMajorModal';
 
 // Components
 
@@ -116,11 +117,11 @@ class MajorList extends React.Component {
                                                             <td><Link to={`/staff/classes/${row._id}`}>{row.name}</Link></td>
                                                             <td style={{width: "150px", minWidth: "150px"}}>
                                                                 <Button className="btn btn-sm btn-secondary btn-sm mr-2" data-toggle="modal" data-target={`#editMajorModal-${row._id}`}>Edit</Button>
-                                                                <Button className="btn btn-sm btn-danger">Delete</Button>
+                                                                <Button className="btn btn-sm btn-danger" data-toggle="modal" data-target={`#deleteMajorModal-${row._id}`}>Delete</Button>
                                                             </td>
                                                         </tr>
                                                     )
-                                                }): <tr><td colSpan="3" align="center">Data not loaded arrrgh. <Button onClick={e => {e.preventDefault(); this.reloadTable();}}>Reload</Button></td></tr>}
+                                                }): <tr><td colSpan="3" align="center">No Data</td></tr>}
                                             </tbody>
                                         </table>
                                         {this.state.currentTableContent.length > 0 ? <script>{ window.loadTable('#majorsTable') }</script> : null}
@@ -135,6 +136,9 @@ class MajorList extends React.Component {
 
                     {/* Generate edit major modal */}
                     {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => { return <EditMajorModal key={row._id} majorId={row._id} name={row.name} success={this.updateSuccess} error={this.showError}/> }) : null}
+                    
+                    {/* Generate delete major modal */}
+                    {this.state.currentTableContent.length > 0 ? this.state.currentTableContent.map(row => { return <DeleteMajorModal key={row._id} majorId={row._id} name={row.name} success={this.updateSuccess} error={this.showError}/> }) : null}
                 </div>
             </div>
         );
