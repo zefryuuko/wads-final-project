@@ -11,10 +11,17 @@ class FileService {
     }
 
     deleteFile(url, callback) {
-        firebase.storage().refFromURL(url).delete();
-        callback();
+        try {
+            firebase.storage().refFromURL(url).delete()
+            .then(() => {
+                if (callback) callback();
+            }).err(() => {
+                if(callback) callback();
+            });
+        } catch (err) {
+            if (callback) callback();
+        }
     }
-
 }
 
 export default new FileService();

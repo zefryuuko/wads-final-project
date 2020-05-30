@@ -3,6 +3,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 
 // Services
 import AuthService from '../../../services/AuthService';
+import UserService from '../../../services/UserService';
 import ClassService from '../../../services/ClassService';
 
 // UI Elements
@@ -11,9 +12,8 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Card from '../../ui-elements/Card';
-// import Button from '../../ui-elements/Button';
-// import ErrorAlert from '../../ui-elements/ErrorAlert';
-// import SuccessAlert from '../../ui-elements/SuccessAlert';
+import SubmitAssignmentModal from './components/SubmitAssignmentModal';
+import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
 
 class Assignments extends Component {
     constructor(props) {
@@ -24,6 +24,7 @@ class Assignments extends Component {
             isAuthenticating: true,
             isAuthenticated: false,
             semesterData: undefined,
+            currentUserData: undefined,
             showErrorMessage: false,
             showSuccessMessage: false
         }
@@ -48,13 +49,20 @@ class Assignments extends Component {
                         isAuthenticated: true
                     })
                     
-                    // Load data
-                    ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
+                    // Load user data
+                    UserService.getUserData()
                     .then(res => {
-                        this.setState({semesterData: res, isLoading: false});
-                    }).catch(err => {
-                        this.setState({isLoading: false})
+                        this.setState({currentUserData: res});
+
+                        // Load data
+                        ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
+                        .then(res => {
+                            this.setState({semesterData: res, isLoading: false});
+                        }).catch(err => {
+                            this.setState({isLoading: false})
+                        });
                     });
+
                 }
             });
         
@@ -110,6 +118,35 @@ class Assignments extends Component {
                                                     : <tr><td colSpan="4" style={{textAlign: "center"}}>There are no assignments available for this class.</td></tr> }
                                                 </tbody>
                                             </table>
+                                            { cls.assignments.length > 0 ?
+                                                cls.assignments.map((assignment) => {
+                                                    if (new Date().getTime() < new Date(assignment.submissionDeadline).getTime())
+                                                        return <SubmitAssignmentModal 
+                                                                    key={assignment._id} 
+                                                                    id={assignment._id}
+                                                                    studentId={this.state.currentUserData.id}
+                                                                    studentName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
+                                                                    assignmentName={assignment.name}
+                                                                    semesterId={this.props.match.params.semesterId}
+                                                                    classCode={this.props.match.params.classCode}
+                                                                    courseCode={this.props.match.params.courseCode}
+                                                                    onSuccess={this.reloadData}
+                                                                    forceRefresh={new Date()}
+                                                                />
+                                                    else return null;
+                                                })
+                                            : null}
+
+                                            { cls.assignments.length > 0 ?
+                                                cls.assignments.map((assignment) => {
+                                                    return <AssignmentSubmissionsModal
+                                                                key={assignment._id}
+                                                                assignmentId={assignment._id}
+                                                                assignmentName={assignment.name}
+                                                                submissions = {assignment.submissions.filter(element => element.universalId === this.state.currentUserData.id)}
+                                                            />
+                                                })
+                                            : null }
                                         </div>
                                     </Card>
                                 );

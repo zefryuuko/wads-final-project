@@ -107,8 +107,7 @@ class AddAssignmentModal extends Component {
                 assignmentDateAdded: new Date(),
                 resourceAuthorName: this.props.authorName,
                 resourceType: "file",
-                resourceFile: undefined,
-                resourceURL: undefined,
+                resourceURL: "",
                 isUpdating: false
             });
 
@@ -127,8 +126,7 @@ class AddAssignmentModal extends Component {
             assignmentName: "",
             assignmentDateAdded: new Date(),
             resourceType: "file",
-            resourceFile: undefined,
-            resourceURL: undefined,
+            resourceURL: "",
             isUpdating: false
         });
     }
@@ -176,7 +174,7 @@ class AddAssignmentModal extends Component {
                         :
                             <div className="form-group">
                                 <label htmlFor="resourceURL" disabled={this.state.isUpdating}>Task URL</label>
-                                <input type="input" name="resourceURL" placeholder="https://example.com/resource/file" className="form-control" onChange={this.onChangeHandler} disabled={this.state.isUpdating} required/>
+                                <input type="input" name="resourceURL" placeholder="https://example.com/resource/file" className="form-control" value={this.state.resourceURL} onChange={this.onChangeHandler} disabled={this.state.isUpdating} required/>
                             </div>
                         }
                         <ModalFooter disableClose={this.state.isUpdating}>

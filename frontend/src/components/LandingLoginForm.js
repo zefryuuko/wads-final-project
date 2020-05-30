@@ -2,6 +2,12 @@ import React from 'react';
 import AuthService from '../services/AuthService';
 import UserService from '../services/UserService';
 
+// UI Elements
+import Modal from './ui-elements/Modal';
+import ModalHeader from './ui-elements/ModalHeader';
+import ModalBody from './ui-elements/ModalBody';
+import ModalFooter from './ui-elements/ModalFooter';
+
 class LandingLoginForm extends React.Component {
     constructor() {
         super();
@@ -19,7 +25,8 @@ class LandingLoginForm extends React.Component {
     }
 
     handleChange(event) {
-        const {name, value} = event.target;
+        let {name, value} = event.target;
+        if (name === "rememberMe") value = event.target.checked;
         this.setState({
             [name]: value,
             showInvalidCredentialsMessage: "none"
@@ -35,7 +42,7 @@ class LandingLoginForm extends React.Component {
                 showInvalidCredentialsMessage: "none"
             }
         });
-        AuthService.login(this.state.emailAddress, this.state.password, (res) => {
+        AuthService.login(this.state.emailAddress, this.state.password, this.state.rememberMe, (res) => {
             if (res.sessionId) {
                 this.setState(prevState => {
                     return {
@@ -56,6 +63,7 @@ class LandingLoginForm extends React.Component {
     }
     
     render() {
+        console.log(this.state.rememberMe)
         if(this.state.loggedIn) {
             AuthService.saveSession(this.state.sessionData);
             UserService.getUserById(this.state.sessionData.universalId)
@@ -80,7 +88,6 @@ class LandingLoginForm extends React.Component {
         return (
             <div className="login-form" id="login-form">
                 <h1 className="mt-3 text-center">Binusian Login</h1>
-                {/* <form> */}
                     <div className="form-group">
                         <input type="input" name="emailAddress" value={this.state.emailAddress} onChange={this.handleChange} className="form-control" placeholder="Email address" disabled={this.state.loggingIn} required></input>
                     </div>
@@ -92,9 +99,22 @@ class LandingLoginForm extends React.Component {
                         <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
                     </div>
                     <button className="btn btn-login" onClick={this.handleLoginButton} disabled={!(!this.state.loggingIn && (this.state.emailAddress && this.state.password))}>{this.state.loggingIn ? "Logging in" : this.state.loggedIn ? "Logged in" : "Login"}</button>
-                    <div style={{textAlign: "center", margin: "5px auto"}}><small><a href="/forgot">Forgot password</a></small></div>
+                    <div style={{textAlign: "center", margin: "5px auto"}}><small><a href="#forgotPassword" data-toggle="modal" data-target="#forgotPasswordModal">Forgot password</a></small></div>
                     <div className="alert alert-danger" style={{display: this.state.showInvalidCredentialsMessage}}>Invalid email and/or password</div>
-                {/* </form> */}
+
+                    <Modal id="forgotPasswordModal" className="modal-dialog-centered">
+                        <ModalHeader title="Forgot password?"/>
+                        <ModalBody>
+                            <p>
+                                Due to security reasons, our staffs are the only one who can reset your password.
+                                To get your password reset, please contact us.
+                            </p>
+                            <p>
+                                Thank you for your understanding.
+                            </p>
+                        </ModalBody>
+                        <ModalFooter buttonText="Close"/>
+                    </Modal>
             </div>
         );
     }

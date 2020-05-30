@@ -10,14 +10,15 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import Card from '../../ui-elements/Card';
-import CreateAccountModal from './components/CreateAccountModal';
+import Preloader from '../../ui-elements/Preloader';
 
 class StaffList extends React.Component {
     constructor() {
         super();
         this.state = {
             isLoading: true,
-            isLoggedIn: false,
+            isAuthenticating: true,
+            isAuthenticated: false,
             tableData: undefined,
         }
 
@@ -29,69 +30,73 @@ class StaffList extends React.Component {
     componentDidMount() {
         // Perform session check
         AuthService.isLoggedIn()
-            .then(res => {
-                if (res.response && (res.response.status === 403))
-                    this.setState({
-                        isLoading: false,
-                        isLoggedIn: false
-                    });
-                else
-                    this.setState({
-                        isLoading: false,
-                        isLoggedIn: true
-                    })
-            });
-        
-        // Load user info
-        UserService.getStaffs()
-            .then(res => {
+        .then(res => {
+            if (res.response && (res.response.status === 403))
                 this.setState({
-                    tableData: res
-                })
+                    isAuthenticating: false,
+                    isAuthenticated: false
+                });
+            else {
+                this.setState({
+                    isAuthenticating: false,
+                    isAuthenticated: true
+                });
+
+                // Load user info
+                UserService.getStaffs().then(res => {
+                    this.setState({
+                        tableData: res,
+                        isLoading: false
+                    })
+                });
+            }
         });
+        
     }
 
     render() {
-        if (!this.state.isLoggedIn && !this.state.isLoading) return <Redirect to="/logout"/>
+        if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
         return (
-            <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
-                <PageWrapper>
-                    <PageBreadcrumb title="Staff Accounts" root="Account Administration" rightComponent={<Link className="btn btn-primary btn-circle mr-2" to="/staff/accounts/create" style={{padding:12}} ><i className="icon-plus"/></Link>}/>
-                    <ContentWrapper>
-                        <div className="row">
-                            <div className="col-12">
-                                <Card padding>
-                                    {/* <div className="table-responsive"> */}
-                                    <div className="table-responsive">
-                                        <table id="accountsTable" className="table table-striped no-wrap">
-                                            <thead className="bg-primary text-white">
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Full Name</th>
-                                                    <th>Primary Email</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.tableData ?
-                                                    this.state.tableData.map(row => {
-                                                        return <tr key={row.id}>
-                                                            <td>{row.id}</td>
-                                                            <td><Link to={`/staff/accounts/${row.id}`}>{row.firstName} {row.lastName}</Link></td>
-                                                            <td>{row.primaryEmail}</td>
-                                                        </tr>
-                                                    })
-                                                    : null}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    {/* <script>{ window.loadTable('#accountsTable') }</script> */}
-                                    {this.state.tableData ? <script>{ window.loadTable('#accountsTable') }</script> : null}
-                                </Card>
+            <div>
+                <Preloader isLoading={this.state.isLoading}/>
+                <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
+                    <PageWrapper>
+                        <PageBreadcrumb title="Staff Accounts" root="Account Administration" rightComponent={<Link className="btn btn-primary btn-circle mr-2" to="/staff/accounts/create" style={{padding:12}} ><i className="icon-plus"/></Link>}/>
+                        <ContentWrapper>
+                            <div className="row">
+                                <div className="col-12">
+                                    <Card padding>
+                                        {/* <div className="table-responsive"> */}
+                                        <div className="table-responsive">
+                                            <table id="accountsTable" className="table table-striped no-wrap">
+                                                <thead className="bg-primary text-white">
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Full Name</th>
+                                                        <th>Primary Email</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state.tableData ?
+                                                        this.state.tableData.map(row => {
+                                                            return <tr key={row.id}>
+                                                                <td>{row.id}</td>
+                                                                <td><Link to={`/staff/accounts/${row.id}`}>{row.firstName} {row.lastName}</Link></td>
+                                                                <td>{row.primaryEmail}</td>
+                                                            </tr>
+                                                        })
+                                                        : null}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {/* <script>{ window.loadTable('#accountsTable') }</script> */}
+                                        {this.state.tableData ? <script>{ window.loadTable('#accountsTable') }</script> : null}
+                                    </Card>
+                                </div>
                             </div>
-                        </div>
-                    </ContentWrapper>
-                </PageWrapper>
-                <CreateAccountModal/>
+                        </ContentWrapper>
+                    </PageWrapper>
+                </div>
             </div>
         );
     }

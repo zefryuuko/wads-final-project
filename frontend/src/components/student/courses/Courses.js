@@ -11,9 +11,6 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import Card from '../../ui-elements/Card';
-// import Button from '../../ui-elements/Button';
-// import ErrorAlert from '../../ui-elements/ErrorAlert';
-// import SuccessAlert from '../../ui-elements/SuccessAlert';
 
 class Courses extends Component {
     constructor(props) {

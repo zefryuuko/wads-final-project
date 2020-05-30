@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // Services
-import CourseService from '../../../../services/CourseService';
+import ClassService from '../../../../services/ClassService';
 
 // UI Components
 import Modal from '../../../ui-elements/Modal';
@@ -11,12 +11,12 @@ import ModalFooter from '../../../ui-elements/ModalFooter';
 import Button from '../../../ui-elements/Button';
 import ErrorAlert from '../../../ui-elements/ErrorAlert';
 
-class CreateAccountModal extends Component {
+class CreateSemesterModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            prefix: "",
             name: "",
+            period: new Date().getFullYear(),
             isUpdating: false,
             showErrorAlert: false,
             errorAlertMessage: ""
@@ -54,19 +54,19 @@ class CreateAccountModal extends Component {
     onSaveChangesClicked(e) {
         e.preventDefault();
         this.setState({isUpdating: true, showErrorAlert: false, errorAlertMessage: ""});
-        CourseService.createCourseGroup(this.state.prefix, this.state.name)
+        ClassService.createSemester(this.props.majorId, this.state.name, this.state.period)
             .then((res) => {
-                this.props.success();
-                this.closeModal(`#createAccountModal`);
+                if (this.props.success) this.props.success();
+                this.closeModal(`#createSemesterModal`);
                 this.setState({isUpdating: false, prefix: "", name: ""});
             })
-            .catch((res, err) =>{
+            .catch((err) =>{
                 if (err.response.status === 409) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
                 } else {
-                    this.props.error();
-                    this.closeModal(`#createAccountModal`);
+                    if (this.props.error) this.props.error();
+                    this.closeModal(`#createSemesterModal`);;
                     this.setState({isUpdating: false});
                 }
             });
@@ -74,21 +74,19 @@ class CreateAccountModal extends Component {
 
     render() { 
         return (
-            <Modal id={`createAccountModal`}>
-                <ModalHeader title={`Create new account`} disableClose={this.state.isUpdating}/>
+            <Modal id={`createSemesterModal`}>
+                <ModalHeader title={`Create new major`} disableClose={this.state.isUpdating}/>
                 <ModalBody>
                     <form onSubmit={this.onSaveChangesClicked} action="post"> 
                         <div className="pl-3 pr-3">
                             {this.state.showErrorAlert ? <ErrorAlert>{this.state.errorAlertMessage}</ErrorAlert> : null}
-                            <input type="hidden" name="originalPrefix" value={this.state.originalPrefix}/>
-                            <div className="form-group">
-                                <label htmlFor="username">Code</label>
-                                <input className="form-control" name="prefix" placeholder="CODE" value={this.state.prefix} onChange={this.handleChange} pattern="[a-zA-Z]*" minLength="4" maxLength="4" disabled={this.state.isUpdating} required/>
-                                <small className="form-text text-muted">A code has to be 4 letters</small>
-                            </div>
                             <div className="form-group">
                                 <label htmlFor="username">Name</label>
-                                <input className="form-control" name="name" placeholder="Course Group Name" value={this.state.name} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                <input className="form-control" name="name" placeholder="Major Name" value={this.state.name} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="username">Period</label>
+                                <input type="number" className="form-control" name="period" placeholder="Period" value={this.state.period} onChange={this.handleChange} disabled={this.state.isUpdating} min={new Date().getFullYear()} max="9999" required/>
                             </div>
                         </div>
                         <ModalFooter disableClose={this.state.isUpdating}>
@@ -101,4 +99,4 @@ class CreateAccountModal extends Component {
     }
 }
  
-export default CreateAccountModal;
+export default CreateSemesterModal;

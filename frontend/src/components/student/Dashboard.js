@@ -30,6 +30,7 @@ class StudentDashboard extends React.Component {
             currentAssignmentCount: 0,
             assignmentDueToday: 0,
             assignmentsDue: [],
+            GPA: "N/A"
         }
 
         // Set page display mode when loading
@@ -84,6 +85,11 @@ class StudentDashboard extends React.Component {
                                         ));
                                     });
 
+                                    let GPA = "";
+                                    res.forEach(semester => {
+                                        GPA += ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))
+                                    });
+
                                     let dueToday = assignmentsDue.filter(
                                         assignment => {
                                             const submissionDeadline = new Date(assignment.submissionDeadline);
@@ -95,7 +101,7 @@ class StudentDashboard extends React.Component {
                                         }
                                     ).length
 
-                                    this.setState({currentAssignmentCount: assignmentsDue.length, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
+                                    this.setState({currentAssignmentCount: assignmentsDue.length, GPA, assignmentsDue, assignmentDueToday: dueToday, isLoading: false})
                                 }).catch(err => {
                                     this.setState({isLoading: false})
                                 });
@@ -137,7 +143,7 @@ class StudentDashboard extends React.Component {
                                     <div className="card-body">
                                         <div className="d-flex d-lg-flex d-md-block align-items-center">
                                             <div>
-                                                <h2 className="text-dark mb-1 w-100 text-truncate font-weight-medium">{this.state.accountDetails && this.state.accountDetails.metadata.currentGPA ? this.state.accountDetails.metadata.currentGPA : "N/A"}</h2>
+                                                <h2 className="text-dark mb-1 w-100 text-truncate font-weight-medium">{this.state.GPA}</h2>
                                                 <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Grade Point Average
                                                 </h6>
                                             </div>
@@ -178,9 +184,18 @@ class StudentDashboard extends React.Component {
                             </div>
                             <div className="row">
                                 <div className="col-md-6 col-lg-6">
-                                    <Card title="Classes" right={<Link to="/student/schedule">Schedule</Link>} padding>
+                                    <Card title="This Semester" padding>
                                         <div className="list-group">
-                                            <span>There are no classes today.</span>
+                                            {this.state.currentEnrolledSemester ?
+                                                this.state.currentEnrolledSemester.classes.map((element, index) => {
+                                                    return <Link to={`/student/courses/${this.state.currentEnrolledSemester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
+                                                        <span className="mr-2">{element.metadata.name}</span> 
+                                                        <span className="badge badge-primary mr-1">{element.classType}</span>
+                                                        <span className="badge badge-secondary mr-1">{element.classCode}</span>
+                                                        <span className="badge badge-secondary mr-1">{element.courseCode}</span>
+                                                    </Link>
+                                                })
+                                            : <div style={{textAlign: "center"}}>No data</div>}
                                         </div>
                                     </Card>
                                 </div>
@@ -202,20 +217,6 @@ class StudentDashboard extends React.Component {
                                     </Card>
                                 </div>
                             </div>
-                            <Card title="This Semester" padding>
-                                <div className="list-group">
-                                    {this.state.currentEnrolledSemester ?
-                                        this.state.currentEnrolledSemester.classes.map((element, index) => {
-                                            return <Link to={`/student/courses/${this.state.currentEnrolledSemester._id}/${element.classCode}/${element.courseCode}`} key={index} className="list-group-item">
-                                                <span className="mr-2">{element.metadata.name}</span> 
-                                                <span className="badge badge-primary mr-1">{element.classType}</span>
-                                                <span className="badge badge-secondary mr-1">{element.classCode}</span>
-                                                <span className="badge badge-secondary mr-1">{element.courseCode}</span>
-                                            </Link>
-                                        })
-                                    : <div style={{textAlign: "center"}}>No data</div>}
-                                </div>
-                            </Card>
                         </ContentWrapper>
                     </PageWrapper>
                     <script>{window.feather.replace()}</script>

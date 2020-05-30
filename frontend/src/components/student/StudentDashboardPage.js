@@ -19,6 +19,7 @@ import Dashboard from './Dashboard';
 import Courses from './courses/Courses';
 import Course from './courses/Course';
 import Assignments from './courses/Assignments';
+import Grades from './Grades';
 
 class Student extends Component {
     constructor() {
@@ -68,13 +69,13 @@ class Student extends Component {
                         {/* Dashboard */}
                         <Route exact path={path}><Dashboard/></Route>
 
-                        {/* Courses */}
+                        {/* Learning */}
                         <Route exact path={`${path}/courses`}><Courses/></Route>
-                        {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
+                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
 
                         {/* Assignments */}
-                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
+                        <Route exact path={`${path}/grades`}><Grades/></Route>
 
                         {/* Classes */}
                         {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}

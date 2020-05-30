@@ -71,13 +71,6 @@ class LecturerDashboardPage extends Component {
                         <Route exact path={`${path}/courses`}><Courses/></Route>
                         {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
-
-                        {/* Classes */}
-                        {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route> */}
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
