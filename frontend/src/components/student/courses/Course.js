@@ -21,6 +21,7 @@ import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
 import SubmitAssignmentModal from './components/SubmitAssignmentModal';
 import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
+import PageNotFound from '../../PageNotFound';
 
 class Course extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class Course extends Component {
             isAuthenticated: false,
             classData: undefined,
             currentUserData: undefined,
+            render404: false,
         }
 
         // Set page display mode when loading
@@ -59,41 +61,43 @@ class Course extends Component {
                 AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
                 .then(status => {
                     // Load current user data
+                    console.log(status)
                     if (status)
-                    UserService.getUserData()
-                    .then(res => {
-                        this.setState({currentUserData: res})
-    
-                        // Load class data
-                        ClassService.getClass(
-                            this.props.match.params.semesterId,
-                            this.props.match.params.classCode,
-                            this.props.match.params.courseCode
-                        ).then(res => {
-                            // Load profile picture URLs
-                            res.students.forEach(element => {
-                                UserService.getProfilePictureURL(element.universalId)
-                                .then(res => {
-                                    this.setState({
-                                        [`profile${element.universalId}`]: res
-                                    });
-                                })
-                            });
-    
-                            res.lecturers.forEach(element => {
-                                UserService.getProfilePictureURL(element.universalId)
-                                .then(res => {
-                                    this.setState({
-                                        [`profile${element.universalId}`]: res
-                                    });
-                                })
-                            });
-    
-                            this.setState({classData: res, isLoading: false});
-                        }).catch(err => {
-                
+                        UserService.getUserData()
+                        .then(res => {
+                            this.setState({currentUserData: res})
+        
+                            // Load class data
+                            ClassService.getClass(
+                                this.props.match.params.semesterId,
+                                this.props.match.params.classCode,
+                                this.props.match.params.courseCode
+                            ).then(res => {
+                                // Load profile picture URLs
+                                res.students.forEach(element => {
+                                    UserService.getProfilePictureURL(element.universalId)
+                                    .then(res => {
+                                        this.setState({
+                                            [`profile${element.universalId}`]: res
+                                        });
+                                    })
+                                });
+        
+                                res.lecturers.forEach(element => {
+                                    UserService.getProfilePictureURL(element.universalId)
+                                    .then(res => {
+                                        this.setState({
+                                            [`profile${element.universalId}`]: res
+                                        });
+                                    })
+                                });
+        
+                                this.setState({classData: res, isLoading: false});
+                            })
                         });
-                    });
+                    else {
+                        this.setState({render404: true, isLoading: false});
+                    }
                 })
                 
             }
@@ -109,6 +113,7 @@ class Course extends Component {
         return ( 
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb title={this.state.classData ? <span>{this.state.classData.metadata.name}<span className="badge badge-primary ml-2">{this.state.classData.classType}</span></span> : "Loading..."} breadcrumb={<Breadcrumb current={this.props.match.params.courseCode} contents={[{name: "Learning", url: ""}, {name: "Courses", url: "/student/courses"}, {name: this.props.match.params.classCode, url: ""}]}/>}/>
@@ -319,6 +324,7 @@ class Course extends Component {
                         </ContentWrapper>
                     </PageWrapper>
                 </div>
+                : <PageNotFound/> }
             </div>
          );
     }

@@ -24,6 +24,7 @@ import AddAssignmentModal from './components/AddAssignmentModal';
 import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal';
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
+import PageNotFound from '../../PageNotFound';
 
 class Course extends Component {
     constructor(props) {
@@ -66,65 +67,65 @@ class Course extends Component {
                 .then(status => {
                     // Load current user data
                     if (status)
-                    UserService.getUserData()
-                    .then(res => {
-                        this.setState({currentUserData: res});
-                        
-                        // Load class data
-                        ClassService.getClass(
-                            this.props.match.params.semesterId,
-                            this.props.match.params.classCode,
-                            this.props.match.params.courseCode
-                        ).then(res => {
-                            // Load profile picture URLs
-                            res.students.forEach(element => {
-                                UserService.getProfilePictureURL(element.universalId)
-                                .then(res => {
-                                    this.setState({
-                                        [`profile${element.universalId}`]: res
-                                    });
-                                })
-                            });
-    
-                            res.lecturers.forEach(element => {
-                                UserService.getProfilePictureURL(element.universalId)
-                                .then(res => {
-                                    this.setState({
-                                        [`profile${element.universalId}`]: res
-                                    });
-                                })
-                            });
-
-                            this.setState({classData: res});
-
-                            // Do precalculations
-                            if (this.state.classData && this.state.classData.students.length > 0)
-                                this.state.classData.students.forEach(student => {
-                                    // Get evaluation reference
-                                    let currentStudentIndex = this.state.classData.scores.findIndex(element => {
-                                        return element.universalId === this.state.currentUserData.id;
-                                    });
-                                    
-                                    // Add element if data does not exist
-                                    if (currentStudentIndex === -1) {
-                                        const newDocument = {
-                                            universalId: student.universalId,
-                                            evaluations:  this.state.classData.metadata.class[0].evaluation.map(evaluation => {
-                                                    return {
-                                                        evaluationName: evaluation.name,
-                                                        score: "",
-                                                        weight: `${evaluation.weight}`
-                                                    }
-                                                })
-                                        }
-                                        this.pushNewScoreElement(newDocument)
-                                    }
+                        UserService.getUserData()
+                        .then(res => {
+                            this.setState({currentUserData: res});
+                            
+                            // Load class data
+                            ClassService.getClass(
+                                this.props.match.params.semesterId,
+                                this.props.match.params.classCode,
+                                this.props.match.params.courseCode
+                            ).then(res => {
+                                // Load profile picture URLs
+                                res.students.forEach(element => {
+                                    UserService.getProfilePictureURL(element.universalId)
+                                    .then(res => {
+                                        this.setState({
+                                            [`profile${element.universalId}`]: res
+                                        });
+                                    })
                                 });
-                            this.setState({isLoading: false});
-                        }).catch(err => {
-                
+        
+                                res.lecturers.forEach(element => {
+                                    UserService.getProfilePictureURL(element.universalId)
+                                    .then(res => {
+                                        this.setState({
+                                            [`profile${element.universalId}`]: res
+                                        });
+                                    })
+                                });
+
+                                this.setState({classData: res});
+
+                                // Do precalculations
+                                if (this.state.classData && this.state.classData.students.length > 0)
+                                    this.state.classData.students.forEach(student => {
+                                        // Get evaluation reference
+                                        let currentStudentIndex = this.state.classData.scores.findIndex(element => {
+                                            return element.universalId === this.state.currentUserData.id;
+                                        });
+                                        
+                                        // Add element if data does not exist
+                                        if (currentStudentIndex === -1) {
+                                            const newDocument = {
+                                                universalId: student.universalId,
+                                                evaluations:  this.state.classData.metadata.class[0].evaluation.map(evaluation => {
+                                                        return {
+                                                            evaluationName: evaluation.name,
+                                                            score: "",
+                                                            weight: `${evaluation.weight}`
+                                                        }
+                                                    })
+                                            }
+                                            this.pushNewScoreElement(newDocument)
+                                        }
+                                    });
+                                this.setState({isLoading: false});
+                            });
                         });
-                    });
+                    else
+                        this.setState({render404: true, isLoading: false})
                 });
             }
         });
@@ -228,6 +229,7 @@ class Course extends Component {
         return ( 
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb title={this.state.classData ? <span>{this.state.classData.metadata.name}<span className="badge badge-primary ml-2">{this.state.classData.classType}</span></span> : "Loading..."} breadcrumb={<Breadcrumb current={this.props.match.params.courseCode} contents={[{name: "Learning", url: ""}, {name: "Courses", url: "/lecturer/courses"}, {name: this.props.match.params.classCode, url: ""}]}/>}/>
@@ -503,6 +505,7 @@ class Course extends Component {
                         </ContentWrapper>
                     </PageWrapper>
                 </div>
+                : <PageNotFound/> }
             </div>
          );
     }

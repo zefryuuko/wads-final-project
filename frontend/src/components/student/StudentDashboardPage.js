@@ -48,7 +48,7 @@ class Student extends Component {
                     isLoggedIn: false
                 });
             else
-                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), "/student")
                 .then(status => {
                     if (status)
                         this.setState({

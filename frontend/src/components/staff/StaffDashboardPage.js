@@ -59,7 +59,7 @@ class StaffDashboardPage extends Component {
                     isLoggedIn: false
                 });
             else
-                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), "/staff")
                 .then(status => {
                     if (status)
                         this.setState({

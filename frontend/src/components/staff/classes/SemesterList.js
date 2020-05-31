@@ -15,6 +15,7 @@ import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
 import CreateSemesterModal from './components/CreateSemesterModal';
 import DeleteSemesterModal from './components/DeleteSemesterModal';
+import PageNotFound from '../../PageNotFound';
 
 // Components
 
@@ -42,12 +43,13 @@ class SemesterList extends React.Component {
         this.setState({isLoading: true});
 
         ClassService.getSemesters(this.props.match.params.majorId, this.state.currentTablePage).then(res => {
-            // TODO: add error validation
             this.setState({
                 pageTitle: res.name,
                 currentTableContent: res.linkedSemesters,
                 isLoading: false
             });
+        }).catch(err => {
+            this.setState({render404: true, isLoading: false});
         });
     }
     
@@ -73,7 +75,9 @@ class SemesterList extends React.Component {
                         currentTableContent: res.linkedSemesters,
                         isLoading: false
                     });
-                });
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
+                });;
             }
         });
         
@@ -84,6 +88,7 @@ class SemesterList extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb 
@@ -130,6 +135,7 @@ class SemesterList extends React.Component {
                     </PageWrapper>
                     <CreateSemesterModal majorId={this.props.match.params.majorId} success={this.reloadTable}/>
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }

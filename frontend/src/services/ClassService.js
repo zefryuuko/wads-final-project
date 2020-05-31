@@ -56,7 +56,7 @@ class ClassService {
             return res.data;
         } catch (err) {
             if (callback) callback(err);
-            return err;
+            throw err;
         }
     }
 
@@ -89,7 +89,7 @@ class ClassService {
             return res.data;
         } catch (err) {
             if (callback) callback(err);
-            return err;
+            throw err;
         }
     }
 

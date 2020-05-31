@@ -28,6 +28,7 @@ import CreateClassModal from './components/CreateClassModal';
 import EditTextbookModal from './components/EditTextbookModal';
 import EditEvaluationModal from './components/EditEvaluationModal';
 import DeleteClassModal from './components/DeleteClassModal';
+import PageNotFound from '../../PageNotFound';
 
 // Components
 
@@ -99,7 +100,9 @@ class Course extends React.Component {
                     CourseService.getCourse(this.props.match.params.courseId).then(res => {
                         // TODO: add error validation
                         this.setState({courseData: res, isLoading: false});
-                    });
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
+                });
             }
         });
     }
@@ -111,6 +114,7 @@ class Course extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb title={this.state.courseData ? this.state.courseData.name : "Loading..."} rightComponent={courseActions} breadcrumb={<Breadcrumb current={this.state.courseData ? this.state.courseData.code : ""} contents={[{name: "Course Administration", url: ""}, {name: "Courses", url: "/staff/courses"}, {name: this.props.match.params.groupId, url: `/staff/courses/${this.props.match.params.groupId}`}]}/>}/>
@@ -161,6 +165,7 @@ class Course extends React.Component {
                     {/* Class Modals */}
                     {this.state.courseData ? <CreateClassModal code={this.state.courseData.code} success={this.updateSuccess} error={this.showError}/> : null}
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }

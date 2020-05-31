@@ -46,7 +46,7 @@ class LecturerDashboardPage extends Component {
                     isLoggedIn: false
                 });
             else
-                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), "/lecturer")
                 .then(status => {
                     if (status)
                         this.setState({

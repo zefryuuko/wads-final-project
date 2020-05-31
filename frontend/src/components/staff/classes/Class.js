@@ -19,8 +19,7 @@ import EnrollStudentModal from './components/EnrollStudentModal';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import EnrollLecturerModal from './components/EnrollLecturerModal';
-
-// Components
+import PageNotFound from '../../PageNotFound';
 
 class Class extends React.Component {
     constructor() {
@@ -71,8 +70,12 @@ class Class extends React.Component {
                         currentTableContent: res,
                         isLoading: false
                     });
-                });
-            });
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
+                });;
+            }).catch(err => {
+                this.setState({render404: true, isLoading: false});
+            });;
         });
     }
 
@@ -188,9 +191,15 @@ class Class extends React.Component {
                                 currentTableContent: res,
                                 isLoading: false
                             });
-                        });
-                    });
-                });
+                        }).catch(err => {
+                            this.setState({render404: true, isLoading: false});
+                        });;
+                    }).catch(err => {
+                        this.setState({render404: true, isLoading: false});
+                    });;
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
+                });;
             }
         });
         
@@ -203,6 +212,7 @@ class Class extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb 
@@ -298,6 +308,7 @@ class Class extends React.Component {
                         <EnrollLecturerModal enrolledStudents={this.state.currentTableContent.lecturers} enrollStudent={this.enrollLecturer}/>
                     : null }
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }

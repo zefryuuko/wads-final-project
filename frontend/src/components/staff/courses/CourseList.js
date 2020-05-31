@@ -4,6 +4,7 @@ import {Link, Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import CourseService from '../../../services/CourseService';
+import AccessControlService from '../../../services/AccessControlService';
 
 // UI Elements
 import PageWrapper from '../../ui-elements/PageWrapper';
@@ -19,6 +20,7 @@ import EditCourseGroupModal from './components/EditCourseGroupModal';
 import CreateCourseModal from './components/CreateCourseModal';
 import DeleteCourseModal from './components/DeleteCourseModal';
 import EditCourseModal from './components/EditCourseModal';
+import PageNotFound from '../../PageNotFound';
 
 // Components
 
@@ -85,13 +87,22 @@ class CourseList extends React.Component {
                     isAuthenticated: true
                 });
 
-                CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
-                    this.setState({
-                        currentTableContent: res[0].courses,
-                        courseName: res[0].name,
-                        coursePrefix: res[0].prefix,
-                        isLoading: false
-                    });
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname).then(status => {
+                    if (status) {
+                        CourseService.getCourseGroupCourses(this.props.match.params.groupId, this.state.currentTablePage).then(res => {
+                            this.setState({
+                                currentTableContent: res[0].courses,
+                                courseName: res[0].name,
+                                coursePrefix: res[0].prefix,
+                                isLoading: false
+                            });
+                        }).catch(err => {
+                            this.setState({render404: true, isLoading: false});
+                        });
+                    }
+                    else {
+                        this.setState({render404: true, isLoading: false});
+                    }
                 });
             }
         });
@@ -103,6 +114,7 @@ class CourseList extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb 
@@ -166,6 +178,7 @@ class CourseList extends React.Component {
                         return <DeleteCourseModal key={row.code} prefix={row.code} name={row.name} success={this.updateSuccess} error={this.showError}/>
                     }): null}
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }

@@ -20,6 +20,7 @@ import ModalBody from '../../ui-elements/ModalBody';
 import ModalFooter from '../../ui-elements/ModalFooter';
 import ModalHeader from '../../ui-elements/ModalHeader';
 import Preloader from '../../ui-elements/Preloader';
+import PageNotFound from '../../PageNotFound';
 
 class Account extends React.Component {
     constructor() {
@@ -263,6 +264,8 @@ class Account extends React.Component {
                         staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
                         isLoading: false
                     });
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
                 });
             }
         });
@@ -371,6 +374,7 @@ class Account extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ?
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb title="User Account Details" root="Account Administration"/>
@@ -613,6 +617,7 @@ class Account extends React.Component {
                         </ContentWrapper>
                     </PageWrapper>
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }
