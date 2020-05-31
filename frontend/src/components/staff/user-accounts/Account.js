@@ -547,6 +547,16 @@ class Account extends React.Component {
                                                         </div>
                                                     : <p style={{textAlign: "center"}}>This account does not have a student profile. <a href="#createStudentAccount" onClick={this.createStudentAccount}>Create one.</a></p>}
                                                 </Card>
+                                                {this.state.studentAccount ?
+                                                    <div>
+                                                        <Card title="SAT Points" padding>
+
+                                                        </Card>
+                                                        <Card title="Social Hours" padding>
+
+                                                        </Card>
+                                                    </div>
+                                                : null }
                                             </div>
                                         </div>
                                     </div>
