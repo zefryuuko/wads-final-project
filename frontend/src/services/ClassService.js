@@ -307,8 +307,13 @@ class ClassService {
 
     calculateGPA(allSemesterGPA) {
         if (!allSemesterGPA || allSemesterGPA.length < 1) return "-";
-        let average = allSemesterGPA.reduce((a, b) => a + b , 0) / allSemesterGPA.length;
-        return average;
+        console.log(allSemesterGPA)
+        let semesterCount = allSemesterGPA.length - 1;
+        let sum = 0;
+        allSemesterGPA.forEach(semester => {
+            sum += semester === "-" ? 0 : semester;
+        });
+        return sum / semesterCount;
     }
 }
 

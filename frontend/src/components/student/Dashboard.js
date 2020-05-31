@@ -85,10 +85,11 @@ class StudentDashboard extends React.Component {
                                         ));
                                     });
 
-                                    let GPA = "";
+                                    let GPA = [];
                                     res.forEach(semester => {
-                                        GPA += ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))
+                                        GPA.push(ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId')));
                                     });
+                                    GPA = ClassService.calculateGPA(GPA);
 
                                     let dueToday = assignmentsDue.filter(
                                         assignment => {
