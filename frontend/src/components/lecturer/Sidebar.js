@@ -30,10 +30,10 @@ class Sidebar extends React.Component {
                             <li className="list-divider"></li>
 
                             <li className="nav-small-cap"><span className="hide-menu">Account</span></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/student-accounts"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/lecturer/profile"
                                     aria-expanded="false"><i data-feather="user" className="feather-icon"></i><span
                                         className="hide-menu">Profile</span></Link></li>
-                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="authentication-login1.html"
+                            <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/logout"
                                     aria-expanded="false"><i data-feather="log-out" className="feather-icon"></i><span
                                         className="hide-menu">Logout</span></Link></li>
                         </ul>

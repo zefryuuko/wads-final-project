@@ -18,6 +18,7 @@ import Footer from '../Footer';
 import Dashboard from './Dashboard';
 import Courses from './courses/Courses';
 import Course from './courses/Course';
+import Profile from '../Profile';
 
 class LecturerDashboardPage extends Component {
     constructor() {
@@ -71,6 +72,9 @@ class LecturerDashboardPage extends Component {
                         <Route exact path={`${path}/courses`}><Courses/></Route>
                         {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
+
+                        {/* Account */}
+                        <Route exact path={`${path}/profile`}><Profile/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
