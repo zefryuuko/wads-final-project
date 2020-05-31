@@ -311,7 +311,8 @@ class ClassService {
         let semesterCount = allSemesterGPA.length - 1;
         let sum = 0;
         allSemesterGPA.forEach(semester => {
-            sum += semester === "-" ? 0 : semester;
+            sum += semester === "-" ? 0 : Number.parseFloat(semester);
+            semesterCount++;
         });
         return sum / semesterCount;
     }
