@@ -127,7 +127,7 @@ class Grades extends React.Component {
                                                     return <tr key={cls._id}>
                                                         <td><span style={{verticalAlign: "middle"}}>{cls.metadata.name}</span> <span className="badge badge-primary">{cls.metadata.class[0].code}</span></td>
                                                         <td>
-                                                            { cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')) && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).length > 0 ? cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.map(evaluation => {
+                                                            { cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')) && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.length > 0 ? cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.map(evaluation => {
                                                                 return <div key={evaluation._id} className="row">
                                                                     <span style={{fontWeight: "bold"}}>{evaluation.evaluationName}</span>: {evaluation.score !== "" ? evaluation.score : "-"}
                                                                 </div>
