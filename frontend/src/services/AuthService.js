@@ -50,6 +50,21 @@ class AuthService {
         }
     }
 
+    async updatePassword(primaryEmail, currentPassword, newPassword) {
+        try {
+            const validateUrl = `${this.API_ENDPOINT}auth/account`;
+            const updateUrl = `${this.API_ENDPOINT}auth/account/${primaryEmail}`;
+
+            await axios.post(validateUrl, { emailAddress: primaryEmail, password: currentPassword });
+            await axios.patch(updateUrl, { password: newPassword });
+
+            return { updated: true, message: "Password updated successfully." }
+        } catch (err) {
+            if (err.response.status === 401) return { updated: false, message: "Current password is invalid." }
+            return { updated: false, message: "An error has ocurred. Please try again." }
+        }
+    } 
+
     async logoutFromAllDevices(callback) {
         try {
             const url = `${this.API_ENDPOINT}auth/session`;
