@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import ClassService from '../../../services/ClassService';
 import FileService from '../../../services/FileService';
 import firebase from '../../../firebase';
 
@@ -263,7 +264,19 @@ class Account extends React.Component {
                         studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                         lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
                         staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
-                        isLoading: false
+                    });
+
+                    ClassService.getCourseByStudentId(this.state.id).then(res => {
+                        this.setState({
+                            studentAccountSemesters: res
+                        });
+
+                        ClassService.getCourseByLecturerId(this.state.id).then(res => {
+                            this.setState({
+                                lecturerAccountSemesters: res,
+                                isLoading: false
+                            })
+                        });
                     });
                 }).catch(err => {
                     this.setState({render404: true, isLoading: false});
@@ -493,10 +506,6 @@ class Account extends React.Component {
                                                 <Card title="Student Account" padding>
                                                     {this.state.studentAccount ?
                                                         <div>
-                                                            <div><b>Current GPA</b>: {this.state.studentAccount.metadata.currentGPA ? this.state.studentAccount.metadata.currentGPA : "No data"}</div>
-                                                            <div><b>Current SAT</b>: {this.state.studentAccount.metadata.currentSAT ? this.state.studentAccount.metadata.currentSAT : "No data"}</div>
-                                                            <div><b>Community Service Hours</b>: {this.state.studentAccount.metadata.currentSOC ? `${this.state.studentAccount.metadata.currentSOC} hours` : "No data"}</div>
-                                                            <br/>
                                                             <div><b>Enrolled Classes</b></div>
                                                             <div className="table-responsive">
                                                                 <table id="studentClasses" className="table table-striped table-bordered no-wrap">
@@ -510,8 +519,10 @@ class Account extends React.Component {
                                                                     <tbody>
                                                                         {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? this.state.studentAccountSemesters.map(semester => {
                                                                             return semester.classes.map(cls => {
-                                                                                return <tr>
-                                                                                    <th scope="row">{cls.name}</th>
+                                                                                return <tr key={cls._id}>
+                                                                                    <th scope="row">{cls.classCode}</th>
+                                                                                    <td>{cls.courseCode}</td>
+                                                                                    <td>{cls.metadata.name}</td>
                                                                                 </tr>
                                                                             })
                                                                         })
@@ -519,7 +530,7 @@ class Account extends React.Component {
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <script>{ window.loadTable('#studentClasses') }</script>
+                                                            {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? <script>{ window.loadTable('#studentClasses') }</script> : null }
                                                             <div className="float-right mt-2">
                                                                 <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStudentProfile">Delete Account</Button>
                                                             </div>
@@ -559,15 +570,20 @@ class Account extends React.Component {
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <tr>
-                                                                            <td>TODO</td>
-                                                                            <td>:</td>
-                                                                            <td>Render class data here</td>
-                                                                        </tr>
+                                                                        {this.state.lecturerAccountSemesters && this.state.lecturerAccountSemesters.length > 0 ? this.state.lecturerAccountSemesters.map(semester => {
+                                                                            return semester.classes.map(cls => {
+                                                                                return <tr key={cls._id}>
+                                                                                    <th scope="row">{cls.classCode}</th>
+                                                                                    <td>{cls.courseCode}</td>
+                                                                                    <td>{cls.metadata.name}</td>
+                                                                                </tr>
+                                                                            })
+                                                                        })
+                                                                        : null}
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <script>{ window.loadTable('#lecturerClasses') }</script>
+                                                            {this.state.lecturerAccountSemesters && this.state.lecturerAccountSemesters.length > 0 ? <script>{ window.loadTable('#lecturerClasses') }</script> : null}
                                                             <div className="float-right mt-2">
                                                                 <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteLecturerProfile">Delete Account</Button>
                                                             </div>
@@ -596,26 +612,15 @@ class Account extends React.Component {
                                                 <Card title="Staff Account" padding>
                                                     {this.state.staffAccount ?
                                                         <div>
-                                                            <div><b>Permitted Domains</b></div>
-                                                            <div className="table-responsive">
-                                                                <table id="staffDomains" className="table table-striped table-bordered no-wrap">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Domain</th>
-                                                                            <th>Allowed Routes</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td>TODO</td>
-                                                                            <td>Render domain data here</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                            <script>{ window.loadTable('#staffDomains') }</script>
+                                                            <p>This account is allowed to access the staff page. 
+                                                                Staff profile allows user to manage the website's content. 
+                                                                A user with a staff profile is able to access all management pages in this site.
+                                                            </p>
+                                                            <p>
+                                                                To revoke access, simply click the "Delete Account" button below.
+                                                                Staff access can be re-granted anytime by another staff account.
+                                                            </p>
                                                             <div className="float-right mt-2">
-                                                                <Button className="btn btn-primary">Add Domain</Button>
                                                                 <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStaffProfile">Delete Account</Button>
                                                             </div>
                                                             <Modal id="deleteStaffProfile">
