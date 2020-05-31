@@ -15,6 +15,7 @@ import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
 import DeleteClassModal from './components/DeleteClassModal';
 import CreateClassModal from './components/CreateClassModal';
+import PageNotFound from '../../PageNotFound';
 
 // Components
 
@@ -88,8 +89,12 @@ class ClassList extends React.Component {
                             currentTableContent: res.classes,
                             isLoading: false
                         });
-                    })
-                })
+                    }).catch(err => {
+                        this.setState({render404: true, isLoading: false});
+                    });
+                }).catch(err => {
+                    this.setState({render404: true, isLoading: false});
+                });
             }
         });
     }
@@ -99,6 +104,7 @@ class ClassList extends React.Component {
         return (
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
+                {!this.state.render404 ? 
                 <div className="ease-on-load" style={this.state.isLoading ? this.loadingStyle : this.loadedStyle}>
                     <PageWrapper>
                         <PageBreadcrumb 
@@ -156,6 +162,7 @@ class ClassList extends React.Component {
                     </PageWrapper>
                     <CreateClassModal semesterId={this.state.semesterId} success={this.reloadTable}/>
                 </div>
+                : <PageNotFound/> }
             </div>
         );
     }

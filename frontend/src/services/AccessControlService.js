@@ -89,7 +89,7 @@ class AccessControlService {
                         
                         if (callback && !isEnrolled) callback(false);
                         if (!isEnrolled) {
-                            window.location.href = `/${domain[1]}`
+                            // window.location.href = `/${domain[1]}`
                             return false;
                         }
                     } catch (err) {
@@ -126,7 +126,7 @@ class AccessControlService {
                         
                         if (callback && !isEnrolled) callback(false);
                         if (!isEnrolled) {
-                            window.location.href = `/${domain[1]}`
+                            // window.location.href = `/${domain[1]}`
                             return false;
                         }
                     } catch (err) {

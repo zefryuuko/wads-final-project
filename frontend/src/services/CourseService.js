@@ -78,7 +78,7 @@ class UserService {
             return res.data;
         } catch (err) {
             if (callback) callback(err);
-            return err;
+            throw err;
         }
     }
 

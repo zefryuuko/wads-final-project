@@ -18,6 +18,8 @@ import Footer from '../Footer';
 import Dashboard from './Dashboard';
 import Courses from './courses/Courses';
 import Course from './courses/Course';
+import Profile from '../Profile';
+import PageNotFound from '../PageNotFound';
 
 class LecturerDashboardPage extends Component {
     constructor() {
@@ -44,7 +46,7 @@ class LecturerDashboardPage extends Component {
                     isLoggedIn: false
                 });
             else
-                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), "/lecturer")
                 .then(status => {
                     if (status)
                         this.setState({
@@ -71,6 +73,12 @@ class LecturerDashboardPage extends Component {
                         <Route exact path={`${path}/courses`}><Courses/></Route>
                         {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
+
+                        {/* Account */}
+                        <Route exact path={`${path}/profile`}><Profile/></Route>
+
+                        {/* Error Pages */}
+                        <Route><PageNotFound/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>

@@ -31,6 +31,8 @@ import LecturerList from './user-accounts/LecturerList';
 import StudentList from './user-accounts/StudentList';
 import Account from './user-accounts/Account';
 import CreateAccount from './user-accounts/CreateAccount';
+import Profile from '../Profile';
+import PageNotFound from '../PageNotFound';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -57,7 +59,7 @@ class StaffDashboardPage extends Component {
                     isLoggedIn: false
                 });
             else
-                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
+                AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), "/staff")
                 .then(status => {
                     if (status)
                         this.setState({
@@ -99,6 +101,12 @@ class StaffDashboardPage extends Component {
                         <Route exact path={`${path}/accounts/student`}><StudentList/></Route>
                         <Route exact path={`${path}/accounts/create`}><CreateAccount/></Route>
                         <Route exact path={`${path}/accounts/:accountId`}><Account/></Route>
+
+                        {/* Profile */}
+                        <Route exact path={`${path}/profile`}><Profile/></Route>
+
+                        {/* Error Pages */}
+                        <Route><PageNotFound/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>

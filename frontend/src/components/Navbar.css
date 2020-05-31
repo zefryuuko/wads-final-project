@@ -1,0 +1,9 @@
+
+    .small-icon {
+      display: none }
+  @media (min-width: 768px) {
+    .small-icon {
+      display: block } }
+  @media (min-width: 1170px) {
+    .small-icon {
+      display: none } }
