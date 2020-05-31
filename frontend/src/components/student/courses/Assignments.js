@@ -124,12 +124,12 @@ class Assignments extends Component {
                                                         return <SubmitAssignmentModal 
                                                                     key={assignment._id} 
                                                                     id={assignment._id}
-                                                                    studentId={this.state.currentUserData.id}
+                                                                    studentId={localStorage.getItem('universalId')}
                                                                     studentName={`${this.state.currentUserData.firstName} ${this.state.currentUserData.lastName}`}
                                                                     assignmentName={assignment.name}
-                                                                    semesterId={this.props.match.params.semesterId}
-                                                                    classCode={this.props.match.params.classCode}
-                                                                    courseCode={this.props.match.params.courseCode}
+                                                                    semesterId={this.state.semesterData[0]._id}
+                                                                    classCode={cls.classCode}
+                                                                    courseCode={cls.courseCode}
                                                                     onSuccess={this.reloadData}
                                                                     forceRefresh={new Date()}
                                                                 />
