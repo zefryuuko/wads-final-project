@@ -20,6 +20,7 @@ import Courses from './courses/Courses';
 import Course from './courses/Course';
 import Assignments from './courses/Assignments';
 import Grades from './Grades';
+import Profile from '../Profile';
 
 class Student extends Component {
     constructor() {
@@ -77,12 +78,8 @@ class Student extends Component {
                         {/* Assignments */}
                         <Route exact path={`${path}/grades`}><Grades/></Route>
 
-                        {/* Classes */}
-                        {/* <Route exact path={`${path}/classes`}><MajorList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId`}><SemesterList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId`}><ClassList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId`}><ClassList/></Route> */}
-                        {/* <Route exact path={`${path}/classes/:majorId/:semesterId/:classId/:courseId`}><Class/></Route> */}
+                        {/* Account */}
+                        <Route exact path={`${path}/profile`}><Profile/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
