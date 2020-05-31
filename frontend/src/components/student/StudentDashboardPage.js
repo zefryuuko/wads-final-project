@@ -21,6 +21,7 @@ import Course from './courses/Course';
 import Assignments from './courses/Assignments';
 import Grades from './Grades';
 import Profile from '../Profile';
+import PageNotFound from '../PageNotFound';
 
 class Student extends Component {
     constructor() {
@@ -80,6 +81,9 @@ class Student extends Component {
 
                         {/* Account */}
                         <Route exact path={`${path}/profile`}><Profile/></Route>
+
+                        {/* Error Pages */}
+                        <Route><PageNotFound/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>

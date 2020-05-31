@@ -32,6 +32,7 @@ import StudentList from './user-accounts/StudentList';
 import Account from './user-accounts/Account';
 import CreateAccount from './user-accounts/CreateAccount';
 import Profile from '../Profile';
+import PageNotFound from '../PageNotFound';
 
 class StaffDashboardPage extends Component {
     constructor() {
@@ -103,6 +104,9 @@ class StaffDashboardPage extends Component {
 
                         {/* Profile */}
                         <Route exact path={`${path}/profile`}><Profile/></Route>
+
+                        {/* Error Pages */}
+                        <Route><PageNotFound/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>

@@ -19,6 +19,7 @@ import Dashboard from './Dashboard';
 import Courses from './courses/Courses';
 import Course from './courses/Course';
 import Profile from '../Profile';
+import PageNotFound from '../PageNotFound';
 
 class LecturerDashboardPage extends Component {
     constructor() {
@@ -75,6 +76,9 @@ class LecturerDashboardPage extends Component {
 
                         {/* Account */}
                         <Route exact path={`${path}/profile`}><Profile/></Route>
+
+                        {/* Error Pages */}
+                        <Route><PageNotFound/></Route>
                     </Switch>
                     <PageWrapper><Footer/></PageWrapper>
                 </div>
