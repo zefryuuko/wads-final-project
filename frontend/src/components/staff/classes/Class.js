@@ -290,9 +290,6 @@ class Class extends React.Component {
                                             <button className="btn btn-primary ml-2" onClick={this.saveLecturerList}>Save changes</button>
                                         </div>
                                     </Card>
-                                    <Card title="Add dis crap" padding>
-                                        Schedule
-                                    </Card>
                                 </div>
                             </div>
                         </ContentWrapper>
