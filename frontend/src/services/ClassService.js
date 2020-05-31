@@ -302,13 +302,13 @@ class ClassService {
 
     calculateGPA(allSemesterGPA) {
         if (!allSemesterGPA || allSemesterGPA.length < 1) return "-";
-        let semesterCount = allSemesterGPA.length - 1;
+        let semesterCount = 0;
         let sum = 0;
         allSemesterGPA.forEach(semester => {
             sum += semester === "-" ? 0 : Number.parseFloat(semester);
-            semesterCount++;
+            if (semester !== "-") semesterCount++;
         });
-        return sum / semesterCount;
+        return (Math.round(sum / semesterCount * 100) / 100).toFixed(2);
     }
 }
 
