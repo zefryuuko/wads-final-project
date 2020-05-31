@@ -46,8 +46,7 @@ class Sidebar extends React.Component {
                                     aria-expanded="false"><i data-feather="user" className="feather-icon"></i><span
                                         className="hide-menu">Student Accounts</span></Link></li>
                             <li className="list-divider"></li>
-
-                            <li className="list-divider"></li>
+                            
                             <li className="nav-small-cap"><span className="hide-menu">Account</span></li>
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/staff/profile"
                                     aria-expanded="false"><i data-feather="user" className="feather-icon"></i><span
