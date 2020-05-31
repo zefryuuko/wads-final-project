@@ -205,7 +205,6 @@ class Course extends Component {
                 }
             }
         })
-        console.log(this.state)
     }
 
     updateGrades() {

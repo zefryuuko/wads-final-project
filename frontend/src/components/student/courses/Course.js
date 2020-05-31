@@ -17,6 +17,7 @@ import PageWrapper from '../../ui-elements/PageWrapper';
 import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import CourseDescription from '../../ui-elements/CourseDescription';
 import Evaluation from '../../ui-elements/Evaluation';
+import Textbooks from '../../ui-elements/Textbooks';
 import ClassService from '../../../services/ClassService';
 import Table from '../../ui-elements/Table';
 import SubmitAssignmentModal from './components/SubmitAssignmentModal';
@@ -61,7 +62,6 @@ class Course extends Component {
                 AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
                 .then(status => {
                     // Load current user data
-                    console.log(status)
                     if (status)
                         UserService.getUserData()
                         .then(res => {
@@ -130,6 +130,13 @@ class Course extends Component {
                                         <div className="row">
                                             <div className="col-12">
                                                 <LearningOutcomes data={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card padding>
+                                                    <Textbooks data={this.state.classData ? this.state.classData.metadata.textbooks : null}/>
+                                                </Card>
                                             </div>
                                         </div>
                                         <div className="row">

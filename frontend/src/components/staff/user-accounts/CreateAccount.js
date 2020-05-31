@@ -92,7 +92,6 @@ class CreateAccount extends React.Component {
                         });
                     })
                     .catch((err) =>{
-                        console.log(err)
                         if (err.response && (err.response.status === 409)) { 
                             this.showErrorAlert(err.response.data.message);
                             this.setState({isUpdating: false});
@@ -119,7 +118,6 @@ class CreateAccount extends React.Component {
                 });
             })
             .catch((err) =>{
-                console.log(err)
                 if (err.response && (err.response.status === 409)) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});

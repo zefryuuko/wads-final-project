@@ -63,7 +63,6 @@ class LandingLoginForm extends React.Component {
     }
     
     render() {
-        console.log(this.state.rememberMe)
         if(this.state.loggedIn) {
             AuthService.saveSession(this.state.sessionData);
             UserService.getUserById(this.state.sessionData.universalId)
@@ -72,7 +71,7 @@ class LandingLoginForm extends React.Component {
                 if (user.accounts.length < 1) {
                     // TODO: add no accounts page
                     window.alert("There are no profile that is associated with this account. Please contact the administrator.");
-                    window.location.href = "https://google.com";
+                    window.location.href = "/logout";
                 } else {
                     const defaultAccountType = user.accounts[0].accountType;
                     const defaultAccountId = user.accounts[0]._id;

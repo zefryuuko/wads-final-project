@@ -71,10 +71,11 @@ class Grades extends React.Component {
                                 ClassService.getCourseByStudentId(localStorage.getItem('universalId'))
                                 .then(res => {
                                     // Calculate GPA
-                                    let GPA = "";
+                                    let GPA = [];
                                     res.forEach(semester => {
-                                        GPA += ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId'))
+                                        GPA.push(ClassService.calculateSemesterGPA(semester, localStorage.getItem('universalId')))
                                     });
+                                    GPA = ClassService.calculateGPA(GPA)
 
                                     this.setState({enrolledSemesters: res, GPA, isLoading: false});
                                 }).catch(err => {
@@ -113,7 +114,7 @@ class Grades extends React.Component {
                                                     // Calculate final grade
                                                     let finalGrade = 0;
                                                     let allScoresExists = true;
-                                                    if (cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')))
+                                                    if (cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')) && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.length > 0) 
                                                         cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.forEach(evaluation => {
                                                             if (evaluation.score === "") {
                                                                 allScoresExists = false;
@@ -123,16 +124,15 @@ class Grades extends React.Component {
                                                         });
                                                     else allScoresExists = false;
                                                     let grade = allScoresExists ? ClassService.getGrade(finalGrade) : ""
-
                                                     return <tr key={cls._id}>
                                                         <td><span style={{verticalAlign: "middle"}}>{cls.metadata.name}</span> <span className="badge badge-primary">{cls.metadata.class[0].code}</span></td>
                                                         <td>
-                                                            { cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')) ? cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.map(evaluation => {
+                                                            { cls.scores.length > 0 && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')) && cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.length > 0 ? cls.scores.find(item => item.universalId === localStorage.getItem('universalId')).evaluations.map(evaluation => {
                                                                 return <div key={evaluation._id} className="row">
                                                                     <span style={{fontWeight: "bold"}}>{evaluation.evaluationName}</span>: {evaluation.score !== "" ? evaluation.score : "-"}
                                                                 </div>
                                                             })
-                                                            : <div className="row">No Data</div>
+                                                            : <div>No Data</div>
                                                             }
                                                         </td>
                                                         <td>

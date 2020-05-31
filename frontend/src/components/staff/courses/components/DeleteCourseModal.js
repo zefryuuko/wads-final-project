@@ -66,7 +66,6 @@ class DeleteCourseModal extends Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err.response)
                 if (err.response.status === 409) {
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
@@ -79,7 +78,6 @@ class DeleteCourseModal extends Component {
     }
 
     render() { 
-        console.log("render modal")
         return (
             <Modal id={`deleteModal-${this.state.prefix}`}>
                 {this.state.redirect ? <Redirect to={`${this.state.redirect}`}/> : null}

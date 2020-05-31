@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router-dom';
 // Services
 import AuthService from '../../../services/AuthService';
 import UserService from '../../../services/UserService';
+import ClassService from '../../../services/ClassService';
 import FileService from '../../../services/FileService';
 import firebase from '../../../firebase';
 
@@ -13,6 +14,7 @@ import PageBreadcrumb from '../../ui-elements/PageBreadcrumb';
 import ContentWrapper from '../../ui-elements/ContentWrapper';
 import Card from '../../ui-elements/Card';
 import Button from '../../ui-elements/Button';
+import Tab from '../../ui-elements/Tab';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
 import Modal from '../../ui-elements/Modal';
@@ -103,7 +105,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -123,7 +125,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -142,7 +144,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -162,7 +164,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -181,7 +183,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -201,7 +203,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -221,7 +223,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -262,7 +264,19 @@ class Account extends React.Component {
                         studentAccount: res ? res.accounts.find(obj => {return obj.accountType === 'student'}): undefined,
                         lecturerAccount: res ? res.accounts.find(obj => {return obj.accountType === 'lecturer'}): undefined,
                         staffAccount: res ? res.accounts.find(obj => {return obj.accountType === 'staff'}): undefined,
-                        isLoading: false
+                    });
+
+                    ClassService.getCourseByStudentId(this.state.id).then(res => {
+                        this.setState({
+                            studentAccountSemesters: res
+                        });
+
+                        ClassService.getCourseByLecturerId(this.state.id).then(res => {
+                            this.setState({
+                                lecturerAccountSemesters: res,
+                                isLoading: false
+                            })
+                        });
                     });
                 }).catch(err => {
                     this.setState({render404: true, isLoading: false});
@@ -307,7 +321,6 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
                 if (err.response && (err.response.status === 409)) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});
@@ -381,239 +394,263 @@ class Account extends React.Component {
                         <ContentWrapper>
                             {this.state.showErrorMessage ? <ErrorAlert><strong>Error -</strong> Action failed. Please try again.</ErrorAlert> : null}
                             {this.state.showSuccessMessage ? <SuccessAlert><strong>Success -</strong> Action performed successfully.</SuccessAlert> : null}
-                            <div className="row">
-                                <div className="col-lg-9 col-md-12">
-                                    <Card title="Account Details" padding>
-                                        <form onSubmit={this.onSubmitHandler}>
-                                            <div className="form-row">
-                                                <div className="form-group col-lg-6">
-                                                    <label htmlFor="firstName">First Name</label>
-                                                    <input type="input" className="form-control" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
-                                                </div>
-                                                <div className="form-group col-lg-6">
-                                                    <label htmlFor="lastName">Last Name</label>
-                                                    <input type="input" className="form-control" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
-                                                </div>
-                                            </div>
-                                            <div className="form-row">
-                                                <div className="form-group col-lg-6">
-                                                    <label htmlFor="primaryEmail">Primary Email</label>
-                                                    <input type="email" className="form-control" name="primaryEmail" placeholder="Primary Email" value={this.state.primaryEmail} onChange={this.handleChange} disabled required/>
-                                                </div>
-                                                <div className="form-group col-lg-6">
-                                                    <label htmlFor="contactEmail">Contact Email</label>
-                                                    <input type="email" className="form-control" name="contactEmail" placeholder="Contact Email" value={this.state.contactEmail} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
-                                                </div>
-                                            </div>
-                                            <div className="form-row">
-                                                <div className="form-group col-lg-6">
-                                                    <label htmlFor="phone">Phone Number</label>
-                                                    <input type="telephone" className="form-control" name="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
-                                                </div>
-                                            </div>
-                                            <div className="form-row">
-                                                <div className="col-lg-6"><small>All fields are required.</small></div>
-                                                <div className="col-lg-6">
-                                                    <Button type="submit" className="btn btn-primary float-right" loading={this.state.isUpdating}>Save Changes</Button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </Card>
-                                </div>
-                                <div className="col-lg-3 col-md-12">
-                                    <Card title="Profile Picture" style={{overflow: "hidden"}} padding>
-                                        <div className="rounded-circle" style={{
-                                                marginRight: "auto",
-                                                marginLeft: "auto",
-                                                display: "block",
-                                                width: 160, 
-                                                overflow: "hidden", 
-                                                height: 160, 
-                                                textAlign: "center",
-                                                backgroundRepeat: "no-repeat",
-                                                backgroundPosition: "center center",
-                                                backgroundSize: "cover",
-                                                backgroundImage: `url('${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}')`
-                                            }}>
-                                        </div>
-                                        <div className="card-title text-secondary mt-3">Update Picture</div>
-                                        <form onSubmit={this.onUpdatePictureHandler}>
-                                            <input type="file" name="profilePictureFile" accept="image/x-png,image/jpeg" onChange={this.handleChange}/>
-                                            <Button type="submit" className="btn btn-primary btn-block mt-2" loading={this.state.isUpdating && this.state.profilePictureFile} disabled={!this.state.profilePictureFile || this.state.isUpdating}>Save Changes</Button>
-                                        </form>
-                                    </Card>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <Card title="Student Account" padding>
-                                        {this.state.studentAccount ?
-                                            <div>
-                                                <div><b>Current GPA</b>: {this.state.studentAccount.metadata.currentGPA ? this.state.studentAccount.metadata.currentGPA : "No data"}</div>
-                                                <div><b>Current SAT</b>: {this.state.studentAccount.metadata.currentSAT ? this.state.studentAccount.metadata.currentSAT : "No data"}</div>
-                                                <div><b>Community Service Hours</b>: {this.state.studentAccount.metadata.currentSOC ? `${this.state.studentAccount.metadata.currentSOC} hours` : "No data"}</div>
-                                                <br/>
-                                                <div><b>Enrolled Classes</b></div>
-                                                <div className="table-responsive">
-                                                    <table id="studentClasses" className="table table-striped table-bordered no-wrap">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Class Code</th>
-                                                                <th>Course Code</th>
-                                                                <th>Course Name</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? this.state.studentAccountSemesters.map(semester => {
-                                                                return semester.classes.map(cls => {
-                                                                    return <tr>
-                                                                        <th scope="row">{cls.name}</th>
-                                                                    </tr>
-                                                                })
-                                                            })
-                                                            : null}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <script>{ window.loadTable('#studentClasses') }</script>
-                                                <div className="float-right mt-2">
-                                                    <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStudentProfile">Delete Account</Button>
-                                                </div>
-                                                <Modal id="deleteStudentProfile">
-                                                    <ModalHeader title="Delete Student Account"/>
-                                                    <ModalBody>
-                                                        <p>Are you sure you want to delete the student account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
-                                                        <p>This action is destructive and cannot be undone.</p>
-                                                    </ModalBody>
-                                                    <ModalFooter>
-                                                        <Button className="btn btn-danger" onClick={this.deleteStudentAccount}>Delete</Button>
-                                                    </ModalFooter>
-                                                </Modal>
-                                            </div>
-                                        : <p style={{textAlign: "center"}}>This account does not have a student profile. <a href="#createStudentAccount" onClick={this.createStudentAccount}>Create one.</a></p>}
-                                    </Card>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <Card title="Lecturer Account" padding>
-                                        {this.state.lecturerAccount ?
-                                            <div>
-                                                <div><b>Enrolled Classes</b></div>
-                                                <div className="table-responsive">
-                                                    <table id="lecturerClasses" className="table table-striped table-bordered no-wrap">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Class Code</th>
-                                                                <th>Course Code</th>
-                                                                <th>Course Name</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>TODO</td>
-                                                                <td>:</td>
-                                                                <td>Render class data here</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <script>{ window.loadTable('#lecturerClasses') }</script>
-                                                <div className="float-right mt-2">
-                                                    <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteLecturerProfile">Delete Account</Button>
-                                                </div>
-                                                <Modal id="deleteLecturerProfile">
-                                                    <ModalHeader title="Delete Lecturer Account"/>
-                                                    <ModalBody>
-                                                        <p>Are you sure you want to delete the lecturer account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
-                                                        <p>This action is destructive and cannot be undone.</p>
-                                                    </ModalBody>
-                                                    <ModalFooter>
-                                                        <Button className="btn btn-danger" onClick={this.deleteLecturerAccount}>Delete</Button>
-                                                    </ModalFooter>
-                                                </Modal>
-                                            </div>
-                                        : <p style={{textAlign: "center"}}>This account does not have a lecturer profile. <a href="#createLecturerAccount" onClick={this.createLecturerAccount}>Create one.</a></p>}
-                                    </Card>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <Card title="Staff Account" padding>
-                                        {this.state.staffAccount ?
-                                            <div>
-                                                <div><b>Permitted Domains</b></div>
-                                                <div className="table-responsive">
-                                                    <table id="staffDomains" className="table table-striped table-bordered no-wrap">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Domain</th>
-                                                                <th>Allowed Routes</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>TODO</td>
-                                                                <td>Render domain data here</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <script>{ window.loadTable('#staffDomains') }</script>
-                                                <div className="float-right mt-2">
-                                                    <Button className="btn btn-primary">Add Domain</Button>
-                                                    <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStaffProfile">Delete Account</Button>
-                                                </div>
-                                                <Modal id="deleteStaffProfile">
-                                                    <ModalHeader title="Delete Staff Account"/>
-                                                    <ModalBody>
-                                                        <p>Are you sure you want to delete the staff account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
-                                                        <p>This action is destructive and cannot be undone.</p>
-                                                    </ModalBody>
-                                                    <ModalFooter>
-                                                        <Button className="btn btn-danger" onClick={this.deleteStaffAccount}>Delete</Button>
-                                                    </ModalFooter>
-                                                </Modal>
-                                            </div>
-                                        : <p style={{textAlign: "center"}}>This account does not have a staff profile. <a href="#createStaffAccount" onClick={this.createStaffAccount}>Create one.</a></p>}
-                                    </Card>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col">
-                                    <Card title="Account Settings" padding>
+                            <Tab data= {[
+                                {
+                                    name: "Details",
+                                    component: <div>
                                         <div className="row">
-                                            <div className="col-lg-6">
-                                                <Button className="btn btn-block btn-secondary mb-2" data-toggle="modal" data-target="#resetPasswordModal">Reset Password</Button>
+                                            <div className="col-lg-9 col-md-12">
+                                                <Card title="Account Details" padding>
+                                                    <form onSubmit={this.onSubmitHandler}>
+                                                        <div className="form-row">
+                                                            <div className="form-group col-lg-6">
+                                                                <label htmlFor="firstName">First Name</label>
+                                                                <input type="input" className="form-control" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                                            </div>
+                                                            <div className="form-group col-lg-6">
+                                                                <label htmlFor="lastName">Last Name</label>
+                                                                <input type="input" className="form-control" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-row">
+                                                            <div className="form-group col-lg-6">
+                                                                <label htmlFor="primaryEmail">Primary Email</label>
+                                                                <input type="email" className="form-control" name="primaryEmail" placeholder="Primary Email" value={this.state.primaryEmail} onChange={this.handleChange} disabled required/>
+                                                            </div>
+                                                            <div className="form-group col-lg-6">
+                                                                <label htmlFor="contactEmail">Contact Email</label>
+                                                                <input type="email" className="form-control" name="contactEmail" placeholder="Contact Email" value={this.state.contactEmail} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-row">
+                                                            <div className="form-group col-lg-6">
+                                                                <label htmlFor="phone">Phone Number</label>
+                                                                <input type="telephone" className="form-control" name="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.handleChange} disabled={this.state.isUpdating} required/>
+                                                            </div>
+                                                        </div>
+                                                        <div className="form-row">
+                                                            <div className="col-lg-6"><small>All fields are required.</small></div>
+                                                            <div className="col-lg-6">
+                                                                <Button type="submit" className="btn btn-primary float-right" loading={this.state.isUpdating}>Save Changes</Button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </Card>
                                             </div>
-                                            <Modal id="resetPasswordModal">
-                                                <ModalHeader title="Reset Password"/>
-                                                <ModalBody>
-                                                    <p>Are you sure you want to reset the password for {`${this.state.firstName} ${this.state.lastName}`}?</p>
-                                                    <p>The password will be set to its default value.</p>
-                                                </ModalBody>
-                                                <ModalFooter>
-                                                    <Button className="btn btn-secondary" onClick={this.resetPassword}>Reset</Button>
-                                                </ModalFooter>
-                                            </Modal>
-                                            <div className="col-lg-6">
-                                                <Button className="btn btn-block btn-danger mb-2" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</Button>
+                                            <div className="col-lg-3 col-md-12">
+                                                <Card title="Profile Picture" style={{overflow: "hidden"}} padding>
+                                                    <div className="rounded-circle" style={{
+                                                            marginRight: "auto",
+                                                            marginLeft: "auto",
+                                                            display: "block",
+                                                            width: 160, 
+                                                            overflow: "hidden", 
+                                                            height: 160, 
+                                                            textAlign: "center",
+                                                            backgroundRepeat: "no-repeat",
+                                                            backgroundPosition: "center center",
+                                                            backgroundSize: "cover",
+                                                            backgroundImage: `url('${this.state.profilePictureURL ? this.state.profilePictureURL : "/img/user.png"}')`
+                                                        }}>
+                                                    </div>
+                                                    <div className="card-title text-secondary mt-3">Update Picture</div>
+                                                    <form onSubmit={this.onUpdatePictureHandler}>
+                                                        <input type="file" name="profilePictureFile" accept="image/x-png,image/jpeg" onChange={this.handleChange}/>
+                                                        <Button type="submit" className="btn btn-primary btn-block mt-2" loading={this.state.isUpdating && this.state.profilePictureFile} disabled={!this.state.profilePictureFile || this.state.isUpdating}>Save Changes</Button>
+                                                    </form>
+                                                </Card>
                                             </div>
-                                            <Modal id="deleteAccountModal">
-                                                <ModalHeader title="Delete Account"/>
-                                                <ModalBody>
-                                                    <p>Are you sure you want to delete the account <b>{`${this.state.id} - ${this.state.firstName} ${this.state.lastName}`}</b>?</p>
-                                                    <p>This action is destructive and cannot be undone.</p>
-                                                    <p>Account data that is assigned to a class will not be deleted, but the information related to this account will be removed.</p>
-                                                </ModalBody>
-                                                <ModalFooter disableClose={this.state.isUpdating}>
-                                                    <Button className="btn btn-danger" onClick={this.deleteAccount} disabled={this.state.isUpdating}>Delete</Button>
-                                                </ModalFooter>
-                                            </Modal>
                                         </div>
-                                    </Card>
-                                </div>
-                            </div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <Card title="Account Settings" padding>
+                                                    <div className="row">
+                                                        <div className="col-lg-6">
+                                                            <Button className="btn btn-block btn-secondary mb-2" data-toggle="modal" data-target="#resetPasswordModal">Reset Password</Button>
+                                                        </div>
+                                                        <Modal id="resetPasswordModal">
+                                                            <ModalHeader title="Reset Password"/>
+                                                            <ModalBody>
+                                                                <p>Are you sure you want to reset the password for {`${this.state.firstName} ${this.state.lastName}`}?</p>
+                                                                <p>The password will be set to its default value.</p>
+                                                            </ModalBody>
+                                                            <ModalFooter>
+                                                                <Button className="btn btn-secondary" onClick={this.resetPassword}>Reset</Button>
+                                                            </ModalFooter>
+                                                        </Modal>
+                                                        <div className="col-lg-6">
+                                                            <Button className="btn btn-block btn-danger mb-2" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</Button>
+                                                        </div>
+                                                        <Modal id="deleteAccountModal">
+                                                            <ModalHeader title="Delete Account"/>
+                                                            <ModalBody>
+                                                                <p>Are you sure you want to delete the account <b>{`${this.state.id} - ${this.state.firstName} ${this.state.lastName}`}</b>?</p>
+                                                                <p>This action is destructive and cannot be undone.</p>
+                                                                <p>Account data that is assigned to a class will not be deleted, but the information related to this account will be removed.</p>
+                                                            </ModalBody>
+                                                            <ModalFooter disableClose={this.state.isUpdating}>
+                                                                <Button className="btn btn-danger" onClick={this.deleteAccount} disabled={this.state.isUpdating}>Delete</Button>
+                                                            </ModalFooter>
+                                                        </Modal>
+                                                    </div>
+                                                </Card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                },
+                                {
+                                    name: "Student",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <Card title="Student Account" padding>
+                                                    {this.state.studentAccount ?
+                                                        <div>
+                                                            <div><b>Enrolled Classes</b></div>
+                                                            <div className="table-responsive">
+                                                                <table id="studentClasses" className="table table-striped table-bordered no-wrap">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Class Code</th>
+                                                                            <th>Course Code</th>
+                                                                            <th>Course Name</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? this.state.studentAccountSemesters.map(semester => {
+                                                                            return semester.classes.map(cls => {
+                                                                                return <tr key={cls._id}>
+                                                                                    <th scope="row">{cls.classCode}</th>
+                                                                                    <td>{cls.courseCode}</td>
+                                                                                    <td>{cls.metadata.name}</td>
+                                                                                </tr>
+                                                                            })
+                                                                        })
+                                                                        : null}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            {this.state.studentAccountSemesters && this.state.studentAccountSemesters.length > 0 ? <script>{ window.loadTable('#studentClasses') }</script> : null }
+                                                            <div className="float-right mt-2">
+                                                                <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStudentProfile">Delete Account</Button>
+                                                            </div>
+                                                            <Modal id="deleteStudentProfile">
+                                                                <ModalHeader title="Delete Student Account"/>
+                                                                <ModalBody>
+                                                                    <p>Are you sure you want to delete the student account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
+                                                                    <p>This action is destructive and cannot be undone.</p>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                    <Button className="btn btn-danger" onClick={this.deleteStudentAccount}>Delete</Button>
+                                                                </ModalFooter>
+                                                            </Modal>
+                                                        </div>
+                                                    : <p style={{textAlign: "center"}}>This account does not have a student profile. <a href="#createStudentAccount" onClick={this.createStudentAccount}>Create one.</a></p>}
+                                                </Card>
+                                                {this.state.studentAccount ?
+                                                    <div>
+                                                        <Card title="SAT Points" padding>
+
+                                                        </Card>
+                                                        <Card title="Social Hours" padding>
+
+                                                        </Card>
+                                                    </div>
+                                                : null }
+                                            </div>
+                                        </div>
+                                    </div>
+                                },
+                                {
+                                    name: "Lecturer",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <Card title="Lecturer Account" padding>
+                                                    {this.state.lecturerAccount ?
+                                                        <div>
+                                                            <div><b>Enrolled Classes</b></div>
+                                                            <div className="table-responsive">
+                                                                <table id="lecturerClasses" className="table table-striped table-bordered no-wrap">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Class Code</th>
+                                                                            <th>Course Code</th>
+                                                                            <th>Course Name</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {this.state.lecturerAccountSemesters && this.state.lecturerAccountSemesters.length > 0 ? this.state.lecturerAccountSemesters.map(semester => {
+                                                                            return semester.classes.map(cls => {
+                                                                                return <tr key={cls._id}>
+                                                                                    <th scope="row">{cls.classCode}</th>
+                                                                                    <td>{cls.courseCode}</td>
+                                                                                    <td>{cls.metadata.name}</td>
+                                                                                </tr>
+                                                                            })
+                                                                        })
+                                                                        : null}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            {this.state.lecturerAccountSemesters && this.state.lecturerAccountSemesters.length > 0 ? <script>{ window.loadTable('#lecturerClasses') }</script> : null}
+                                                            <div className="float-right mt-2">
+                                                                <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteLecturerProfile">Delete Account</Button>
+                                                            </div>
+                                                            <Modal id="deleteLecturerProfile">
+                                                                <ModalHeader title="Delete Lecturer Account"/>
+                                                                <ModalBody>
+                                                                    <p>Are you sure you want to delete the lecturer account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
+                                                                    <p>This action is destructive and cannot be undone.</p>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                    <Button className="btn btn-danger" onClick={this.deleteLecturerAccount}>Delete</Button>
+                                                                </ModalFooter>
+                                                            </Modal>
+                                                        </div>
+                                                    : <p style={{textAlign: "center"}}>This account does not have a lecturer profile. <a href="#createLecturerAccount" onClick={this.createLecturerAccount}>Create one.</a></p>}
+                                                </Card>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                },
+                                {
+                                    name: "Staff",
+                                    component: <div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <Card title="Staff Account" padding>
+                                                    {this.state.staffAccount ?
+                                                        <div>
+                                                            <p>This account is allowed to access the staff page. 
+                                                                Staff profile allows user to manage the website's content. 
+                                                                A user with a staff profile is able to access all management pages in this site.
+                                                            </p>
+                                                            <p>
+                                                                To revoke access, simply click the "Delete Account" button below.
+                                                                Staff access can be re-granted anytime by another staff account.
+                                                            </p>
+                                                            <div className="float-right mt-2">
+                                                                <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStaffProfile">Delete Account</Button>
+                                                            </div>
+                                                            <Modal id="deleteStaffProfile">
+                                                                <ModalHeader title="Delete Staff Account"/>
+                                                                <ModalBody>
+                                                                    <p>Are you sure you want to delete the staff account for {`${this.state.firstName} ${this.state.lastName}`}?</p>
+                                                                    <p>This action is destructive and cannot be undone.</p>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                    <Button className="btn btn-danger" onClick={this.deleteStaffAccount}>Delete</Button>
+                                                                </ModalFooter>
+                                                            </Modal>
+                                                        </div>
+                                                    : <p style={{textAlign: "center"}}>This account does not have a staff profile. <a href="#createStaffAccount" onClick={this.createStaffAccount}>Create one.</a></p>}
+                                                </Card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            ]}/>
                         </ContentWrapper>
                     </PageWrapper>
                 </div>
