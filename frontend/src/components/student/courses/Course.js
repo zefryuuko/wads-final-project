@@ -61,7 +61,6 @@ class Course extends Component {
                 AccessControlService.hasAccessToPage(localStorage.getItem('universalId'), window.location.pathname)
                 .then(status => {
                     // Load current user data
-                    console.log(status)
                     if (status)
                         UserService.getUserData()
                         .then(res => {

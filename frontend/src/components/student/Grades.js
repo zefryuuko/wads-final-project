@@ -124,7 +124,6 @@ class Grades extends React.Component {
                                                         });
                                                     else allScoresExists = false;
                                                     let grade = allScoresExists ? ClassService.getGrade(finalGrade) : ""
-                                                        console.log(cls)
                                                     return <tr key={cls._id}>
                                                         <td><span style={{verticalAlign: "middle"}}>{cls.metadata.name}</span> <span className="badge badge-primary">{cls.metadata.class[0].code}</span></td>
                                                         <td>

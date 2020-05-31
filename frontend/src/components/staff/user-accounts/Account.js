@@ -103,7 +103,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -123,7 +123,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -142,7 +142,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -162,7 +162,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -181,7 +181,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -201,7 +201,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -221,7 +221,7 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
+                
                 if (err.response && (err.response.status === 409)) { 
                     this.showError();
                     this.setState({isUpdating: false});
@@ -307,7 +307,6 @@ class Account extends React.Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) =>{
-                console.log(err)
                 if (err.response && (err.response.status === 409)) { 
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});

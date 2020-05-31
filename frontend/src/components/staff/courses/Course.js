@@ -72,7 +72,6 @@ class Course extends React.Component {
     }
 
     deleteCourseSuccess() {
-        console.log("courseDeleteSuccess")
         this.setState({deleted: true});
     }
 

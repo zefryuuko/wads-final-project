@@ -63,7 +63,6 @@ class LandingLoginForm extends React.Component {
     }
     
     render() {
-        console.log(this.state.rememberMe)
         if(this.state.loggedIn) {
             AuthService.saveSession(this.state.sessionData);
             UserService.getUserById(this.state.sessionData.universalId)

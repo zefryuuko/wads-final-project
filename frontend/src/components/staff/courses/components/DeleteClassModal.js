@@ -63,7 +63,6 @@ class DeleteClassModal extends Component {
                 this.setState({isUpdating: false});
             })
             .catch((err) => {
-                console.log(err.response)
                 if (err.response.status === 409) {
                     this.showErrorAlert(err.response.data.message);
                     this.setState({isUpdating: false});

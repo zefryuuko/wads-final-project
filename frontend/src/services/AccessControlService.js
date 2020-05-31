@@ -93,7 +93,6 @@ class AccessControlService {
                             return false;
                         }
                     } catch (err) {
-                        console.log(err)
                         if (callback) callback(false);
                         return false;
                     }
@@ -130,7 +129,6 @@ class AccessControlService {
                             return false;
                         }
                     } catch (err) {
-                        console.log(err)
                         if (callback) callback(false);
                         return false;
                     }

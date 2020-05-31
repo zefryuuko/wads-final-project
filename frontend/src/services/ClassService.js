@@ -176,7 +176,6 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
             throw err;
         }
@@ -188,7 +187,6 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
             throw err;
         }
@@ -201,7 +199,6 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
             throw err;
         }
@@ -213,7 +210,6 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
             throw err;
         }
@@ -225,7 +221,6 @@ class ClassService {
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
-            console.log(err.response)
             if (callback) callback(err);
             throw err;
         }
@@ -307,7 +302,6 @@ class ClassService {
 
     calculateGPA(allSemesterGPA) {
         if (!allSemesterGPA || allSemesterGPA.length < 1) return "-";
-        console.log(allSemesterGPA)
         let semesterCount = allSemesterGPA.length - 1;
         let sum = 0;
         allSemesterGPA.forEach(semester => {
