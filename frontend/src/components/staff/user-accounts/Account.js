@@ -276,6 +276,18 @@ class Account extends React.Component {
                                 lecturerAccountSemesters: res,
                                 isLoading: false
                             })
+                        }).catch(err => {
+                            this.setState({lecturerAccountSemesters: undefined, isLoading: false});
+                        });
+                    }).catch(err => {
+                        this.setState({studentAccountSemesters: undefined});
+                        ClassService.getCourseByLecturerId(this.state.id).then(res => {
+                            this.setState({
+                                lecturerAccountSemesters: res,
+                                isLoading: false
+                            })
+                        }).catch(err => {
+                            this.setState({lecturerAccountSemesters: undefined, isLoading: false});
                         });
                     });
                 }).catch(err => {
