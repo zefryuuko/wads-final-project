@@ -38,12 +38,12 @@ The courses service manages the database structure for the courses. Primarily us
 #### backend/class
 The class instance manages the database structure for classes data. It is primarity used by the student and lecturer page. It gets and updates the parameters related to a class.
 
-#### Design Decisions
+### Design Decisions
 
-##### Service Structure
+#### Service Structure
 We chose to create the structure of the services based on its functionality and features. For example while a user service and authentication service can be coupled together, we seperated it just to make sure that the authentication service is robust enough as it is very crucial to the app.
 
-##### Authentication Method
+#### Authentication Method
 For this app, we implemented a server side session-based authentication. While it is slower and resource hungry compared to something like JSON Web Token (JWT), we didn't know that JWT exists. The use of JWT will heavily improve performance and simplify the system. We already have everything set up perfectly in place so we chose to stick with the current setup.
 
 ## Technologies Used
