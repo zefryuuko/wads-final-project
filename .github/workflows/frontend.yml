@@ -2,7 +2,7 @@ name: frontend
 
 on:
   push:
-    branches: [ master ]
+    branches: [ staging ]
     paths:
       - 'frontend/**'
 

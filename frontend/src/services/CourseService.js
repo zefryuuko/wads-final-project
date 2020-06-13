@@ -7,7 +7,7 @@ class UserService {
 
     async getCourseGroup(page, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/groups/?page=${page}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/groups/?page=${page}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -20,7 +20,8 @@ class UserService {
         try {
             const res = await axios.post(
                 `${this.API_ENDPOINT}/groups/`,
-                {prefix,name}
+                {prefix,name},
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res);
             return res;
@@ -37,7 +38,8 @@ class UserService {
                 {
                     prefix: newPrefix,
                     name: newName
-                }
+                }, 
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res);
             return res;
@@ -51,6 +53,7 @@ class UserService {
         try {
             const res = await axios.delete(
                 `${this.API_ENDPOINT}/groups/${prefix}`,
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res);
             return res;
@@ -62,7 +65,7 @@ class UserService {
 
     async getCourseGroupCourses(group, page, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/groups/${group}?page=${page}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/groups/${group}?page=${page}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -73,7 +76,7 @@ class UserService {
 
     async getCourse(code, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/course/${code}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/course/${code}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -86,7 +89,8 @@ class UserService {
         try {
             const res = await axios.post(
                 `${this.API_ENDPOINT}/course`,
-                {group, code, name, description, scu}
+                {group, code, name, description, scu},
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -103,7 +107,8 @@ class UserService {
                 {
                     code: newCode,
                     name: newName
-                }
+                },
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -120,7 +125,8 @@ class UserService {
                 {
                     description,
                     scu
-                }
+                },
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -136,7 +142,8 @@ class UserService {
                 `${this.API_ENDPOINT}/course/${code}`,
                 {
                     learningOutcomes
-                }
+                }, 
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -148,7 +155,7 @@ class UserService {
 
     async deleteCourse(code, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/course/${code}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/course/${code}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -161,7 +168,8 @@ class UserService {
         try {
             const res = await axios.post(
                 `${this.API_ENDPOINT}/course/${courseCode}`,
-                {code: classCode}
+                {code: classCode},
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -175,7 +183,8 @@ class UserService {
         try {
             const res = await axios.patch(
                 `${this.API_ENDPOINT}/course/${courseCode}/${classCode}`,
-                {textbooks}
+                {textbooks},
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -189,7 +198,8 @@ class UserService {
         try {
             const res = await axios.patch(
                 `${this.API_ENDPOINT}/course/${courseCode}/${classCode}`,
-                {evaluation}
+                {evaluation},
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;
@@ -202,7 +212,8 @@ class UserService {
     async deleteClass(courseCode, classCode, callback) {
         try {
             const res = await axios.delete(
-                `${this.API_ENDPOINT}/course/${courseCode}/${classCode}`
+                `${this.API_ENDPOINT}/course/${courseCode}/${classCode}`, 
+                { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } }
             );
             if (callback) callback(res.data);
             return res.data;

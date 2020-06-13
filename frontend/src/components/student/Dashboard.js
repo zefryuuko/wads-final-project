@@ -30,7 +30,8 @@ class StudentDashboard extends React.Component {
             currentAssignmentCount: 0,
             assignmentDueToday: 0,
             assignmentsDue: [],
-            GPA: "N/A"
+            GPA: "N/A",
+            SAT: "N/A"
         }
 
         // Set page display mode when loading
@@ -67,8 +68,13 @@ class StudentDashboard extends React.Component {
 
                             UserService.getUserAccountDetails(localStorage.getItem('universalId'), sessionStorage.getItem('activeAccount').split(",")[0])
                             .then(res => {
+                                console.log(res)
+                                let SAT = ClassService.calculateSAT(res.metadata.satDetails);
+                                let SOC = ClassService.calculateSOC(res.metadata.socDetails);
                                 this.setState({
-                                    accountDetails: res
+                                    accountDetails: res,
+                                    SAT,
+                                    SOC
                                 })
 
                                 // Load classes data
@@ -149,7 +155,7 @@ class StudentDashboard extends React.Component {
                                                 </h6>
                                             </div>
                                             <div className="ml-auto mt-md-3 mt-lg-0">
-                                                <span className="opacity-7 text-muted"><i data-feather="frown" className="feather-icon"></i></span>
+                                                <span className="opacity-7 text-muted"><i data-feather="award" className="feather-icon"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +165,7 @@ class StudentDashboard extends React.Component {
                                         <div className="d-flex d-lg-flex d-md-block align-items-center">
                                             <div>
                                                 <div className="d-inline-flex align-items-center">
-                                                    <h2 className="text-dark mb-1 font-weight-medium">{this.state.accountDetails && this.state.accountDetails.metadata.currentSAT ? this.state.accountDetails.metadata.currentSAT : "N/A"}</h2>
+                                                    <h2 className="text-dark mb-1 font-weight-medium">{this.state.SAT}</h2>
                                                 </div>
                                                 <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">SAT Points</h6>
                                             </div>
@@ -173,7 +179,7 @@ class StudentDashboard extends React.Component {
                                     <div className="card-body">
                                         <div className="d-flex d-lg-flex d-md-block align-items-center">
                                             <div>
-                                                <h2 className="text-dark mb-1 font-weight-medium">{this.state.accountDetails && this.state.accountDetails.metadata.currentSOC ? this.state.accountDetails.metadata.currentSOC : "N/A"}</h2>
+                                                <h2 className="text-dark mb-1 font-weight-medium">{this.state.SOC}</h2>
                                                 <h6 className="text-muted font-weight-normal mb-0 w-100 text-truncate">Social Hours</h6>
                                             </div>
                                             <div className="ml-auto mt-md-3 mt-lg-0">

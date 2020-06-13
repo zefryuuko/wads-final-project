@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const proxy = require('express-http-proxy');
 const request = require('request-promise-native');
 const dotenv = require('dotenv/config');
+const axios = require('axios');
 
 
 const app = express();
@@ -14,26 +16,34 @@ app.use(function (req, res, next) {
     next()
 });
 
-// Temporarily allow access from localhost
-// Add headers
-app.use(function (req, res, next) {
+// Allow CORS
+app.use(cors());
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     next();
+// });
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
-    next();
-});
+// Authentication Middleware
+app.use((req, res, next) => {
+    const path = req.path.split('/');
+    if (path[1] == '' || path[1].toLowerCase() == 'auth' ) { next(); return; }
+    // if (req.method == 'OPTIONS') { res.status(200); return; }
+    if (!req.headers.authorization) { res.status(403).json({ "message": "Unauthorized" }); return; }
+    if (req.headers.authorization.split(" ").length !== 2) { res.status(403).json({ "message": "Invalid auth header" }); return; }
+    
+    const authData = req.headers.authorization.split(" ");
+    sessionId = authData[0];
+    universalId = authData[1]
+    axios.get(`http://${process.env.AUTH_HOST}/session?sessionId=${sessionId}&universalId=${universalId}`).then(res => {
+        next();
+    }).catch(err => {
+        console.log(err)
+        res.status(403).json({ "message": "Unauthorized" });
+    });
+})
 
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));

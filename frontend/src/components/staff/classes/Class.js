@@ -17,6 +17,7 @@ import LearningOutcomes from '../../ui-elements/LearningOutcomes';
 import Evaluation from '../../ui-elements/Evaluation';
 import EnrollStudentModal from './components/EnrollStudentModal';
 import SuccessAlert from '../../ui-elements/SuccessAlert';
+import Textbooks from '../../ui-elements/Textbooks';
 import ErrorAlert from '../../ui-elements/ErrorAlert';
 import EnrollLecturerModal from './components/EnrollLecturerModal';
 import PageNotFound from '../../PageNotFound';
@@ -229,6 +230,9 @@ class Class extends React.Component {
                                 <div className="col-12">
                                     <CourseDescription data={this.state.currentTableContent ? this.state.currentTableContent.metadata.description : undefined}/>
                                     <LearningOutcomes data={this.state.currentTableContent ? this.state.currentTableContent.metadata.learningOutcomes : undefined}/>
+                                    <Card padding>
+                                        <Textbooks data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].textbooks : null}/>
+                                    </Card>
                                     <Card padding>
                                         <Evaluation data={this.state.currentTableContent ? this.state.currentTableContent.metadata.class[0].evaluation : undefined}/>
                                     </Card>
