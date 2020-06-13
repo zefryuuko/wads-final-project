@@ -72,8 +72,9 @@ class StaffDashboard extends React.Component {
                         <ContentWrapper>
                             <div className="row">
                                 <div className="col-12">
-                                    <Card title="StaffDashBody" padding={true}>
-                                        <h1>Staff Dash Body</h1>
+                                    <Card title="Welcome" padding={true}>
+                                        This dashboard allows you to manage the contents of this site. To get started, select an menu from the sidebar. <br/>
+                                        Your account has total control of the site. Always double check on what you are doing. <br/>
                                     </Card>
                                 </div>
                             </div>
