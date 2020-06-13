@@ -7,7 +7,7 @@ class ClassService {
 
     async getMajors(page, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/major?page=${page}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/major?page=${page}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -18,7 +18,7 @@ class ClassService {
 
     async createMajor(name, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/major`, {name});
+            const res = await axios.post(`${this.API_ENDPOINT}/major`, {name}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -29,7 +29,7 @@ class ClassService {
 
     async updateMajor(majorId, name, callback) {
         try {
-            const res = await axios.patch(`${this.API_ENDPOINT}/major/${majorId}`, {name});
+            const res = await axios.patch(`${this.API_ENDPOINT}/major/${majorId}`, {name}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -40,7 +40,7 @@ class ClassService {
 
     async deleteMajor(majorId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/major/${majorId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/major/${majorId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -51,7 +51,7 @@ class ClassService {
 
     async getSemesters(majorId, page, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/major/${majorId}?page=${page}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/major/${majorId}?page=${page}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -62,7 +62,7 @@ class ClassService {
 
     async createSemester(majorId, name, period, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/semester/`, {majorId, name, period});
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/`, {majorId, name, period}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -73,7 +73,7 @@ class ClassService {
 
     async deleteSemester(semesterId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -84,7 +84,7 @@ class ClassService {
 
     async getClasses(semesterId, page, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}?page=${page}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}?page=${page}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -95,7 +95,7 @@ class ClassService {
 
     async getClass(semesterId, classId, courseId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -106,7 +106,7 @@ class ClassService {
 
     async createClass(semesterId, classCode, courseCode, classType, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}`, {classCode, courseCode, classType});
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}`, {classCode, courseCode, classType}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -117,7 +117,7 @@ class ClassService {
 
     async deleteClass(semesterId, classId, courseId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -128,7 +128,7 @@ class ClassService {
 
     async getCourse(code, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/course/${code}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/course/${code}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -139,7 +139,7 @@ class ClassService {
 
     async updateClassStudents(semesterId, classId, courseId, students, callback) {
         try {
-            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {students});
+            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {students}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -150,7 +150,7 @@ class ClassService {
 
     async updateClassLecturers(semesterId, classId, courseId, lecturers, callback) {
         try {
-            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {lecturers});
+            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {lecturers}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -161,7 +161,7 @@ class ClassService {
 
     async updateClassScores(semesterId, classId, courseId, scores, callback) {
         try {
-            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {scores});
+            const res = await axios.patch(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}`, {scores}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -172,7 +172,7 @@ class ClassService {
 
     async createSharedResources(semesterId, classId, courseId, data, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources`, {...data});
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources`, {...data}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -183,7 +183,7 @@ class ClassService {
 
     async deleteSharedResources(semesterId, classId, courseId, resourceId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources/${resourceId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/shared-resources/${resourceId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -195,7 +195,7 @@ class ClassService {
 
     async createAssignment(semesterId, classId, courseId, data, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments`, {...data});
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments`, {...data}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -206,7 +206,7 @@ class ClassService {
 
     async submitAssignment(semesterId, classId, courseId, assignmentId, data, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}/submit`, {...data});
+            const res = await axios.post(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}/submit`, {...data}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -217,7 +217,7 @@ class ClassService {
 
     async deleteAssignment(semesterId, classId, courseId, assignmentId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/semester/${semesterId}/${classId}/${courseId}/assignments/${assignmentId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -228,7 +228,7 @@ class ClassService {
 
     async getCourseByStudentId(studentId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchStudentById/${studentId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchStudentById/${studentId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -239,7 +239,7 @@ class ClassService {
 
     async getCourseByLecturerId(lecturerId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchLecturerById/${lecturerId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/semester/searchLecturerById/${lecturerId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
