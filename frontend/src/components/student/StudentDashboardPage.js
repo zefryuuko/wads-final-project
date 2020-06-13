@@ -20,6 +20,8 @@ import Courses from './courses/Courses';
 import Course from './courses/Course';
 import Assignments from './courses/Assignments';
 import Grades from './Grades';
+import ActivityPoints from './ActivityPoints';
+import SocialHours from './SocialHours';
 import Profile from '../Profile';
 import PageNotFound from '../PageNotFound';
 
@@ -74,10 +76,12 @@ class Student extends Component {
                         {/* Learning */}
                         <Route exact path={`${path}/courses`}><Courses/></Route>
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
-                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
 
-                        {/* Assignments */}
+                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
+                        {/* Student Information */}
                         <Route exact path={`${path}/grades`}><Grades/></Route>
+                        <Route exact path={`${path}/sat`}><ActivityPoints/></Route>
+                        <Route exact path={`${path}/social-hours`}><SocialHours/></Route>
 
                         {/* Account */}
                         <Route exact path={`${path}/profile`}><Profile/></Route>
