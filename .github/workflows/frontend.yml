@@ -1,4 +1,4 @@
-name: staging/frontend
+name: frontend
 
 on:
   push:
