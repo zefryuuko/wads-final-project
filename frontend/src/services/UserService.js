@@ -7,7 +7,7 @@ class UserService {
     
     async getUsers(callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -18,7 +18,7 @@ class UserService {
 
     async getStaffs(callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user?staff=1}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user?staff=1}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -29,7 +29,7 @@ class UserService {
 
     async getLecturers(callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user?lecturer=1}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user?lecturer=1}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -40,7 +40,7 @@ class UserService {
 
     async getStudents(callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user?student=1}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user?student=1}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -52,7 +52,7 @@ class UserService {
     async getUserData(callback) {
         try {
             const universalId = localStorage.getItem('universalId');
-            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -63,7 +63,7 @@ class UserService {
 
     async getUserById(universalId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -74,7 +74,7 @@ class UserService {
 
     async deleteUserById(universalId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/user/${universalId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/user/${universalId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -85,7 +85,7 @@ class UserService {
 
     async createUser(data, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/user`, data);
+            const res = await axios.post(`${this.API_ENDPOINT}/user`, data, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -96,7 +96,7 @@ class UserService {
 
     async updateUser(userId, data, callback) {
         try {
-            const res = await axios.patch(`${this.API_ENDPOINT}/user/${userId}`, data);
+            const res = await axios.patch(`${this.API_ENDPOINT}/user/${userId}`, data, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -107,7 +107,7 @@ class UserService {
 
     async updateUserProfile(userId, accountId, data, callback) {
         try {
-            const res = await axios.put(`${this.API_ENDPOINT}/user/${userId}/${accountId}`, data);
+            const res = await axios.put(`${this.API_ENDPOINT}/user/${userId}/${accountId}`, data, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -118,7 +118,7 @@ class UserService {
     
     async createStudentAccount(userId, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/student`, {name: "Student"});
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/student`, {name: "Student"}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -129,7 +129,7 @@ class UserService {
 
     async createLecturerAccount(userId, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/lecturer`, {name: "Lecturer"});
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/lecturer`, {name: "Lecturer"}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -140,7 +140,7 @@ class UserService {
 
     async createStaffAccount(userId, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/staff`, {name: "Staff"});
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/staff`, {name: "Staff"}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -151,7 +151,7 @@ class UserService {
 
     async resetUserPassword(userId, callback) {
         try {
-            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/reset-password`);
+            const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/reset-password`, {}, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -162,7 +162,7 @@ class UserService {
 
     async deleteUserAccount(userId, accountId, callback) {
         try {
-            const res = await axios.delete(`${this.API_ENDPOINT}/user/${userId}/${accountId}`);
+            const res = await axios.delete(`${this.API_ENDPOINT}/user/${userId}/${accountId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -173,7 +173,7 @@ class UserService {
 
     async getUserAccountDetails(universalId, accountId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}/${accountId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}/${accountId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data);
             return res.data;
         } catch (err) {
@@ -184,7 +184,7 @@ class UserService {
 
     async getProfilePictureURL(universalId, callback) {
         try {
-            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`);
+            const res = await axios.get(`${this.API_ENDPOINT}/user/${universalId}`, { headers: { Authorization: `${localStorage.getItem('sessionId')} ${localStorage.getItem('universalId')}` } });
             if (callback) callback(res.data.profilePictureURL ? res.data.profilePictureURL : "/img/user.png");
             return res.data.profilePictureURL ? res.data.profilePictureURL : "/img/user.png";
         } catch (err) {
