@@ -392,6 +392,28 @@ router.get('/:userId/:accountId', async (req, res) => {
     }
 });
 
+router.put('/:userId/:accountId', async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { id: req.params.userId, 'accounts._id': req.params.accountId },
+            { 'accounts.$': req.body }
+        );
+        
+        if (!user) {
+            res.status(404).json({
+                "message": `User with id ${req.params.userId} does not have an account with id ${req.params.accountId}.`
+            });
+        }
+        else {
+            res.status(200).send({message: "Success"});
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
 router.delete('/:userId/:accountId', async (req, res) => {
     try {
         const removedUser = await User.updateOne(

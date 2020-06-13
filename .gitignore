@@ -5,6 +5,7 @@ package-lock.json
 # Authentication Files
 auth-inf.json
 *.env
+firebase.js
 
 # React
 frontend/build
