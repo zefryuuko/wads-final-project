@@ -25,8 +25,10 @@ app.use(function (req, res, next) {
 });
 
 // Authentication Middleware
-function authenticate(req, res, next) {
-    if (req.method == 'OPTIONS') { res.status(200); return; }
+app.use((req, res, next) => {
+    const path = req.path.split('/');
+    if (path[1] == '' || path[1].toLowerCase() == 'auth' ) { next(); return; }
+    // if (req.method == 'OPTIONS') { res.status(200); return; }
     if (!req.headers.authorization) { res.status(403).json({ "message": "Unauthorized" }); return; }
     if (req.headers.authorization.split(" ").length !== 2) { res.status(403).json({ "message": "Invalid auth header" }); return; }
     
@@ -39,13 +41,13 @@ function authenticate(req, res, next) {
         console.log(err)
         res.status(403).json({ "message": "Unauthorized" });
     });
-}
+})
 
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));
-app.use('/courses', authenticate, proxy(process.env.COURSES_HOST));
-app.use('/users', authenticate, proxy(process.env.USER_HOST));
-app.use('/classes', authenticate, proxy(process.env.CLASS_HOST));
+app.use('/courses', proxy(process.env.COURSES_HOST));
+app.use('/users', proxy(process.env.USER_HOST));
+app.use('/classes', proxy(process.env.CLASS_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
