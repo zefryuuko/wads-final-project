@@ -2,6 +2,7 @@ const express = require('express');
 const proxy = require('express-http-proxy');
 const request = require('request-promise-native');
 const dotenv = require('dotenv/config');
+const axios = require('axios');
 
 
 const app = express();
@@ -14,32 +15,36 @@ app.use(function (req, res, next) {
     next()
 });
 
-// Temporarily allow access from localhost
-// Add headers
+// Allow CORS
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
-
-    // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
     next();
 });
 
+// Authentication Middleware
+function authenticate(req, res, next) {
+    if (!req.headers.authorization) { res.status(403).json({ "message": "Unauthorized" }); return; }
+    if (req.headers.authorization.split(" ").length !== 2) { res.status(403).json({ "message": "Invalid auth header" }); return; }
+    
+    const authData = req.headers.authorization.split(" ");
+    sessionId = authData[0];
+    universalId = authData[1]
+    axios.get(`http://${process.env.AUTH_HOST}/session?sessionId=${sessionId}&universalId=${universalId}`).then(res => {
+        next();
+    }).catch(err => {
+        console.log(err)
+        res.status(403).json({ "message": "Unauthorized" });
+    });
+}
+
 // Import Routes
 app.use('/auth', proxy(process.env.AUTH_HOST));
-app.use('/courses', proxy(process.env.COURSES_HOST));
-app.use('/users', proxy(process.env.USER_HOST));
-app.use('/classes', proxy(process.env.CLASS_HOST));
+app.use('/courses', authenticate, proxy(process.env.COURSES_HOST));
+app.use('/users', authenticate, proxy(process.env.USER_HOST));
+app.use('/classes', authenticate, proxy(process.env.CLASS_HOST));
 
 app.get('/', async (req, res) => {
     res.json({
