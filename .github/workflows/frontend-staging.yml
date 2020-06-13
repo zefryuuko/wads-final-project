@@ -1,8 +1,8 @@
-name: frontend
+name: staging/frontend
 
 on:
   push:
-    branches: [ master ]
+    branches: [ staging ]
     paths:
       - 'frontend/**'
 
