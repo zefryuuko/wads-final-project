@@ -477,7 +477,7 @@ class Account extends React.Component {
             let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
             newStudentAccount.metadata.socDetails.push({
                 name: prevState.socActivityName, 
-                points: prevState.socActivityPoints
+                hours: prevState.socActivityPoints
             });
             
             UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
@@ -747,7 +747,7 @@ class Account extends React.Component {
                                                                             this.state.studentAccount.metadata.socDetails.map((activity, index) => {
                                                                                 return <tr key={index}>
                                                                                     <th scope="row">{activity.name}</th>
-                                                                                    <td>{activity.points}</td>
+                                                                                    <td>{activity.hours}</td>
                                                                                     <td style={{width: 100}}><button className="btn btn-danger btn-sm" onClick={this.deleteSoc} id={index}>Delete</button></td>
                                                                                 </tr>
                                                                             })
