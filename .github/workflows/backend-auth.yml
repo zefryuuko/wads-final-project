@@ -26,9 +26,9 @@ jobs:
     # Build backend services
     - name: Build auth
       run: |
-        docker build ./backend/auth -t zefryuuko/wads-auth:latest
+        docker build ./backend/auth -t zefryuuko/wads-auth:latest-stable
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-auth:latest
+        docker push zefryuuko/wads-auth:latest-stable

@@ -26,9 +26,9 @@ jobs:
     # Build backend services
     - name: Build courses
       run: |
-        docker build ./backend/courses -t zefryuuko/wads-courses:latest
+        docker build ./backend/courses -t zefryuuko/wads-courses:latest-stable
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-courses:latest
+        docker push zefryuuko/wads-courses:latest-stable
