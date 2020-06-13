@@ -25,6 +25,7 @@ import AssignmentSubmissionsModal from './components/AssignmentSubmissionsModal'
 import Button from '../../ui-elements/Button';
 import Preloader from '../../ui-elements/Preloader';
 import PageNotFound from '../../PageNotFound';
+import Textbooks from '../../ui-elements/Textbooks';
 
 class Course extends Component {
     constructor(props) {
@@ -245,6 +246,13 @@ class Course extends Component {
                                         <div className="row">
                                             <div className="col-12">
                                                 <LearningOutcomes data={this.state.classData ? this.state.classData.metadata.learningOutcomes : null}/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <Card padding>
+                                                    <Textbooks data={this.state.classData ? this.state.classData.metadata.class[0].textbooks : null}/>
+                                                </Card>
                                             </div>
                                         </div>
                                         <div className="row">

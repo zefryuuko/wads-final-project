@@ -301,14 +301,36 @@ class ClassService {
     }
 
     calculateGPA(allSemesterGPA) {
-        if (!allSemesterGPA || allSemesterGPA.length < 1) return "-";
+        if (!allSemesterGPA || allSemesterGPA.length < 1) return "N/A";
         let semesterCount = 0;
         let sum = 0;
         allSemesterGPA.forEach(semester => {
             sum += semester === "-" ? 0 : Number.parseFloat(semester);
             if (semester !== "-") semesterCount++;
         });
-        return (Math.round(sum / semesterCount * 100) / 100).toFixed(2);
+        let result = (Math.round(sum / semesterCount * 100) / 100).toFixed(2);
+        if (isNaN(result)) return "N/A";
+        return result;
+    }
+
+    calculateSAT(activityList) {
+        if (!activityList || activityList.length === 0) return 'N/A';
+        let sum = 0;
+        activityList.forEach(activity => {
+            sum += activity.points;
+        });
+        if (sum === 0) return 'N/A';
+        return sum;
+    }
+
+    calculateSOC(activityList) {
+        if (!activityList || activityList.length === 0) return 'N/A';
+        let sum = 0;
+        activityList.forEach(activity => {
+            sum += activity.hours;
+        });
+        if (sum === 0) return 'N/A';
+        return sum;
     }
 }
 

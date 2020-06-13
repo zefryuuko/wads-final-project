@@ -110,6 +110,7 @@ class Course extends Component {
 
     render() { 
         if (!this.state.isAuthenticated && !this.state.isAuthenticating) return <Redirect to="/logout"/>
+        console.log(this.state)
         return ( 
             <div>
                 <Preloader isLoading={this.state.isLoading}/>
@@ -135,7 +136,7 @@ class Course extends Component {
                                         <div className="row">
                                             <div className="col-12">
                                                 <Card padding>
-                                                    <Textbooks data={this.state.classData ? this.state.classData.metadata.textbooks : null}/>
+                                                    <Textbooks data={this.state.classData ? this.state.classData.metadata.class[0].textbooks : null}/>
                                                 </Card>
                                             </div>
                                         </div>
