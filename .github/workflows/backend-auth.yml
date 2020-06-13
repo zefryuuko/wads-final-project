@@ -2,7 +2,7 @@ name: backend/auth
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ master, staging ]
     paths:
       - 'backend/auth/**'
 
