@@ -48,6 +48,8 @@ class Account extends React.Component {
             isUpdating: false,
             satActivityName: "",
             satActivityPoints: 1,
+            socActivityName: "",
+            socActivityPoints: 1,
         }
 
         // Set page display mode when loading
@@ -71,6 +73,8 @@ class Account extends React.Component {
         this.deleteAccount = this.deleteAccount.bind(this);
         this.addSat = this.addSat.bind(this);
         this.deleteSat = this.deleteSat.bind(this);
+        this.addSoc = this.addSoc.bind(this);
+        this.deleteSoc = this.deleteSoc.bind(this);
     }
 
     closeModal(modalId) {
@@ -318,6 +322,7 @@ class Account extends React.Component {
         if (name === 'id' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.id;
         if (name === 'profilePictureFile') value = event.target.files
         if (name === 'satActivityPoints') value = Number.parseInt(value);
+        if (name === 'socActivityPoints') value = Number.parseInt(value);
         this.setState({
             [name]: value
         });
@@ -441,6 +446,65 @@ class Account extends React.Component {
         this.setState(prevState => {
             let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
             newStudentAccount.metadata.satDetails.splice(Number.parseInt(id), 1);
+            
+            UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
+                this.setState({
+                    isUpdating: false,
+                    satActivityName: "",
+                    satActivityPoints: 1
+                });
+            }).catch(err => {
+                window.alert("An error has ocurred. Please try again later.");
+            })
+            return {
+                isUpdating: true,
+                studentAccount: newStudentAccount
+            }
+        });
+    }
+
+    addSoc() {
+        if (this.state.socActivityName === "") {
+            window.alert("Please fill in the activity name.");
+            return;
+        }
+        if (!(this.state.socActivityPoints >= 1)) {
+            window.alert("Activity points cannot be less than 1.");
+            return;
+        }
+
+        this.setState(prevState => {
+            let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
+            newStudentAccount.metadata.socDetails.push({
+                name: prevState.socActivityName, 
+                points: prevState.socActivityPoints
+            });
+            
+            UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
+                this.setState({
+                    isUpdating: false,
+                    socActivityName: "",
+                    socActivityPoints: 1
+                });
+                this.closeModal('#addSocDataModal');
+            }).catch(err => {
+                window.alert("An error has ocurred. Please try again later.");
+            })
+            return {
+                isUpdating: true,
+                studentAccount: newStudentAccount
+            }
+        });
+    }
+
+    deleteSoc(e) {
+        const { id } = e.target;
+        const confirm = window.confirm("Are you sure you want to delete this activity?");
+        if (!confirm) return;
+
+        this.setState(prevState => {
+            let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
+            newStudentAccount.metadata.socDetails.splice(Number.parseInt(id), 1);
             
             UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
                 this.setState({
@@ -641,7 +705,7 @@ class Account extends React.Component {
                                                                                 return <tr key={index}>
                                                                                     <th scope="row">{activity.name}</th>
                                                                                     <td>{activity.points}</td>
-                                                                                    <td><button className="btn btn-danger btn-sm" onClick={this.deleteSat} id={index}>Delete</button></td>
+                                                                                    <td style={{width: 100}}><button className="btn btn-danger btn-sm" onClick={this.deleteSat} id={index}>Delete</button></td>
                                                                                 </tr>
                                                                             })
                                                                         : <tr><td colSpan="3">No SAT data.</td></tr>}
@@ -684,13 +748,31 @@ class Account extends React.Component {
                                                                                 return <tr key={index}>
                                                                                     <th scope="row">{activity.name}</th>
                                                                                     <td>{activity.points}</td>
-                                                                                    <td><button className="btn btn-danger btn-sm">Delete</button></td>
+                                                                                    <td style={{width: 100}}><button className="btn btn-danger btn-sm" onClick={this.deleteSoc} id={index}>Delete</button></td>
                                                                                 </tr>
                                                                             })
                                                                         : <tr><td colSpan="3">No Social Hours data.</td></tr>}
                                                                     </tbody>
                                                                 </table>
                                                                 <button className="btn btn-primary float-right" data-toggle="modal" data-target="#addSocDataModal">Add Data</button>
+                                                                <Modal id="addSocDataModal">
+                                                                    <ModalHeader title="Add Activity Data"/>
+                                                                    <ModalBody>
+                                                                        <form>
+                                                                            <div className="form-group">
+                                                                                <label htmlFor="socActivityName">Activity Name</label>
+                                                                                <input type="text" name="socActivityName" value={this.state.socActivityName} onChange={this.handleChange} className="form-control" minLength="1" maxLength="60" placeholder="Activity Name" disabled={this.state.isUpdating} required/>
+                                                                            </div>
+                                                                            <div className="form-group">
+                                                                                <label htmlFor="socActivityPoints">Activity Points</label>
+                                                                                <input type="number" name="socActivityPoints" value={this.state.socActivityPoints} onChange={this.handleChange} className="form-control" min="1" placeholder="Activity Points" disabled={this.state.isUpdating} required/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </ModalBody>
+                                                                    <ModalFooter>
+                                                                        <Button className="btn btn-primary" onClick={this.addSoc} loading={this.state.isUpdating}>Add</Button>
+                                                                    </ModalFooter>
+                                                                </Modal>
                                                             </div>
                                                         </Card>
                                                     </div>
