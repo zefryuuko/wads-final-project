@@ -155,7 +155,7 @@ class StudentDashboard extends React.Component {
                                                 </h6>
                                             </div>
                                             <div className="ml-auto mt-md-3 mt-lg-0">
-                                                <span className="opacity-7 text-muted"><i data-feather="frown" className="feather-icon"></i></span>
+                                                <span className="opacity-7 text-muted"><i data-feather="award" className="feather-icon"></i></span>
                                             </div>
                                         </div>
                                     </div>

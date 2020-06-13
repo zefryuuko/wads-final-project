@@ -32,15 +32,15 @@ class Sidebar extends React.Component {
                             {/* Account Administration */}
                             <li className="nav-small-cap"><span className="hide-menu">Student Information</span></li>
                             <li className="sidebar-item"> <Link className="sidebar-link" to="/student/grades"
-                                    aria-expanded="false"><i data-feather="users" className="feather-icon"></i><span
+                                    aria-expanded="false"><i data-feather="award" className="feather-icon"></i><span
                                         className="hide-menu">Grades
                                     </span></Link>
                             </li>
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/student/sat"
-                                    aria-expanded="false"><i data-feather="smile" className="feather-icon"></i><span
+                                    aria-expanded="false"><i data-feather="star" className="feather-icon"></i><span
                                         className="hide-menu">Activity Points</span></Link></li>
                             <li className="sidebar-item"> <Link className="sidebar-link sidebar-link" to="/student/social-hours"
-                                    aria-expanded="false"><i data-feather="smile" className="feather-icon"></i><span
+                                    aria-expanded="false"><i data-feather="users" className="feather-icon"></i><span
                                         className="hide-menu">Social Hours</span></Link></li>
                             <li className="list-divider"></li>
 
