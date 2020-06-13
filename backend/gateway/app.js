@@ -26,7 +26,7 @@ app.use(function (req, res, next) {
 
 // Authentication Middleware
 function authenticate(req, res, next) {
-    if (req.method == 'OPTIONS') { res.send(200); return; }
+    if (req.method == 'OPTIONS') { res.status(200); return; }
     if (!req.headers.authorization) { res.status(403).json({ "message": "Unauthorized" }); return; }
     if (req.headers.authorization.split(" ").length !== 2) { res.status(403).json({ "message": "Invalid auth header" }); return; }
     
