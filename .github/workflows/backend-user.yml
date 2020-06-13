@@ -2,7 +2,7 @@ name: backend/user
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ master, staging ]
     paths:
       - 'backend/user/**'
 
