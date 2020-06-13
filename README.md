@@ -14,7 +14,7 @@ A Web Application Development and Security final project.
 |backend/auth|![backend/auth](https://github.com/zefryuuko/wads-final-project/workflows/backend/auth/badge.svg)|![staging/backend/auth](https://github.com/zefryuuko/wads-final-project/workflows/staging/backend/auth/badge.svg?branch=staging)|
 |backend/user|![backend/user](https://github.com/zefryuuko/wads-final-project/workflows/backend/user/badge.svg)|![staging/backend/user](https://github.com/zefryuuko/wads-final-project/workflows/staging/backend/user/badge.svg?branch=staging)|
 |backend/courses|![backend/courses](https://github.com/zefryuuko/wads-final-project/workflows/backend/courses/badge.svg)|![staging/backend/courses](https://github.com/zefryuuko/wads-final-project/workflows/staging/backend/courses/badge.svg?branch=staging)|
-|backend/class|![backend/class](https://github.com/zefryuuko/wads-final-project/workflows/backend/class/badge.svg)||![staging/backend/class](https://github.com/zefryuuko/wads-final-project/workflows/staging/backend/class/badge.svg?branch=staging)|
+|backend/class|![backend/class](https://github.com/zefryuuko/wads-final-project/workflows/backend/class/badge.svg)|![staging/backend/class](https://github.com/zefryuuko/wads-final-project/workflows/staging/backend/class/badge.svg?branch=staging)|
 
 
 ## Services
