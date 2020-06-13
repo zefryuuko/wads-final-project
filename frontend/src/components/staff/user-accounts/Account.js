@@ -45,7 +45,9 @@ class Account extends React.Component {
             staffAccount: undefined,
             showErrorMessage: false,
             showSuccessMessage: false,
-            isUpdating: false
+            isUpdating: false,
+            satActivityName: "",
+            satActivityPoints: 1,
         }
 
         // Set page display mode when loading
@@ -67,6 +69,8 @@ class Account extends React.Component {
         this.deleteStaffAccount = this.deleteStaffAccount.bind(this);
         this.resetPassword = this.resetPassword.bind(this);
         this.deleteAccount = this.deleteAccount.bind(this);
+        this.addSat = this.addSat.bind(this);
+        this.deleteSat = this.deleteSat.bind(this);
     }
 
     closeModal(modalId) {
@@ -313,6 +317,7 @@ class Account extends React.Component {
         if (name === 'primaryEmail' && !/^[a-zA-Z() ]*$/.test(value)) value = this.state.primaryEmail;
         if (name === 'id' && !/^[a-zA-Z1-9()]*$/.test(value)) value = this.state.id;
         if (name === 'profilePictureFile') value = event.target.files
+        if (name === 'satActivityPoints') value = Number.parseInt(value);
         this.setState({
             [name]: value
         });
@@ -391,6 +396,65 @@ class Account extends React.Component {
                 this.setState({showErrorAlert: true, isUpdating: false});
                 this.closeModal('#deleteAccountModal');
             });
+        });
+    }
+
+    addSat() {
+        if (this.state.satActivityName === "") {
+            window.alert("Please fill in the activity name.");
+            return;
+        }
+        if (!(this.state.satActivityPoints >= 1)) {
+            window.alert("Activity points cannot be less than 1.");
+            return;
+        }
+
+        this.setState(prevState => {
+            let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
+            newStudentAccount.metadata.satDetails.push({
+                name: prevState.satActivityName, 
+                points: prevState.satActivityPoints
+            });
+            
+            UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
+                this.setState({
+                    isUpdating: false,
+                    satActivityName: "",
+                    satActivityPoints: 1
+                });
+                this.closeModal('#addSatDataModal');
+            }).catch(err => {
+                window.alert("An error has ocurred. Please try again later.");
+            })
+            return {
+                isUpdating: true,
+                studentAccount: newStudentAccount
+            }
+        });
+    }
+
+    deleteSat(e) {
+        const { id } = e.target;
+        const confirm = window.confirm("Are you sure you want to delete this activity?");
+        if (!confirm) return;
+
+        this.setState(prevState => {
+            let newStudentAccount = JSON.parse(JSON.stringify(prevState.studentAccount));
+            newStudentAccount.metadata.satDetails.splice(Number.parseInt(id), 1);
+            
+            UserService.updateUserProfile(this.state.id, this.state.studentAccount._id, newStudentAccount).then(res => {
+                this.setState({
+                    isUpdating: false,
+                    satActivityName: "",
+                    satActivityPoints: 1
+                });
+            }).catch(err => {
+                window.alert("An error has ocurred. Please try again later.");
+            })
+            return {
+                isUpdating: true,
+                studentAccount: newStudentAccount
+            }
         });
     }
 
@@ -491,7 +555,7 @@ class Account extends React.Component {
                                                             </ModalFooter>
                                                         </Modal>
                                                         <div className="col-lg-6">
-                                                            <Button className="btn btn-block btn-danger mb-2" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</Button>
+                                                            <Button className="btn btn-block btn-danger mb-2" data-toggle="modal" data-target="#deleteAccountModal"disabled={this.state.id === `${localStorage.getItem('universalId')}`}>{this.state.id === `${localStorage.getItem('universalId')}` ? "You can't delete your own account" : "Delete Account"}</Button>
                                                         </div>
                                                         <Modal id="deleteAccountModal">
                                                             <ModalHeader title="Delete Account"/>
@@ -520,8 +584,8 @@ class Account extends React.Component {
                                                         <div>
                                                             <div><b>Enrolled Classes</b></div>
                                                             <div className="table-responsive">
-                                                                <table id="studentClasses" className="table table-striped table-bordered no-wrap">
-                                                                    <thead>
+                                                                <table id="studentClasses" className="table table-striped no-wrap">
+                                                                    <thead className="bg-primary text-white">
                                                                         <tr>
                                                                             <th>Class Code</th>
                                                                             <th>Course Code</th>
@@ -562,10 +626,72 @@ class Account extends React.Component {
                                                 {this.state.studentAccount ?
                                                     <div>
                                                         <Card title="SAT Points" padding>
-
+                                                            <div className="table-responsive">
+                                                                <table className="table table-striped no-wrap">
+                                                                    <thead className="bg-primary text-white">
+                                                                        <tr>
+                                                                            <th>Activity Name</th>
+                                                                            <th>Points</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        { this.state.studentAccount.metadata.satDetails.length > 0 ?
+                                                                            this.state.studentAccount.metadata.satDetails.map((activity, index) => {
+                                                                                return <tr key={index}>
+                                                                                    <th scope="row">{activity.name}</th>
+                                                                                    <td>{activity.points}</td>
+                                                                                    <td><button className="btn btn-danger btn-sm" onClick={this.deleteSat} id={index}>Delete</button></td>
+                                                                                </tr>
+                                                                            })
+                                                                        : <tr><td colSpan="3">No SAT data.</td></tr>}
+                                                                    </tbody>
+                                                                </table>
+                                                                <button className="btn btn-primary float-right" data-toggle="modal" data-target="#addSatDataModal">Add Data</button>
+                                                                <Modal id="addSatDataModal">
+                                                                    <ModalHeader title="Add Activity Data"/>
+                                                                    <ModalBody>
+                                                                        <form>
+                                                                            <div className="form-group">
+                                                                                <label htmlFor="satActivityName">Activity Name</label>
+                                                                                <input type="text" name="satActivityName" value={this.state.satActivityName} onChange={this.handleChange} className="form-control" minLength="1" maxLength="60" placeholder="Activity Name" disabled={this.state.isUpdating} required/>
+                                                                            </div>
+                                                                            <div className="form-group">
+                                                                                <label htmlFor="satActivityPoints">Activity Points</label>
+                                                                                <input type="number" name="satActivityPoints" value={this.state.satActivityPoints} onChange={this.handleChange} className="form-control" min="1" placeholder="Activity Points" disabled={this.state.isUpdating} required/>
+                                                                            </div>
+                                                                        </form>
+                                                                    </ModalBody>
+                                                                    <ModalFooter>
+                                                                        <Button className="btn btn-primary" onClick={this.addSat} loading={this.state.isUpdating}>Add</Button>
+                                                                    </ModalFooter>
+                                                                </Modal>
+                                                            </div>
                                                         </Card>
                                                         <Card title="Social Hours" padding>
-
+                                                            <div className="table-responsive">
+                                                                <table className="table table-striped no-wrap">
+                                                                    <thead className="bg-primary text-white">
+                                                                        <tr>
+                                                                            <th>Activity Name</th>
+                                                                            <th>Points</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        { this.state.studentAccount.metadata.socDetails.length > 0 ?
+                                                                            this.state.studentAccount.metadata.socDetails.map((activity, index) => {
+                                                                                return <tr key={index}>
+                                                                                    <th scope="row">{activity.name}</th>
+                                                                                    <td>{activity.points}</td>
+                                                                                    <td><button className="btn btn-danger btn-sm">Delete</button></td>
+                                                                                </tr>
+                                                                            })
+                                                                        : <tr><td colSpan="3">No Social Hours data.</td></tr>}
+                                                                    </tbody>
+                                                                </table>
+                                                                <button className="btn btn-primary float-right" data-toggle="modal" data-target="#addSocDataModal">Add Data</button>
+                                                            </div>
                                                         </Card>
                                                     </div>
                                                 : null }
@@ -643,7 +769,7 @@ class Account extends React.Component {
                                                                 Staff access can be re-granted anytime by another staff account.
                                                             </p>
                                                             <div className="float-right mt-2">
-                                                                <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStaffProfile">Delete Account</Button>
+                                                                <Button className="btn btn-danger ml-2" data-toggle="modal" data-target="#deleteStaffProfile" disabled={this.state.id === `${localStorage.getItem('universalId')}`}>{this.state.id === `${localStorage.getItem('universalId')}` ? "You can't delete your own account" : "Delete Account"}</Button>
                                                             </div>
                                                             <Modal id="deleteStaffProfile">
                                                                 <ModalHeader title="Delete Staff Account"/>

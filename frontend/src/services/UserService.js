@@ -105,6 +105,17 @@ class UserService {
         }
     }
 
+    async updateUserProfile(userId, accountId, data, callback) {
+        try {
+            const res = await axios.put(`${this.API_ENDPOINT}/user/${userId}/${accountId}`, data);
+            if (callback) callback(res.data);
+            return res.data;
+        } catch (err) {
+            if (callback) callback(err);
+            throw err;
+        }
+    }
+    
     async createStudentAccount(userId, callback) {
         try {
             const res = await axios.post(`${this.API_ENDPOINT}/user/${userId}/student`, {name: "Student"});
