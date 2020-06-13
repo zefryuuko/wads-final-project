@@ -8,11 +8,12 @@ var UserSchema = new mongoose.Schema({
     primaryEmail: { type: String, required: true },
     contactEmail: { type: String, required: true },
     phone: { type: String, required: true },
+    profilePictureURL: { type: String },
     accounts: {
         type: [{
             name: { type: String, required: true },
             accountType: { type: String, required: true },
-            id: { type: mongoose.Schema.Types.ObjectId, required: true },
+            metadata: { type: Object , required: true },
         }]
     },
     permittedDomains: { type: [mongoose.Schema.Types.ObjectId] }

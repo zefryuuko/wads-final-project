@@ -4,7 +4,7 @@ const account = require('../model/account.model');
 const session = require('../model/session.model');
 
 router.get('/', async (req, res) => {
-    const { sessionId, universalId } = req.body;
+    const { sessionId, universalId } = req.query;
 
     if (!(sessionId && universalId)) {
         res.status(400).json({

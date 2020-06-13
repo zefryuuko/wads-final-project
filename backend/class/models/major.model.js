@@ -8,7 +8,9 @@ var MajorSchema = new mongoose.Schema({
         type: [{
             _id: mongoose.Schema.Types.ObjectId,
             id: { type: mongoose.Schema.Types.ObjectId, required: true },
-            name: { type: String, required: true }
+            name: { type: String, required: true },
+            period: { type: String, required: true },
+            semesterId: { type: String, required: true }
         }]}
 });
 

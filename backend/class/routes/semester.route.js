@@ -5,6 +5,11 @@ const mongoose = require('mongoose');
 const Major = require('../models/major.model');
 const Semester = require('../models/semester.model');
 const Class = require('../models/class.model')
+const Student = require('../models/student.model');
+const Lecturer = require('../models/lecturer.model');
+const SharedResource = require('../models/sharedresource.model');
+const Assignment = require('../models/assignment.model');
+const Score = require('../models/score.model');
 const coursesServiceEndpoint = process.env.COURSES_HOST;
 
 router.get('/', async (req, res) => {
@@ -47,6 +52,76 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/searchStudentById/:id', async (req, res) => {
+    try {
+        const semesters = await Semester.find(
+            { 'classes.students.universalId': req.params.id },
+            {}
+        );
+
+        // Filter out results
+        semesters.forEach(semester => {
+            semester.classes = semester.classes.filter(semesterClass => {
+                let isCurrentClassHasSearchedStudent = false
+                semesterClass.students.forEach(student => {
+                    if (student.universalId == req.params.id)
+                        isCurrentClassHasSearchedStudent = true;
+                })
+                return isCurrentClassHasSearchedStudent;
+            })
+        });
+
+        
+        if (semesters.length < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not registered in any courses`
+            });
+        }
+        else {
+            res.status(200).send(semesters);
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.get('/searchLecturerById/:id', async (req, res) => {
+    try {
+        const semesters = await Semester.find(
+            { 'classes.lecturers.universalId': req.params.id },
+            {}
+        );
+
+        // Filter out results
+        semesters.forEach(semester => {
+            semester.classes = semester.classes.filter(semesterClass => {
+                let isCurrentClassHasSearchedLecturer = false
+                semesterClass.lecturers.forEach(lecturer => {
+                    if (lecturer.universalId == req.params.id)
+                        isCurrentClassHasSearchedLecturer = true;
+                })
+                return isCurrentClassHasSearchedLecturer;
+            })
+        });
+
+        
+        if (semesters.length < 1) {
+            res.status(404).json({
+                "message": `User with id ${req.params.id} is not registered in any courses`
+            });
+        }
+        else {
+            res.status(200).send(semesters);
+        }
+    } catch (err) {
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         // Check if passed majorId exists
@@ -68,7 +143,18 @@ router.post('/', async (req, res) => {
         const sResult = await semester.save();
 
         // Add semester reference to majors
-        const mResult = await Major.updateOne({ _id: req.body.majorId }, { $push: { linkedSemesters: req.body._id } });
+        const mResult = await Major.updateOne(
+            { _id: req.body.majorId }, 
+            { 
+                $push: { 
+                    linkedSemesters: {
+                        _id: mongoose.Types.ObjectId(),
+                        name: req.body.name,
+                        period: req.body.period,
+                        semesterId: req.body._id
+                    } 
+                }
+            });
 
         res.status(200).json({
             "message": "Semester added successfully."
@@ -152,10 +238,19 @@ router.delete('/:id', async (req, res) => {
         );
         
         // Remove reference to the semester from major
-        const mResult = await Major.updateOne(
-            { _id: semester[0].majorId }, 
-            { $pull: { linkedSemesters: req.params.id } }
-            );
+        const mResult = await Major.findOneAndUpdate(
+            { 
+                _id: semester[0].majorId
+            }, 
+            { 
+                $pull: { 
+                    linkedSemesters: {
+                        semesterId: req.params.id
+                    } 
+                }
+            },
+            { new: true }
+        );
         
         // Remove semester data
         const removedSemester = await Semester.deleteOne({ _id: req.params.id });
@@ -179,7 +274,7 @@ router.delete('/:id', async (req, res) => {
         }
 
         res.status(500).json({
-            "message": err
+            "message": `${err}`
         });
     }
 });
@@ -318,6 +413,291 @@ router.post('/:id', async (req, res) => {
     }
 });
 
+router.delete('/:id/:classCode/:courseCode/shared-resources/:resourceId', async (req, res) => {
+    try {
+        // Pull the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $pull: {
+                    'classes.$.sharedResources': {
+                        _id: mongoose.Types.ObjectId(req.params.resourceId)
+                    }
+                }
+            },
+            // { new: true, upsert: false }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Resource removed successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.post('/:id/:classCode/:courseCode/shared-resources', async (req, res) => {
+    try {
+        // Create and validate request body
+        const { dateAdded, addedBy, name, url } = req.body;
+        if (!(dateAdded && name && url && addedBy)) {
+            res.status(400).json({
+                "message": "One or more request body is missing. Required: dateAdded, addedBy, name, url",
+                "got": req.body
+            })
+            return;
+        }
+
+        if (!(addedBy.name && addedBy.universalId)) {
+            res.status(400).json({
+                "message": "One or more fields for addedBy is missing. Required: universalId, name",
+                "got": addedBy
+            });
+            return;
+        }
+
+        req.body._id = mongoose.Types.ObjectId();
+        const newResource = new SharedResource(req.body);
+
+        // Push the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $push: {
+                    'classes.$.sharedResources': newResource
+                }
+            },
+            { new: true }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Resource added successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.delete('/:id/:classCode/:courseCode/assignments/:resourceId', async (req, res) => {
+    try {
+        // Pull the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $pull: {
+                    'classes.$.assignments': {
+                        _id: mongoose.Types.ObjectId(req.params.resourceId)
+                    }
+                }
+            },
+            // { new: true, upsert: false }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment removed successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.post('/:id/:classCode/:courseCode/assignments/:assignmentId/submit', async (req, res) => {
+    try {
+        // Validate request body
+        const { universalId, name, submittedAt, fileURL } = req.body;
+        if (!(universalId && name && submittedAt && fileURL)) {
+            res.status(400).json({
+                "message": "Missing required fields. Required: universalId, name, submittedAt, fileURL",
+                "got": req.body
+            })
+            return;
+        }
+
+        req.body._id = mongoose.Types.ObjectId();
+
+        // Push the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode },
+                        assignments: {
+                            $elemMatch: {
+                                _id: req.params.assignmentId
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $push: {
+                    'classes.$.assignments.$[outer].submissions': req.body
+                }
+            },
+            { 
+                new: true, 
+                arrayFilters: [{
+                    "outer._id": mongoose.Types.ObjectId(req.params.assignmentId)
+                }] 
+            }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment submitted successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
+router.post('/:id/:classCode/:courseCode/assignments', async (req, res) => {
+    try {
+        // Create and validate request body
+        const { dateAdded, submissionDeadline, name, resourceURL } = req.body;
+        if (!(dateAdded && name && resourceURL && submissionDeadline)) {
+            res.status(400).json({
+                "message": "One or more request body is missing. Required: dateAdded, submissionDeadline, name, resourceURL",
+                "got": req.body
+            })
+            return;
+        }
+
+        req.body._id = mongoose.Types.ObjectId();
+        const newAssignment = new Assignment(req.body);
+
+        // Push the new data into array
+        const semester = await Semester.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                classes: {
+                    $elemMatch: {
+                        classCode: { $eq: req.params.classCode },
+                        courseCode: { $eq: req.params.courseCode }
+                    }
+                }
+            },
+            { 
+                $push: {
+                    'classes.$.assignments': newAssignment
+                }
+            },
+            { new: true }
+        );
+
+        if (!semester) {
+            res.status(404).json({
+                "message": 'One or more parameters are not found'
+            });
+        }
+        else {
+            res.status(200).json({
+                "message": "Assignment added successfully"
+            });
+        }
+    } catch (err) {
+        if (err.name == "CastError") {
+            res.status(404).json({
+                "message": `Semester with id ${req.params.id} is not found.`
+            });
+            return;
+        }
+
+        res.status(500).json({
+            "message": `${err}`
+        });
+    }
+});
+
 router.patch('/:id/:classCode/:courseCode', async (req, res) => {
     try {
         // Prevent multiple instance of classes with the same class and course code
@@ -345,11 +725,81 @@ router.patch('/:id/:classCode/:courseCode', async (req, res) => {
         const result = await Semester.findOneAndUpdate(
             { 
                 _id: req.params.id, 
-                'classes.classCode': { $eq: req.params.classCode }, 
-                'classes.courseCode': { $eq: req.params.courseCode } 
+                classes: {
+                    $elemMatch: {
+                        'classCode': { $eq: req.params.classCode },
+                        'courseCode': { $eq: req.params.courseCode }
+                    }
+                }
             }, 
-            { $setOnInsert: { 'classes.$': req.body } }
+            { $setOnInsert: { 'classes.$': req.body } }                             // TODO: Fix this crap
         );
+
+        // Update Students
+        if (req.body.students) {
+            const newStudentBody = req.body.students.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Student(element);
+                return element;
+            });
+            await Semester.updateOne(
+                { 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
+                }, 
+                { $set: { 'classes.$.students': newStudentBody } },
+                { new: true, upsert: true }
+            );
+        }
+
+        // Update Lecturers
+        if (req.body.lecturers) {
+            const newLecturerBody = req.body.lecturers.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Lecturer(element);
+                return element;
+            });
+            await Semester.updateOne(
+                { 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
+                }, 
+                { $set: { 'classes.$.lecturers': newLecturerBody } },
+                { new: true, upsert: true }
+            );
+        }
+
+        // Update scores
+        if (req.body.scores) {
+            const newScoresBody = req.body.scores.map(element => {
+                if (!element._id) element._id = mongoose.Types.ObjectId();
+                element = new Score(element);
+                return element;
+            });
+            await Semester.updateOne(
+                { 
+                    _id: { $eq: req.params.id }, 
+                    classes: {
+                        $elemMatch: {
+                            'classCode': { $eq: req.params.classCode }, 
+                            'courseCode': { $eq: req.params.courseCode } 
+                        }
+                    }
+                }, 
+                { $set: { 'classes.$.scores': newScoresBody } },
+                { new: true, upsert: true }
+            );
+        }
 
         if (!result) {
             res.status(404).json({

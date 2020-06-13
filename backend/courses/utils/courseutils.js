@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Course = require('../models/course.model');
+const Group = require('../models/group.model');
 
 class CourseUtils {
 
@@ -33,6 +34,28 @@ class CourseUtils {
                 { code: { $regex: new RegExp('^' + prefix) } },
                 [ { $set: { code: { $concat: [ newPrefix, { $substr: [ '$code', prefix.length, -1 ] } ] } } } ]
             );
+            const result2 = await Group.updateMany(
+                { 'courses.code': { $regex: new RegExp('^' + prefix) } },
+                [ { 
+                    $set: { 
+                        courses: { 
+                            $map: {
+                                input: '$courses',
+                                as: 'c',
+                                in: {
+                                    name: '$$c.name',
+                                    _id: '$$c._id',
+                                    id: '$$c.id',
+                                    code: {
+                                        $concat: [ newPrefix, { $substr: [ '$$c.code', prefix.length, -1 ] } ] 
+                                    }
+                                }
+                            }
+                        } 
+                    } 
+                } ]
+            );
+
             if (result.n > 0) return true;
             else return false;
         } catch (err) {

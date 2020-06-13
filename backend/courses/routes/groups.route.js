@@ -11,13 +11,12 @@ const courseUtils = require('../utils/courseutils');
 // - sortBy: sorting order of the result
 // Returns: array of group objects
 router.get('/', async (req, res) => {
-    const { page, sortBy } = req.query;
-    const itemsPerPage = 10;
-    if (!page) page == 1;
     // TODO: implement sort by...
-    const result = await Group.find({}, {_id: 0, __v: 0, courses: 0})
-        .skip((page - 1) * itemsPerPage)
-        .limit(itemsPerPage);
+    const result = await Group.find(
+        {}, 
+        {_id: 0, __v: 0, courses: 0}
+    )
+        .sort({prefix: 'ascending'});
     res.json(result);
 });
 
@@ -131,6 +130,16 @@ router.patch('/:prefix', async (req, res) => {
         if (err.name == 'CastError') {
             res.status(404).json({
                 'message': 'Group not found'
+            });
+            return;
+        }
+
+        // Handle duplicate key error
+        if (err && err.code === 11000) {
+            const duplicateKey = Object.keys(err.keyValue)[0];
+            res.status(409).json({
+                'message': `${err.keyValue[duplicateKey]} already exists`,
+                'key': `${err.keyValue[duplicateKey]}`
             });
             return;
         }
