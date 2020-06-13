@@ -1,4 +1,4 @@
-name: backend/auth
+name: staging/backend/auth
 
 on:
   push:

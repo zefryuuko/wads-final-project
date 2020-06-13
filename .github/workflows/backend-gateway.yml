@@ -1,4 +1,4 @@
-name: backend/gateway
+name: staging/backend/gateway
 
 on:
   push:

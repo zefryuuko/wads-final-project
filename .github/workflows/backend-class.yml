@@ -1,4 +1,4 @@
-name: backend/class
+name: staging/backend/class
 
 on:
   push:
