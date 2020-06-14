@@ -27,7 +27,7 @@ The frontend service hosts the user interface of the app. It is made using React
 The API gateway service serves as an endpoint for the frontend. It handles API authentication before passing the request to the designated service.
 
 #### backend/auth
-The authentication service handles the authentication process of the app. It stores the email, hashed password, and session ids. This service is primarily called by the API gateway to make sure every request only went through if it contains valid session data embedded.
+The authentication service handles the authentication process of the app. It stores the email, hashed password, and session ids. This service is primarily called by the API gateway to make sure every request only goes through if it contains valid session data embedded.
 
 #### backend/user
 The user service stores and manages the information that are related to users. Mostly parameters to a specific user such as name, email, and profiles.
@@ -36,7 +36,7 @@ The user service stores and manages the information that are related to users. M
 The courses service manages the database structure for the courses. Primarily used by staffs to manage course templates that will be used as a class. The course service is also used by the class service.
 
 #### backend/class
-The class instance manages the database structure for classes data. It is primarity used by the student and lecturer page. It gets and updates the parameters related to a class.
+The class instance manages the database structure for classes data. It is primarily used by the student and lecturer page. It gets and updates the parameters related to a class.
 
 ### Design Decisions
 
