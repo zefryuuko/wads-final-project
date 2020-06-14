@@ -1,4 +1,4 @@
-# Binusmaya
+# New BinusMaya
 ![topLanguage](https://img.shields.io/github/languages/top/zefryuuko/wads-final-project) [![commit](https://img.shields.io/github/last-commit/getliberated/wads-final-project)](https://github.com/zefryuuko/wads-Final-Project/commits/master) ![size](https://img.shields.io/github/repo-size/zefryuuko/wads-final-project) ![license](https://img.shields.io/github/license/zefryuuko/wads-final-project)
 
 A campus web portal with features aimed at Binusians, designed to be fast and easy to use. Made using the microservices architecture to improve speed and reliability compared to the current portal.
@@ -44,7 +44,7 @@ The class instance manages the database structure for classes data. It is primar
 We chose to create the structure of the services based on its functionality and features. For example while a user service and authentication service can be coupled together, we seperated it just to make sure that the authentication service is robust enough as it is very crucial to the app.
 
 #### Authentication Method
-For this app, we implemented a server side session-based authentication. While it is slower and resource hungry compared to something like JSON Web Token (JWT), we didn't know that JWT exists. The use of JWT will heavily improve performance and simplify the system. We already have everything set up perfectly in place so we chose to stick with the current setup.
+For this app, we implemented a server side session-based authentication. While it is slower and resource hungry compared to something like JSON Web Token (JWT). However, we didn't know that JWT existed when we were creating the project. The use of JWT will heavily improve performance and simplify the system. However, we already have everything set up perfectly in place so we chose to stick with the current setup.
 
 ## Technologies Used
 - Node.js
