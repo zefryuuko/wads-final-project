@@ -2,7 +2,7 @@ name: backend/gateway
 
 on:
   push:
-    branches: [ master, staging ]
+    branches: [ master ]
     paths:
       - 'backend/gateway/**'
 
@@ -26,9 +26,9 @@ jobs:
     # Build backend services
     - name: Build gateway
       run: |
-        docker build ./backend/gateway -t zefryuuko/wads-gateway:latest
+        docker build ./backend/gateway -t zefryuuko/wads-gateway:latest-stable
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-gateway:latest
+        docker push zefryuuko/wads-gateway:latest-stable

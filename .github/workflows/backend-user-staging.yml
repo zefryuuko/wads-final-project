@@ -1,10 +1,10 @@
-name: backend/courses
+name: staging/backend/user
 
 on:
   push:
-    branches: [ master ]
+    branches: [ staging ]
     paths:
-      - 'backend/courses/**'
+      - 'backend/user/**'
 
 jobs:
   build-containers:
@@ -24,11 +24,11 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     
     # Build backend services
-    - name: Build courses
+    - name: Build user
       run: |
-        docker build ./backend/courses -t zefryuuko/wads-courses:latest-stable
+        docker build ./backend/user -t zefryuuko/wads-user:latest
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-courses:latest-stable
+        docker push zefryuuko/wads-user:latest

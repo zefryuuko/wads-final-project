@@ -2,7 +2,7 @@ name: backend/user
 
 on:
   push:
-    branches: [ master, staging ]
+    branches: [ master ]
     paths:
       - 'backend/user/**'
 
@@ -26,9 +26,9 @@ jobs:
     # Build backend services
     - name: Build user
       run: |
-        docker build ./backend/user -t zefryuuko/wads-user:latest
+        docker build ./backend/user -t zefryuuko/wads-user:latest-stable
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-user:latest
+        docker push zefryuuko/wads-user:latest-stable
