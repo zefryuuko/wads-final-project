@@ -107,6 +107,7 @@ CRYPTO_SALT=your_crypto_salt;
 - `MYSQL_USER` and `MYSQL_PASS` is your credentials to access the MySQL server.
 - `MYSQL_DB` is the database name that the service will access.
 - `MYSQL_CONNECTION_LIMIT` is the limit of concurrent connections allowed to the MySQL server.
+- `CRYPTO_SALT` is the salt that is added before the plaintext password is hashed and stored into the database.
 
 To run it directly, run
 ```
