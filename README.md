@@ -55,9 +55,9 @@ We chose to create the structure of the services based on its functionality and 
 For this app, we implemented a server side session-based authentication. While it is slower and resource hungry compared to something like JSON Web Token (JWT). However, we didn't know that JWT existed when we were creating the project. The use of JWT will heavily improve performance and simplify the system. However, we already have everything set up perfectly in place so we chose to stick with the current setup.
 
 ## Installation
-There are two ways that you can use to run the services, running it directly or using Docker. The installation setup is similar for both methods. All services needs to run for this to work, especially services that handles authentication, user data, and the gateway.
+There are two ways that you can use to run the services: running it directly or using Docker. The installation setup is similar for both methods. All services needs to run for this to work, especially services that handles authentication, user data, and the gateway.
 
-If you would like to run it directly, make sure that you have `Node.js` installed. To install `Node.js`, Download the binaries from [Node.js' site](https://nodejs.org/en/download/) and install. If you prefer to use a package manager, you can also install [Node.js using package manager](https://nodejs.org/en/download/package-manager/).
+If you would like to run it directly, make sure that you have `Node.js` installed. To install `Node.js`, download the binaries from [Node.js' site](https://nodejs.org/en/download/) and install. If you prefer to use a package manager, you can also install [Node.js using package manager](https://nodejs.org/en/download/package-manager/).
 
 Make sure you are in the correct subdirectory while following the guide for each service.
 
