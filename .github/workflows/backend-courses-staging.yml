@@ -1,8 +1,8 @@
-name: backend/courses
+name: staging/backend/courses
 
 on:
   push:
-    branches: [ master ]
+    branches: [ staging ]
     paths:
       - 'backend/courses/**'
 
@@ -26,9 +26,9 @@ jobs:
     # Build backend services
     - name: Build courses
       run: |
-        docker build ./backend/courses -t zefryuuko/wads-courses:latest-stable
+        docker build ./backend/courses -t zefryuuko/wads-courses:latest
     
     # Push to Docker Hub
     - name: Push to Docker Hub
       run: |
-        docker push zefryuuko/wads-courses:latest-stable
+        docker push zefryuuko/wads-courses:latest

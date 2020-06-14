@@ -2,7 +2,7 @@ name: backend/class
 
 on:
   push:
-    branches: [ master, staging ]
+    branches: [ master ]
     paths:
       - 'backend/class/**'
 
