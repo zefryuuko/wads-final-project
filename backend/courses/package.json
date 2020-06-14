@@ -1,6 +1,6 @@
 {
   "name": "courses",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Course service",
   "main": "app.js",
   "scripts": {
