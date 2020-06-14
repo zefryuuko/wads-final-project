@@ -20,6 +20,7 @@ import Courses from './courses/Courses';
 import Course from './courses/Course';
 import Profile from '../Profile';
 import PageNotFound from '../PageNotFound';
+import Assignments from './courses/Assignments';
 
 class LecturerDashboardPage extends Component {
     constructor() {
@@ -71,8 +72,8 @@ class LecturerDashboardPage extends Component {
 
                         {/* Courses */}
                         <Route exact path={`${path}/courses`}><Courses/></Route>
-                        {/* <Route exact path={`${path}/courses/:groupId`}><CourseList/></Route> */}
                         <Route exact path={`${path}/courses/:semesterId/:classCode/:courseCode`}><Course/></Route>
+                        <Route exact path={`${path}/assignments`}><Assignments/></Route>
 
                         {/* Account */}
                         <Route exact path={`${path}/profile`}><Profile/></Route>
