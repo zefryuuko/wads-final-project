@@ -191,9 +191,11 @@ node run prod
 If you want to use a prebuilt version, you can simply pull the image from the Docker Hub: `zefryuuko/wads-class:latest-stable` or `zefryuuko/wads-class:latest` for the latest staging build. In addition, the `.env` file should be mounted on the container's root directory.
 
 ## Technologies Used
+This project is made possible with these awesome software and libraries:
 - Node.js
 - Express
 - MongoDB
+- Mongoose
 - MySQL
 - Firebase
 - axios
