@@ -159,27 +159,6 @@ class StaffDashboard extends React.Component {
                                         </form>
                                     </Card>
                                 </div>
-                                <div className="col-md-6">
-                                    <Card title="Your Profiles" padding>
-                                        <p>An account can have several profiles assigned to it. You can choose the default profile that will be used when you log in.</p>
-                                        <p>Click the arrow button to re-arrange.</p>
-                                        <div className="list-group">
-                                            {this.state.userData ? this.state.userData.accounts.map((profile, index) => {
-                                                return <div className={`list-group-item ${index === 0 ? "active" : ""}`} key={index}>
-                                                    <div className="d-flex w-100 justify-content-between">
-                                                        <div>
-                                                            <Button className="btn btn-light btn-sm mr-1" disabled={index === 0}><i className="fas fa-arrow-up"/></Button>
-                                                            <Button className="btn btn-light btn-sm mr-2" disabled={index === this.state.userData.accounts.length - 1}><i className="fas fa-arrow-down"/></Button>
-                                                            <span>{profile.name}</span>
-                                                        </div>
-                                                        {index === 0 ? <small style={{marginTop: 6}}>Default</small> : <span></span>}
-                                                    </div>
-                                                </div>
-                                            })
-                                            : <div></div>}
-                                        </div>
-                                    </Card>
-                                </div>
                             </div>
                         </ContentWrapper>
                     </PageWrapper>
