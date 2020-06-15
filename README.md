@@ -194,6 +194,8 @@ If you want to use a prebuilt version, you can simply pull the image from the Do
 ## Application Instructions
 New BinusMaya is a website that offers ease of use to all the users. When entering the website into the browser, you will be directed into the login page. Here, you will enter your credentials s which are your email address and password. If you choose to to have the website direct you into the dashboard page immediately the next time you access the website, tick the 'Remember me' checkbox.
 
+A demo video could be found [here](https://s.zef.sh/wadsdemo).
+
 ### Lecturers
 For lecturers, when you enter the dashboard page, you will be able to see two main parts of the page. First, you will see the sidebar that consist of your main features and the body which consists of the classes and courses you are teaching in that semester. 
 
