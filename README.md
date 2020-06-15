@@ -11,6 +11,7 @@ A Web Application Development and Security final project.
   - [Description](#description)
   - [Design Decisions](#design-decisions)
 - [Installation](#installation)
+- [Application Instructions](#application-instructions)
 - [Technologies USed](#technologies-used)
 
 ## Build Status
@@ -189,6 +190,28 @@ node run prod
 ```
 
 If you want to use a prebuilt version, you can simply pull the image from the Docker Hub: `zefryuuko/wads-class:latest-stable` or `zefryuuko/wads-class:latest` for the latest staging build. In addition, the `.env` file should be mounted on the container's root directory.
+
+## Application Instructions
+New BinusMaya is a website that offers ease of use to all the users. When entering the website into the browser, you will be directed into the login page. Here, you will enter your credentials s which are your email address and password. If you choose to to have the website direct you into the dashboard page immediately the next time you access the website, tick the 'Remember me' checkbox.
+
+A demo video could be found [here](https://s.zef.sh/wadsdemo).
+
+### Lecturers
+For lecturers, when you enter the dashboard page, you will be able to see two main parts of the page. First, you will see the sidebar that consist of your main features and the body which consists of the classes and courses you are teaching in that semester. 
+
+To enter the course page, you may click the courses button in the sidebar or directly choose your class from the body. There, you will be able to see the class details, modify (view, add, delete) shared materials, modify assignments, add grades to the students, and see the people involved in the course (other lecturers and students). You can view your assignments page from the sidebar button as well. You can view your profile to see basic information and change password in the sidebar. There is also a button to logout in the sidebar.
+
+### Students
+For students, when you enter the dashboard page, you will be able to see two main parts of the page. First, you will see the sidebar that consists of your main features and the body which consists of the basic information of your academic details. The body will have a basic overview of your number of assignments due, GPA, SAT points, and community service hours. Moreover, you will have a list of classes you have that semester and a list of assignments with their deadlines.
+
+You can access courses by pressing the course on the body or from the sidebar. There, you will be able to see class details, download and view shared materials, download and submit assignments, and see the people involved in the course (other lecturers and students). You can view and submit your assignments from the sidebar button as well.
+
+You can see your grades from the sidebar button. You will see the score weight and the score of each class, per semester, in that page. You can view details of your SAT points and community service hours from the sidebar button. In both, you will see the name of the activity you did and the points you gained in each activity.  You can view your profile to see basic informatio and change password in the sidebar. There is also a button to logout in the sidebar.
+
+### Staff
+For staff, when you enter the dashboard page, you will be able to see two main parts of the page. First, you will see the sidebar that consists of your main features and the body. 
+
+The role of a staff would be to handle users (staff, lecturer, and students), courses, and classes. As a staff you can add and delete classes and courses. You can press the buttons from the sidebar and you can add courses to the classes, enroll lecturers and students into classes and more. Next, you can see the list of users of New BinusMaya. You can see a list of all, list of students, list of staffs, and list of lecturers. You can sort the list alphabetically or numerically based on their ID numbers. You can add and delete users by entering their basic information. You can also edit details about the user except for their main email address.
 
 ## Technologies Used
 This project is made possible with these awesome software and libraries:
