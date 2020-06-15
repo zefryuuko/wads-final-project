@@ -215,14 +215,14 @@ The role of a staff would be to handle users (staff, lecturer, and students), co
 
 ## Technologies Used
 This project is made possible with these awesome software and libraries:
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- MySQL
-- Firebase
-- axios
-- React
-- nginx
-- Docker
-- watchtower
+- Node.js: JavaScript runtime.
+- Express: JavaScript web framework.
+- MongoDB: Database for all services but Auth and Gateway.
+- Mongoose: MongoDB extension that handles schema, also known as an Object Doucment Mapper (ODM).
+- MySQL: Database for Authentication.
+- Firebase: Hosting image and files.
+- axios: HTTP client for JavaScript (used in Frontend). To request data from Frontend to Backend using API.
+- React: Frontend framework.
+- nginx: Web server. Used for web proxy and load balancing.
+- Docker: Containerization technology for building and containerizing applications.
+- watchtower: Docker container that updates other running containers in the server.
