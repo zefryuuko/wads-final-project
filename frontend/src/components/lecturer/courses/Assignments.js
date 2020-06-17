@@ -122,7 +122,7 @@ class Assignments extends Component {
                                                                 key={assignment._id}
                                                                 assignmentId={assignment._id}
                                                                 assignmentName={assignment.name}
-                                                                submissions = {assignment.submissions.filter(element => element.universalId === this.state.currentUserData.id)}
+                                                                submissions = {assignment.submissions}
                                                             />
                                                 })
                                             : null }
