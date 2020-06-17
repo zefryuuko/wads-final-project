@@ -5,6 +5,8 @@ A campus web portal with features aimed at Binusians, designed to be fast and ea
 
 A Web Application Development and Security final project.
 
+![](https://github.com/zefryuuko/wads-final-project/blob/master/docs/preview.png?raw=true)
+
 ## Table of Contents
 - [Build Status](#build-status)
 - [Services](#services)
