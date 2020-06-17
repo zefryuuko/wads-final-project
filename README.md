@@ -14,7 +14,7 @@ A Web Application Development and Security final project.
   - [Design Decisions](#design-decisions)
 - [Installation](#installation)
 - [Application Instructions](#application-instructions)
-- [Technologies USed](#technologies-used)
+- [Technologies Used](#technologies-used)
 
 ## Build Status
 
